@@ -1,4 +1,4 @@
-import axiosInstance from '@/configs/axios-config'
+import axiosInstance from '@/configs/AxiosConfig'
 import { IPost } from '@/interfaces/post/IPost'
 
 export class PostService {

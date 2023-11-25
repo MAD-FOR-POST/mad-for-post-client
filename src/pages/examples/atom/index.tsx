@@ -50,8 +50,8 @@ export default function TailwindExample() {
   return (
     <Layout>
       <BasicButton onClick={onGoToHomeButtonClicked}>홈으로 가기</BasicButton>
-      <input id={'email'} onChange={handleInputChanged} value={email} />
-      <input id={'name'} onChange={handleInputChanged} value={name} />
+      <input id={'email'} placeholder={'email을 입력해주세요'} onChange={handleInputChanged} value={email} />
+      <input id={'name'} placeholder={'name을 입력해주세요'} onChange={handleInputChanged} value={name} />
       <BasicButton onClick={setTestUserInfo}>atom에 저장하기</BasicButton>
     </Layout>
   )

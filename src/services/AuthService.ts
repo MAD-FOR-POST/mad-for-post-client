@@ -1,6 +1,6 @@
 import { Apis } from '@/common/Constants'
 import IApiResponse from '@/interfaces/api/IApiResponse'
-import axiosInstance from '@/configs/axios-config'
+import axiosInstance from '@/configs/AxiosConfig'
 import { ILoginResponse } from '@/interfaces/auth/ILoginResponse'
 import { AxiosResponse } from 'axios'
 
