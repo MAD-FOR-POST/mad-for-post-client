@@ -3,7 +3,7 @@
 ## 🖥 개요
 
 생성형 Ai기반 자동 포스팅 서비스 구축  
-담당자 - ㅁㅁㅁ, ㅁㅁㅁ 
+담당자 - ㅁㅁㅁ, ㅁㅁㅁ
 
 ## ⚙️ 기술 스택
 
@@ -12,7 +12,7 @@
 ![NodeJS](https://img.shields.io/badge/Node.js-v20.8.0-339933?logo=node.js&style=plastic) ![typescript](https://img.shields.io/badge/typescript-v5.3.2-007acc?logo=typescript&style=plastic) ![react](https://img.shields.io/badge/react-v18.2.38-61dafb?logo=React&style=plastic) ![next](https://img.shields.io/badge/next-v14.0.3-eee?logo=next.js&style=plastic)
 
 </div>
- 
+
 ## 🎁 패키지
 
 **패치** | `axios` `"@tanstack/react-query`
@@ -71,7 +71,6 @@ API_BASE_URL=https://aidev.lotte.net
 ```javascript
 const apiBaseUrl = process.env.API_BASE_URL // "https://aidev.lotte.net"
 ```
-
 
 ## 🗂 프로젝트 구조
 
@@ -156,3 +155,48 @@ const apiBaseUrl = process.env.API_BASE_URL // "https://aidev.lotte.net"
 ├── tailwind.config.js
 
 └── tsconfig.json
+
+## 달라진 점
+
+### react-router의 페이지 라우팅 방식
+
+```ts
+//AS-IS
+const navigate = useNavigate()
+navigate(AppRoutes.login)
+```
+
+### Next.js에서의 페이지 라우팅
+
+```ts
+//TO-BE
+const router = useRouter()
+router.push(AppRoutes.login)
+```
+
+### 페이지 라우팅 방식 변경
+
+<small>별도의 Route파일을 통한 라우팅 설정이 필요 없음.</small>
+> ex) pages/login/index.html -> localhost:3000/login
+
+### 페이지 파라미터 가져오기
+
+<small>이 부분은 Next.js가 좀더 번거로운거 같아요</small>
+
+```ts
+//a.com?token=12345 라는 url에서 token의 12345를 파싱할 경우
+const router = useRouter()
+
+useEffect(() => {
+    //ready가 되어야 파라미터 파싱이 가능합니다.
+    if (!router.isReady) return;
+
+    const {token} = router.query;
+
+    if (token) {
+        console.log(`token : ${token}`)
+    } else {
+        console.log(`토큰이 존재하지 않습니다.`)
+    }
+}, [router.isReady]); //이 부분이 중요합니다. []이 아닙니다.
+```
