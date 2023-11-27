@@ -1,13 +1,9 @@
 // ApiResponse.ts
 
-interface IHeader {
-  message: string
-  errorCode: string | null
-  totalPage: number
-}
-
 interface IApiResponse<T> {
-  header: IHeader
+  message?: string
+  statusCode?: number
+  totalPage?: number
   data: T
 }
 

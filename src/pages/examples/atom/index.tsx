@@ -49,10 +49,12 @@ export default function TailwindExample() {
 
   return (
     <Layout>
-      <BasicButton onClick={onGoToHomeButtonClicked}>홈으로 가기</BasicButton>
-      <input id={'email'} placeholder={'email을 입력해주세요'} onChange={handleInputChanged} value={email} />
-      <input id={'name'} placeholder={'name을 입력해주세요'} onChange={handleInputChanged} value={name} />
-      <BasicButton onClick={setTestUserInfo}>atom에 저장하기</BasicButton>
+      <div className={'flex flex-col justify-center items-center rounded-[20px] bg-white w-full max-w-[512px] h-full'}>
+        <BasicButton onClick={onGoToHomeButtonClicked}>홈으로 가기</BasicButton>
+        <input id={'email'} placeholder={'email을 입력해주세요'} onChange={handleInputChanged} value={email} />
+        <input id={'name'} placeholder={'name을 입력해주세요'} onChange={handleInputChanged} value={name} />
+        <BasicButton onClick={setTestUserInfo}>atom에 저장하기</BasicButton>
+      </div>
     </Layout>
   )
 }

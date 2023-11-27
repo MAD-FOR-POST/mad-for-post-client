@@ -21,9 +21,11 @@ export default function Home() {
 
   return (
     <Layout>
-      <BasicButton onClick={onAPiExampleButtonClicked}>API 통신 예제 페이지로 가기</BasicButton>
-      <BasicButton onClick={onPublishExampleButtonClicked}>퍼블리시 예제 페이지로 가기</BasicButton>
-      <BasicButton onClick={onAtomExampleButtonClicked}>atom 예제 페이지로 가기</BasicButton>
+      <div className={'flex flex-col justify-center items-center rounded-[20px] bg-white w-full max-w-[512px] h-full'}>
+        <BasicButton onClick={onAPiExampleButtonClicked}>API 통신 예제 페이지로 가기</BasicButton>
+        <BasicButton onClick={onPublishExampleButtonClicked}>퍼블리시 예제 페이지로 가기</BasicButton>
+        <BasicButton onClick={onAtomExampleButtonClicked}>atom 예제 페이지로 가기</BasicButton>
+      </div>
     </Layout>
   )
 }
