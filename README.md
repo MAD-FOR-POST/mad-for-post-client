@@ -63,13 +63,13 @@
 운영 : .env.production
 
 ```text
-API_BASE_URL=https://aidev.lotte.net
+API_BASE_URL=https://naver.com
 ```
 
 ### 프로젝트 내에서 환경변수 사용
 
 ```javascript
-const apiBaseUrl = process.env.API_BASE_URL // "https://aidev.lotte.net"
+const apiBaseUrl = process.env.API_BASE_URL // "https://naver.com"
 ```
 
 ## 🗂 프로젝트 구조
