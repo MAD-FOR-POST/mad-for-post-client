@@ -18,6 +18,12 @@ export default function Home() {
   const onAtomExampleButtonClicked = () => {
     router.push(AppRoutes.atomExample)
   }
+  const onUITextButtonClicked = () => {
+    router.push(AppRoutes.inputText)
+  }
+  const onUIImageButtonClicked = () => {
+    router.push(AppRoutes.inputImage)
+  }
 
   return (
     <Layout>
@@ -25,6 +31,8 @@ export default function Home() {
         <BasicButton onClick={onAPiExampleButtonClicked}>API 통신 예제 페이지로 가기</BasicButton>
         <BasicButton onClick={onPublishExampleButtonClicked}>퍼블리시 예제 페이지로 가기</BasicButton>
         <BasicButton onClick={onAtomExampleButtonClicked}>atom 예제 페이지로 가기</BasicButton>
+        <BasicButton onClick={onUITextButtonClicked}>UI text 페이지로 가기</BasicButton>
+        <BasicButton onClick={onUIImageButtonClicked}>UI image 페이지로 가기</BasicButton>
       </div>
     </Layout>
   )
