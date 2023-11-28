@@ -1,0 +1,29 @@
+name: MFP client 빌드
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+      with:
+        ref: develop  # develop 브랜치를 체크아웃
+
+    - name: Set up SSH
+      uses: webfactory/ssh-agent@v0.5.1
+      with:
+        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+    - name: SSH and Run Script
+      run: |
+        ssh -o "StrictHostKeyChecking=no" username@yourserver.com << 'EOF'
+          echo "Starting script execution"
+          # 여기에 실행할 명령어들을 추가하세요
+          cd /path/to/directory
+          git pull
+          ./run_some_tasks.sh
+          echo "Script execution completed"
+        EOF
