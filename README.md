@@ -73,87 +73,44 @@ const apiBaseUrl = process.env.API_BASE_URL // "https://aidev.lotte.net"
 ```
 
 ## 🗂 프로젝트 구조
-
 ├── frontend(client)
-
 │ ├── public
-
-│ │ ├── docx
-
 │ │ ├── images
-
 │ │ └── js
-
 │ ├── src
-
 │ │ ├── api
-
 │ │ │ └── fetcher
-
 │ │ ├── components
-
 │ │ │ ├── Fallback
-
 │ │ │ ├── Layout
-
 │ │ │ ├── Pages
-
 │ │ │ └── UI
-
 │ │ ├── config
-
 │ │ ├── constants
-
 │ │ ├── hooks
-
 │ │ │ └── query
-
 │ │ ├── pages
-
 │ │ │ ├── assets
-
 │ │ │ │ └── fonts
-
 │ │ │ │ └── styles
-
 │ │ │ └── \_app
-
 │ │ │ └── \_document
-
 │ │ │ └── \_error
-
 │ │ ├── store
-
 │ │ │ └── atoms
-
-│ │ │ └── selectors
-
 │ │ ├── styles
-
 │ │ │ └── UI
-
 │ │ ├── type
-
 │ │ │ └── response
-
 │ │ └── utils
-
 │ └── .gitlab
-
 ├── .env
-
 ├── .eslintrc.json
-
 ├── Dockerfile
-
 ├── newrelic.js
-
 ├── next.config.js
-
 ├── package.js
-
 ├── tailwind.config.js
-
 └── tsconfig.json
 
 ## 달라진 점
