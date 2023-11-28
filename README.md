@@ -81,7 +81,6 @@ const apiBaseUrl = process.env.API_BASE_URL // "https://aidev.lotte.net"
 │ │ ├── api
 │ │ │ └── fetcher
 │ │ ├── components
-│ │ │ ├── Fallback
 │ │ │ ├── Layout
 │ │ │ ├── Pages
 │ │ │ └── UI
