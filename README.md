@@ -105,7 +105,6 @@ const apiBaseUrl = process.env.API_BASE_URL // "https://aidev.lotte.net"
 │ └── .gitlab
 ├── .env
 ├── .eslintrc.json
-├── Dockerfile
 ├── newrelic.js
 ├── next.config.js
 ├── package.js
