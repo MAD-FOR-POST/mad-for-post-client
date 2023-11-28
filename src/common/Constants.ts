@@ -38,6 +38,8 @@ export const AppRoutes = {
   apiExample: '/examples/api',
   publishExample: '/examples/publish',
   atomExample: '/examples/atom',
+  inputText: '/input/text',
+  inputImage: '/input/image',
 }
 
 export enum HttpStatusCode {
