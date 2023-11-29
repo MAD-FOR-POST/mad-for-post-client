@@ -38,7 +38,7 @@ export default function TextPage() {
           </div>
           <div className={'flex flex-col bg-white rounded-[36.38px] w-[87%] min-h-[194px] mt-[14px] px-[10px] py-[11px] '}>
             <div className={'flex-1 text-[#262A2F] text-[14px] font-bold text-center  mb-[16px]'}>Any more detail?(optional)</div>
-            <textarea className={'h-full text-[16px] '} placeholder='Add more detail about keywords.'></textarea>
+            <textarea className={'h-full text-[16px] focus:outline-none'} placeholder='Add more detail about keywords.'></textarea>
           </div>
 
 
