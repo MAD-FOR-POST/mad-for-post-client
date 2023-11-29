@@ -25,6 +25,15 @@ export default function TailwindExample() {
       reader.readAsDataURL(file)
     }
   }
+
+  const onDeleteImage = (index: number) => {
+    // Copy the current array
+    const newArray = [...selectedImagesArray]
+    // Remove the image at the specified index
+    newArray.splice(index, 1)
+    // Update the Recoil state
+    setSelectedImagesArray(newArray)
+  }
   useEffect(() => {
     console.log(selectedImagesArray)
   }, [selectedImagesArray])
@@ -49,7 +58,7 @@ export default function TailwindExample() {
           {selectedImagesArray.map((imgUrl, index) => (
             <div className="relative">
               <img key={index} src={imgUrl} alt="Selected" className="w-full h-full object-cover rounded-3xl  max-w-[100px] max-h-[100px]" />
-              <span className="absolute top-0 right-2 bg-white p-1 rounded-full w-6 h-6 flex justify-center items-center cursor-pointer">
+              <span className="absolute top-0 right-2 bg-white p-1 rounded-full w-6 h-6 flex justify-center items-center cursor-pointer" onClick={() => onDeleteImage(index)}>
                 <FontAwesomeIcon icon={faXmark} />
               </span>
             </div>
