@@ -44,7 +44,7 @@ export default function TailwindExample() {
         <BackButton />
         <div className="font-poppins text-4xl w-[266px] text-center mt-[256px] font-bold ">Do you have any pictures?</div>
         <form
-          className="relative grid grid-cols-3 gap-10 w-full h-96  px-10 pt-20"
+          className="relative grid grid-cols-3 gap-10 w-full h-96  px-10 pt-20 overflow-auto"
           style={{
             backgroundImage: 'url("/images/FormBackground.png")',
             backgroundSize: 'cover',
@@ -64,7 +64,7 @@ export default function TailwindExample() {
             </div>
           ))}
           <label htmlFor="imageInput" className="bg-white w-full  z-10 rounded-3xl max-w-[100px] max-h-[100px] flex justify-center items-center cursor-pointer">
-            <span className="text-slate-300 text-sm w-3/5 text-center">Add Picture</span>
+            {selectedImagesArray.length < 3 ? <span className="text-slate-300 text-sm w-3/5 text-center">Add Picture</span> : <></>}
           </label>
         </form>
         <NextButton>Skip and generate</NextButton>
