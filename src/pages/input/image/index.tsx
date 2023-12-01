@@ -8,6 +8,7 @@ import Layout from '@/components/layout'
 import { useEffect, useState } from 'react'
 import { useRecoilState } from 'recoil'
 import { userInputImages } from '@/stores/UserAtom'
+import { printLog } from '@/utils/LogUtil'
 
 export default function TailwindExample() {
   const router = useRouter()
@@ -35,7 +36,7 @@ export default function TailwindExample() {
     setSelectedImagesArray(newArray)
   }
   useEffect(() => {
-    console.log(selectedImagesArray)
+    printLog(selectedImagesArray)
   }, [selectedImagesArray])
 
   return (
@@ -56,7 +57,7 @@ export default function TailwindExample() {
           {/* {selectedImage ? <img src={selectedImage} alt="Selected" className="w-full h-full object-cover rounded-3xl  max-w-[100px] max-h-[100px]" /> : <></>}
           {selectedImage ? <img src={selectedImage} alt="Selected" className="w-full h-full object-cover rounded-3xl  max-w-[100px] max-h-[100px]" /> : <></>} */}
           {selectedImagesArray.map((imgUrl, index) => (
-            <div className="relative">
+            <div key={`${index}${imgUrl}`} className="relative">
               <img key={index} src={imgUrl} alt="Selected" className="w-full h-full object-cover rounded-3xl  max-w-[100px] max-h-[100px]" />
               <span className="absolute top-0 right-2 bg-white p-1 rounded-full w-6 h-6 flex justify-center items-center cursor-pointer" onClick={() => onDeleteImage(index)}>
                 <FontAwesomeIcon icon={faXmark} />

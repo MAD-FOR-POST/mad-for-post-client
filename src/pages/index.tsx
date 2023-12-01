@@ -1,7 +1,7 @@
 import Layout from '@/components/layout'
 import { useRouter } from 'next/router'
 import { AppRoutes } from '@/common/Constants'
-import { BasicButton } from '@/components/ui/button'
+import { BasicButton } from '@/components/ui/button/BasicButton'
 import React from 'react'
 
 export default function Home() {

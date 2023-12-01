@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router'
 import { useRecoilState, useRecoilValue } from 'recoil'
 import { userAtom } from '@/stores/UserAtom'
-import { BasicButton } from '@/components/ui/button'
+import { BasicButton } from '@/components/ui/button/BasicButton'
 import Layout from '@/components/layout'
 import { ChangeEvent, useEffect, useState } from 'react'
 import { IUserInfo } from '@/interfaces/user/IUserInfo'

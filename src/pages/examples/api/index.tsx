@@ -4,7 +4,7 @@ import { PostService } from '@/services/PostService'
 import { useState } from 'react'
 import { IPost } from '@/interfaces/post/IPost'
 import { printLog } from '@/utils/LogUtil'
-import { BasicButton } from '@/components/ui/button'
+import { BasicButton } from '@/components/ui/button/BasicButton'
 
 export default function ApiExample() {
   const router = useRouter()
