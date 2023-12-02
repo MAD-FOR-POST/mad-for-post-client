@@ -38,6 +38,7 @@ export const AppRoutes = {
   apiExample: '/examples/api',
   publishExample: '/examples/publish',
   atomExample: '/examples/atom',
+  input: '/input',
   inputText: '/input/text',
   inputImage: '/input/image',
 }
