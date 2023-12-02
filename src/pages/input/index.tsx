@@ -34,7 +34,7 @@ export default function TailwindExample() {
 
   return (
     <Layout>
-      <div className="overflow-hidden flex flex-col justify-between items-center rounded-[20px] bg-white w-full max-w-[512px] h-full pt-9 relative">
+      <div className="overflow-hidden  flex flex-col justify-between items-center rounded-[20px] bg-white w-full max-w-[512px] h-full pt-9 relative">
         <div className=" flex flex-col font-poppins text-4xl w-[266px] text-center  font-bold -rotate-[9deg]">
           {/* <img src="/images/SocialIcons.png" className="scale-[7]  transition ease-linear translate-x-[500px] animation-move-left   duration-[12000ms]   mb-[100px]" /> */}
           <div className="animate-slidein">
@@ -50,7 +50,7 @@ export default function TailwindExample() {
             <img src="/images/SocialIcons.png" className="scale-[8]  mb-[120px] " />
           </div>
         </div>
-        <div className="absolute flex flex-col  justify-between bg-white w-full h-1/2 bottom-0 p-8 pt-20">
+        <div className="absolute   flex flex-col  justify-between  shadow-3xl bg-white w-full h-2/5 bottom-0 p-8 ">
           <div className="h-2/3 flex flex-col items-center">
             <div className="font-poppins text-4xl  text-center font-bold w-5/6 ">Let me just be efficient</div>
             <div className="text-center mt-3 text-gray-400  ">

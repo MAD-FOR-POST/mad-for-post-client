@@ -10,6 +10,9 @@ const config: Config = {
       colors: {
         'orange-pink': '#F4B7A8',
       },
+      boxShadow: {
+        '3xl': '0px -80px 100px 80px  rgba(255,255,255,1)',
+      },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
         'gradient-conic': 'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
