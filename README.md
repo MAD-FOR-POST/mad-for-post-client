@@ -81,7 +81,6 @@ const apiBaseUrl = process.env.API_BASE_URL // "https://naver.com"
 │ │ ├── api
 │ │ │ └── fetcher
 │ │ ├── components
-│ │ │ ├── Fallback
 │ │ │ ├── Layout
 │ │ │ ├── Pages
 │ │ │ └── UI
@@ -106,7 +105,6 @@ const apiBaseUrl = process.env.API_BASE_URL // "https://naver.com"
 │ └── .gitlab
 ├── .env
 ├── .eslintrc.json
-├── Dockerfile
 ├── newrelic.js
 ├── next.config.js
 ├── package.js
