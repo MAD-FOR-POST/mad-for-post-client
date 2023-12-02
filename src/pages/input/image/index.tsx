@@ -42,7 +42,11 @@ export default function TailwindExample() {
   return (
     <Layout>
       <div className="flex flex-col justify-between items-center rounded-[20px] bg-B5D9D9 w-full max-w-[512px] h-full pt-9 relative">
-        <BackButton />
+        <BackButton
+          onClick={() => {
+            router.back()
+          }}
+        />
         <div className="font-poppins text-4xl w-[266px] text-center mt-[256px] font-bold ">Do you have any pictures?</div>
         <form
           className="relative grid grid-cols-3 gap-10 w-full h-96  px-10 pt-20 overflow-auto"
