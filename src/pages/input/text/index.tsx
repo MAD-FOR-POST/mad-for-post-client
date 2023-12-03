@@ -38,9 +38,13 @@ export default function TextPage() {
               <KeywordInput keyword={typedKeyword} setPutKeyword={setTypedKeyword} onEnterKeyDown={onEnterKeyDown} />
               <KeywordList keywords={keywords} onRemoveKeywordButtonClicked={onRemoveKeywordButtonClicked} />
             </div>
-            <div className={'flex flex-col bg-white rounded-[36.38px] w-[87%] min-h-[194px] mt-[14px] px-[10px] py-[11px] mb-[104px]'}>
+            <div className={'flex flex-col bg-white rounded-[36.38px] w-[87%] min-h-[194px] mt-[14px] px-[40px] pt-[12px] pb-[24px] mb-[104px]'}>
               <div className={'text-[#262A2F] text-[14px] font-bold text-center  mb-[16px]'}>Any more detail?(optional)</div>
-              <textarea className={'flex-grow h-full text-[16px] focus:outline-none'} placeholder="Add more detail about keywords."></textarea>
+              <textarea
+                style={{ resize: 'none' }}
+                className={'flex-grow h-full text-[16px] focus:outline-none hide-scrollbar'}
+                placeholder="Add more detail about keywords."
+              ></textarea>
             </div>
             <NextButton>Done</NextButton>
           </div>
