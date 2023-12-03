@@ -13,5 +13,7 @@ export const authService = {
     const response: AxiosResponse<IApiResponse<ILoginResponse>> = await axiosInstance.post(Apis.login, reqParams)
     return response.data.data
   },
-  async refreshToken(): Promise<boolean> {},
+  async refreshToken(): Promise<boolean> {
+    return true
+  },
 }
