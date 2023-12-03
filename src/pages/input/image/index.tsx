@@ -40,7 +40,7 @@ export default function TailwindExample() {
 
   return (
     <Layout>
-      <div className="flex flex-col justify-between items-center rounded-[20px] bg-B5D9D9 w-full max-w-[512px] h-full pt-9 relative">
+      <div className="overflow-hidden flex flex-col justify-between items-center rounded-[20px] bg-B5D9D9 w-full max-w-[512px] h-full pt-9 relative">
         <BackButton
           onClick={() => {
             router.back()
