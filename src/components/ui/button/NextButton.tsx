@@ -10,7 +10,7 @@ interface Props {
 export const NextButton: React.FC<Props> = ({ children, onClick }) => {
   return (
     <button
-      className="flex justify-center items-center text-white py-5 px-7  rounded-full absolute bottom-5 text-xl font-bold max-w-[490px] w-custom bg-[#303841] hover:shadow-xl transition-shadow"
+      className="flex justify-center items-center text-white py-5 px-7  rounded-full absolute bottom-5 text-xl font-bold max-w-[380px] w-custom bg-[#303841] hover:shadow-xl transition-shadow"
       onClick={onClick}
     >
       <span className="w-3/4"> {children}</span>

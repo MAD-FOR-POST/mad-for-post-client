@@ -27,7 +27,7 @@ export default function TextPage() {
   printLog(keywords)
   return (
     <Layout>
-      <div className={'flex flex-col justify-between items-center rounded-[20px] bg-[#DDBCC5] w-full max-w-[512px] h-full pt-9 relative '}>
+      <div className={'flex flex-col justify-between items-center bg-[#DDBCC5] w-full max-w-[428px] h-full pt-9 relative '}>
         <BackButton />
         <br />
         <div className={'relative w-full'}>

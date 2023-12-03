@@ -4,6 +4,7 @@ import Layout from '@/components/layout'
 import { motion, useMotionValue, useTransform } from 'framer-motion'
 import { useEffect, useRef, useState } from 'react'
 import { AppRoutes } from '@/common/Constants'
+import ChevronRightAnimated from '@/components/ui/icon/ChevronRightAnimated'
 
 export default function TailwindExample() {
   const router = useRouter()
@@ -34,7 +35,7 @@ export default function TailwindExample() {
 
   return (
     <Layout>
-      <div className="overflow-hidden flex flex-col justify-between items-center rounded-[20px] bg-white w-full max-w-[512px] h-full pt-9 relative">
+      <div className="overflow-hidden flex flex-col justify-between items-center bg-white w-full max-w-[428px] h-full pt-9 relative">
         <div className=" flex flex-col font-poppins text-4xl w-[266px] text-center  font-bold -rotate-[9deg]">
           {/* <img src="/images/SocialIcons.png" className="scale-[7]  transition ease-linear translate-x-[500px] animation-move-left   duration-[12000ms]   mb-[100px]" /> */}
           <div className="animate-slidein">
@@ -68,9 +69,7 @@ export default function TailwindExample() {
                 dragConstraints={constraintsRef}
                 dragSnapToOrigin
               >
-                <span className="text-gray-400 text-xl">{'>'}</span>
-                <span className="text-gray-600 text-xl">{'>'}</span>
-                <span className="text-gray-800 text-xl">{'>'}</span>
+                <ChevronRightAnimated />
               </motion.div>
             </motion.div>
           </div>
