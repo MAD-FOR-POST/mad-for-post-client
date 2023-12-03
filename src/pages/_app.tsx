@@ -3,6 +3,7 @@ import type { AppProps } from 'next/app'
 import { RecoilRoot } from 'recoil'
 
 import { Poppins } from 'next/font/google'
+import { QueryClient, QueryClientProvider } from 'react-query'
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -12,11 +13,15 @@ const poppins = Poppins({
 })
 
 export default function App({ Component, pageProps }: AppProps) {
+  const queryClient = new QueryClient()
+
   return (
-    <main className={poppins.className}>
-      <RecoilRoot>
-        <Component {...pageProps} />
-      </RecoilRoot>
-    </main>
+    <QueryClientProvider client={queryClient}>
+      <main className={poppins.className}>
+        <RecoilRoot>
+          <Component {...pageProps} />
+        </RecoilRoot>
+      </main>
+    </QueryClientProvider>
   )
 }

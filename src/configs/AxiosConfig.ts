@@ -10,6 +10,10 @@ const axiosInstance = axios.create({
 // 요청 인터셉터
 axiosInstance.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
+    // Authorization 헤더를 요청 구성에 추가
+    const jwt = process.env.NEXT_PUBLIC_ACCESS_TOKEN
+    config.headers.Authorization = `Bearer ${jwt}`
+
     printLog('Request:', config) // 요청 내용을 로깅
     return config
   },
