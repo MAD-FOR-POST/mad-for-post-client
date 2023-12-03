@@ -40,3 +40,10 @@ export enum HttpStatusCode {
   SERVICE_UNAVAILABLE = 503,
   GATEWAY_TIMEOUT = 504,
 }
+
+export const ApiErrorCode = {
+  VALID_TOKEN: 1000,
+  NEED_REFRESH_TOKEN: 1001,
+  EXPIRED_TOKEN: 1002,
+  INVALID_TOKEN: 1003,
+}
