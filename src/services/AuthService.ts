@@ -24,7 +24,7 @@ export const authService = {
     return response.data.data
   },
   async validateToken(): Promise<IRefreshTokenResponse> {
-    const response: AxiosResponse<IApiResponse<IRefreshTokenResponse>> = await axiosInstance.post(Apis.validateToken, reqParams)
+    const response: AxiosResponse<IApiResponse<IRefreshTokenResponse>> = await axiosInstance.post(Apis.validateToken)
     return response.data.data
   },
 }
