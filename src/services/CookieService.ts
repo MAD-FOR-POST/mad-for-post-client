@@ -7,34 +7,35 @@ const CookieKeys = {
   refreshToken: 'refreshToken',
 }
 
-const setCookie = (key: string, value: string, option?: any) => {
-  cookies.set(key, value, { ...option })
-}
+export const cookieService = {
+  setCookie(key: string, value: string, option?: any) {
+    cookies.set(key, value, { path: '/', secure: false, sameSite: 'lax', ...option })
+  },
+  getCookie(key: string) {
+    return cookies.get(key)
+  },
 
-const getCookie = (key: string) => {
-  return cookies.get(key)
-}
+  setAccessToken(value: string) {
+    this.setCookie(CookieKeys.accessToken, value)
+  },
 
-export const setAccessToken = (value: string) => {
-  setCookie(CookieKeys.accessToken, value)
-}
+  getAccessToken() {
+    return this.getCookie(CookieKeys.accessToken)
+  },
 
-export const getAccessToken = () => {
-  return getCookie(CookieKeys.accessToken)
-}
+  clearAccessToken() {
+    return cookies.remove(CookieKeys.accessToken)
+  },
 
-export const clearAccessToken = () => {
-  return cookies.remove(CookieKeys.accessToken)
-}
+  setRefreshToken(value: string) {
+    this.setCookie(CookieKeys.refreshToken, value)
+  },
 
-export const setRefreshToken = (value: string) => {
-  setCookie(CookieKeys.refreshToken, value)
-}
+  getRefreshToken() {
+    return this.getCookie(CookieKeys.refreshToken)
+  },
 
-export const getRefreshToken = () => {
-  return getCookie(CookieKeys.refreshToken)
-}
-
-export const clearRefreshToken = () => {
-  return cookies.remove(CookieKeys.refreshToken)
+  clearRefreshToken() {
+    return cookies.remove(CookieKeys.refreshToken)
+  },
 }

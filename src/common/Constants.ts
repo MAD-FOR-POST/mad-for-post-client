@@ -1,8 +1,10 @@
 export const Apis = {
   baseUrl: process.env.NEXT_PUBLIC_BASE_URL,
 
-  //AUTH
-  login: '/api/v1/auth/login',
+  //인증
+  login: '/api/v1/auth/login', //로그인
+  refreshToken: '/api/v1/auth/refresh-token', //토큰 갱신
+  validateToken: '/validate-token', //토큰 검증
 
   //USER
   createUser: '/api/v1/users',
