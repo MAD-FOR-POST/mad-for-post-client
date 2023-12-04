@@ -23,7 +23,7 @@ export default function Home() {
     router.push(AppRoutes.inputText)
   }
   const onUIImageButtonClicked = () => {
-    router.push(AppRoutes.inputImage)
+    router.push(AppRoutes.input)
   }
 
   const onGoToMainPageButtonClicked = () => {

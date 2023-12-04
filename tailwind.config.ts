@@ -6,9 +6,13 @@ const config: Config = {
     extend: {
       backgroundColor: {
         B5D9D9: '#B5D9D9',
+        DADDBC: '#DADDBC',
       },
       colors: {
         'orange-pink': '#F4B7A8',
+      },
+      boxShadow: {
+        '3xl': '0px -80px 100px 80px  rgba(255,255,255,1)',
       },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
