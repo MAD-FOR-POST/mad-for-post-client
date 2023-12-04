@@ -21,7 +21,7 @@ export default function TailwindExample() {
     newX.onChange(() => {
       if (newX.get() === 1 && !routerPushed) {
         setRouterPushed(true)
-        router.push(AppRoutes.inputImage)
+        router.push(AppRoutes.inputText)
       }
     })
   }, [x])
