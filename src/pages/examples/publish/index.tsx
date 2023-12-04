@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router'
-import { BasicButton } from '@/components/ui/button'
+import { BasicButton } from '@/components/ui/button/BasicButton'
 import Layout from '@/components/layout'
 
 export default function TailwindExample() {

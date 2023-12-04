@@ -1,76 +1,53 @@
 import { useRouter } from 'next/router'
-import { BasicButton } from '@/components/ui/button'
 import Layout from '@/components/layout'
+import { useState } from 'react'
+import { NextButton } from '@/components/ui/button/NextButton'
+import { BackButton } from '@/components/ui/button/BackButton'
+import { KeywordInput } from '@/components/ui/keyword/KeywordInput'
+import { KeywordList } from '@/components/ui/keyword/KeywordList'
+import { printLog } from '@/utils/LogUtil'
 
-export default function TailwindExample() {
-  const router = useRouter()
-  const onGoToHomeButtonClicked = () => {
-    router.back()
+export default function TextPage() {
+  const [keywords, setKeywords] = useState<string[]>([])
+  const [typedKeyword, setTypedKeyword] = useState('')
+
+  const onEnterKeyDown = () => {
+    setKeywords((prevData) => [...prevData, typedKeyword])
+    setTypedKeyword('')
   }
 
+  const onRemoveKeywordButtonClicked = (index: number) => {
+    setKeywords((prevData) => {
+      const newData = [...prevData]
+      newData.splice(index, 1)
+      return newData
+    })
+  }
+  // printLog(putKeyword)
+  printLog(keywords)
   return (
     <Layout>
-      <div className={'flex flex-col justify-center items-center rounded-[20px] bg-white w-full max-w-[512px] h-full'}>
-        <BasicButton onClick={onGoToHomeButtonClicked}>홈으로 가기</BasicButton>
-
-        {/*  FLEX ROW */}
-        <div className={'flex'}>
-          <span>ITEM1</span> <span>ITEM2</span>
-        </div>
-
-        {/*  FLEX COLUMN */}
-        <div className={'flex flex-col'}>
-          <span>ROW1</span> <span>ROW2</span>
-        </div>
-
-        {/* SET BACKGROUND COLOR */}
-        <div className={'bg-red-200'}>
-          <span>RED BACKGROUND</span>
-        </div>
-
-        {/* SET TEXT COLOR */}
-        <div className={'text-red-500'}>
-          <span>RED TEXT</span>
-        </div>
-
-        {/* SET TEXT SIZE */}
-        <div className={'text-xl'}>
-          <span>XL TEXT</span>
-        </div>
-
-        {/* SET PADDING */}
-        <div className={'p-4 bg-blue-200'}>
-          <span>패딩입니다.</span>
-        </div>
-
-        {/* SET SIZE */}
-        {/*  w-fit : width를 콘텐츠 사이즈만큼만 */}
-        {/*  w-full : width를 부모 width의 100%만큼 */}
-        {/*  w-screen: width를 화면 사이즈만큼 100vw */}
-        {/*  w-[16px] : width를 px 사이즈만큼*/}
-        {/*  h-fit : 높이를 ... 변경 */}
-        <div className={'w-fit h-fit bg-red-200'}>
-          <span>SIZED</span>
-        </div>
-
-        {/* SET CORNER RADIUS */}
-        <div className={'w-fit rounded-xl p-2 bg-blue-300'}>
-          <span>CORNER RADIUS</span>
-        </div>
-
-        {/* SET SHADOW */}
-        <div className={'w-fit p-2 shadow-blue-200 shadow-xl'}>
-          <span>SHADOW</span>
-        </div>
-
-        {/* SET HOVER */}
-        <div className={'w-fit p-2 bg-red-300 hover:bg-blue-300'}>
-          <span>HOVER</span>
-        </div>
-
-        {/* CURSOR POINTER */}
-        <div className={'w-fit p-2 bg-red-300 hover:bg-blue-300 cursor-pointer'}>
-          <span>CURSOR POINTER</span>
+      <div className={'flex flex-col justify-between items-center bg-[#DDBCC5] w-full max-w-[428px] h-full pt-9 relative '}>
+        <BackButton />
+        <br />
+        <div className={'relative w-full'}>
+          <span className={'text-[#262A2F] text-[38px] font-bold top-[-86px] w-full text-center absolute'}>Give me words</span>
+          <div className={'flex flex-col items-center bg-white/50 w-full rounded-t-[40px] rounded-b-[20px] '}>
+            <div className={'flex flex-col bg-white rounded-[36.38px] w-[87%] min-h-[134px] mt-[43px] px-[10px] py-[11px] '}>
+              <div className={'text-[#262A2F] text-[14px] font-bold text-center  mb-[16px]'}>Keywords</div>
+              <KeywordInput keyword={typedKeyword} setPutKeyword={setTypedKeyword} onEnterKeyDown={onEnterKeyDown} />
+              <KeywordList keywords={keywords} onRemoveKeywordButtonClicked={onRemoveKeywordButtonClicked} />
+            </div>
+            <div className={'flex flex-col bg-white rounded-[36.38px] w-[87%] min-h-[194px] mt-[14px] px-[40px] pt-[12px] pb-[24px] mb-[104px]'}>
+              <div className={'text-[#262A2F] text-[14px] font-bold text-center  mb-[16px]'}>Any more detail?(optional)</div>
+              <textarea
+                style={{ resize: 'none' }}
+                className={'flex-grow h-full text-[16px] focus:outline-none hide-scrollbar'}
+                placeholder="Add more detail about keywords."
+              ></textarea>
+            </div>
+            <NextButton>Done</NextButton>
+          </div>
         </div>
       </div>
     </Layout>
