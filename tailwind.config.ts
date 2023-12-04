@@ -6,6 +6,7 @@ const config: Config = {
     extend: {
       backgroundColor: {
         B5D9D9: '#B5D9D9',
+        DADDBC: '#DADDBC',
       },
       colors: {
         'orange-pink': '#F4B7A8',

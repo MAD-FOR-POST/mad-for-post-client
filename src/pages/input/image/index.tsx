@@ -9,11 +9,12 @@ import { useEffect, useState } from 'react'
 import { useRecoilState } from 'recoil'
 import { userInputImages } from '@/stores/UserAtom'
 import { printLog } from '@/utils/LogUtil'
+import { motion, AnimatePresence } from 'framer-motion'
 
 export default function TailwindExample() {
   const router = useRouter()
-  const [selectedImage, setSelectedImage] = useState<string | null>(null)
   const [selectedImagesArray, setSelectedImagesArray] = useRecoilState(userInputImages)
+  const [isLoading, setIsLoading] = useState(false)
 
   const onImageChange = (event: any) => {
     const file = event.target.files[0]
@@ -41,41 +42,66 @@ export default function TailwindExample() {
 
   return (
     <Layout>
-      {/* <div className="overflow-hidden flex flex-col justify-between items-center bg-white w-full max-w-[428px] h-full pt-9 relative"> */}
-
-      <div className="overflow-hidden flex flex-col justify-between items-center  bg-B5D9D9 w-full max-w-[428px] h-full pt-9 relative">
-        <BackButton
-          onClick={() => {
-            router.back()
-          }}
-        />
-        <div className="font-poppins text-4xl w-[266px] text-center mt-[256px] font-bold ">Do you have any pictures?</div>
-        <form
-          className="relative grid grid-cols-3 gap-10 w-full h-96  px-10 pt-20 overflow-auto"
-          style={{
-            backgroundImage: 'url("/images/FormBackground.png")',
-            backgroundSize: 'cover',
-            backgroundPosition: 'top',
-            transform: 'scale(1.1)',
-          }}
+      {!isLoading ? (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="overflow-hidden flex flex-col justify-between items-center  bg-B5D9D9 w-full max-w-[428px] h-full pt-9 relative"
         >
-          <input type="file" accept="image/*" className="hidden" id="imageInput" onChange={onImageChange} />
-          {/* {selectedImage ? <img src={selectedImage} alt="Selected" className="w-full h-full object-cover rounded-3xl  max-w-[100px] max-h-[100px]" /> : <></>}
-          {selectedImage ? <img src={selectedImage} alt="Selected" className="w-full h-full object-cover rounded-3xl  max-w-[100px] max-h-[100px]" /> : <></>} */}
-          {selectedImagesArray.map((imgUrl, index) => (
-            <div key={`${index}${imgUrl}`} className="relative">
-              <img key={index} src={imgUrl} alt="Selected" className="w-full h-full object-cover rounded-3xl  max-w-[100px] max-h-[100px]" />
-              <span className="absolute top-0 right-2 bg-white p-1 rounded-full w-6 h-6 flex justify-center items-center cursor-pointer" onClick={() => onDeleteImage(index)}>
-                <FontAwesomeIcon icon={faXmark} />
-              </span>
+          <BackButton
+            onClick={() => {
+              router.back()
+            }}
+          />
+          <div className="font-poppins text-4xl w-[266px] text-center mt-[256px] font-bold ">Do you have any pictures?</div>
+          <form
+            className="relative grid grid-cols-3 gap-10 w-full h-96  px-10 pt-20 overflow-auto"
+            style={{
+              backgroundImage: 'url("/images/FormBackground.png")',
+              backgroundSize: 'cover',
+              backgroundPosition: 'top',
+              transform: 'scale(1.1)',
+            }}
+          >
+            <input type="file" accept="image/*" className="hidden" id="imageInput" onChange={onImageChange} />
+
+            {selectedImagesArray.map((imgUrl, index) => (
+              <div key={`${index}${imgUrl}`} className="relative">
+                <img key={index} src={imgUrl} alt="Selected" className="w-full h-full object-cover rounded-3xl  max-w-[100px] max-h-[100px]" />
+                <span className="absolute top-0 right-2 bg-white p-1 rounded-full w-6 h-6 flex justify-center items-center cursor-pointer" onClick={() => onDeleteImage(index)}>
+                  <FontAwesomeIcon icon={faXmark} />
+                </span>
+              </div>
+            ))}
+            {selectedImagesArray.length! < 3 && (
+              <label htmlFor="imageInput" className="bg-white w-full  z-10 rounded-3xl max-w-[100px] max-h-[100px] flex justify-center items-center cursor-pointer">
+                <span className="text-slate-300 text-sm w-3/5 text-center">Add Picture</span>
+              </label>
+            )}
+          </form>
+          <NextButton onClick={() => setIsLoading(true)}>Skip and generate</NextButton>
+        </motion.div>
+      ) : (
+        <AnimatePresence>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="overflow-hidden flex flex-col justify-between items-center  bg-[#DADDBC] w-full max-w-[428px] h-full pt-9 relative"
+          >
+            <BackButton
+              onClick={() => {
+                setIsLoading(false)
+              }}
+            />
+            <div className="flex  flex-col font-poppins text-4xl w-[220px] h-full  text-center mt-[256px] font-bold  ">
+              <span className="mb-10"> Magic is happening at the moment</span>
+              <span> if you close, the magic will stop and need to start again</span>
             </div>
-          ))}
-          <label htmlFor="imageInput" className="bg-white w-full  z-10 rounded-3xl max-w-[100px] max-h-[100px] flex justify-center items-center cursor-pointer">
-            {selectedImagesArray.length < 3 ? <span className="text-slate-300 text-sm w-3/5 text-center">Add Picture</span> : <></>}
-          </label>
-        </form>
-        <NextButton>Skip and generate</NextButton>
-      </div>
+          </motion.div>
+        </AnimatePresence>
+      )}
     </Layout>
   )
 }
