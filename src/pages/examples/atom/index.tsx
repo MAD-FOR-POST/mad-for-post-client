@@ -9,7 +9,7 @@ import { IUserInfo } from '@/interfaces/user/IUserInfo'
 export default function TailwindExample() {
   const [userInfo, setUserInfo] = useRecoilState(userAtom)
   const [typedData, setTypedData] = useState<IUserInfo>({
-    email: '',
+    id: '',
     email: '',
     name: ' ',
   })
@@ -41,7 +41,7 @@ export default function TailwindExample() {
 
   useEffect(() => {
     setTypedData({
-      email: '',
+      id: '',
       name: userInfo?.name ?? '',
       email: userInfo?.email ?? '',
     })
