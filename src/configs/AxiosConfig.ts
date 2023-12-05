@@ -5,6 +5,7 @@ import { printLog } from '@/utils/LogUtil'
 import IApiResponse from '@/interfaces/api/IApiResponse'
 import { ApiErrorCode } from '@/common/Constants'
 import { authService } from '@/services/AuthService'
+import { cookieService } from '@/services/CookieService'
 
 const axiosInstance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
@@ -14,8 +15,8 @@ const axiosInstance = axios.create({
 axiosInstance.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
     // Authorization 헤더를 요청 구성에 추가
-    const jwt = process.env.NEXT_PUBLIC_ACCESS_TOKEN
-    config.headers.Authorization = `Bearer ${jwt}`
+    const accessToken = cookieService.getAccessToken()
+    config.headers.Authorization = `Bearer ${accessToken}`
 
     printLog('Request:', config) // 요청 내용을 로깅
     return config

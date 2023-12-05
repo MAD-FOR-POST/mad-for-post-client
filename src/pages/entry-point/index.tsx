@@ -26,8 +26,12 @@ export default function Home() {
   const goToMainPageButtonClicked = () => {
     //TODO: - API로 변경
     if (entryPassword === '1234') {
-      cookieService.setAccessToken(process.env.NEXT_PUBLIC_ACCESS_TOKEN ?? 'testAccessToken')
-      cookieService.setRefreshToken(process.env.NEXT_PUBLIC_ACCESS_TOKEN ?? 'testRefresh Token')
+      cookieService.setAccessToken(
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAZ21haWwuY29tIiwic3ViIjoxOSwicm9sZXMiOlsiVXNlciJdLCJpYXQiOjE3MDE3ODQ2MTUsImV4cCI6MTcwMTc5NTQxNX0.YkyGfJm-02SMjAja5VE5UpoXZHIf-56mjHj0y3F6OZ8',
+      )
+      cookieService.setRefreshToken(
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAZ21haWwuY29tIiwic3ViIjoxOSwicm9sZXMiOlsiVXNlciJdLCJpYXQiOjE3MDE3ODQ2MTUsImV4cCI6MTcwMTc4NDYxNX0.d2xRHNaZhgO-eqh74eR7MCtwTcWVhrTKRLcgFGlzcf8',
+      )
       router.push(AppRoutes.input)
       return
     }

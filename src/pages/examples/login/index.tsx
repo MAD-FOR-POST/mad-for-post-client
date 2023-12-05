@@ -21,8 +21,8 @@ export default function TailwindExample() {
 
   const onLoginButtonClicked = async () => {
     const result = await authService.requestLogin(email, password)
-    const accessToken = result.access_token ?? ''
-    const refreshToken = result.refresh_token ?? ''
+    const accessToken = result.accessToken ?? ''
+    const refreshToken = result.refreshToken ?? ''
     cookieService.setAccessToken(accessToken)
     cookieService.setRefreshToken(refreshToken)
   }
