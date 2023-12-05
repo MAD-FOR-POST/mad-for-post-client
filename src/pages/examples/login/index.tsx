@@ -6,6 +6,8 @@ import { ChangeEvent, useState } from 'react'
 import { authService } from '@/services/AuthService'
 import { printLog } from '@/utils/LogUtil'
 import { cookieService } from '@/services/CookieService'
+import { BasicInput } from '@/components/ui/input/BasicInput'
+import { postService } from '@/services/PostService'
 
 export default function TailwindExample() {
   const router = useRouter()
@@ -30,6 +32,11 @@ export default function TailwindExample() {
     printLog(result)
   }
 
+  const onTestAPICallButtonClicked = async () => {
+    const result = await postService.getPost(1)
+    printLog(JSON.stringify(result))
+  }
+
   const onValidateTokenButtonClicked = async () => {
     const result = await authService.validateToken()
     printLog(result)
@@ -45,13 +52,14 @@ export default function TailwindExample() {
   }
 
   return (
-    <div className={'flex flex-col'}>
+    <div className={'flex flex-col gap-2 p-4'}>
       <span>로그인 테스트</span>
-      <input name={'email'} value={email} placeholder={'이메일'} onChange={onInputChanged} />
-      <input name={'password'} value={password} placeholder={'비밀번호'} onChange={onInputChanged} />
-      <button onClick={onLoginButtonClicked}>로그인</button>
-      <button onClick={onTokenRefreshButtonClicked}>토큰 리프레시</button>
-      <button onClick={onTokenRefreshButtonClicked}>토큰 검증</button>
+      <BasicInput name={'email'} value={email} placeholder={'이메일'} onChange={onInputChanged} />
+      <BasicInput name={'password'} value={password} placeholder={'비밀번호'} onChange={onInputChanged} />
+      <BasicButton onClick={onLoginButtonClicked}>로그인</BasicButton>
+      <BasicButton onClick={onTokenRefreshButtonClicked}>토큰 리프레시</BasicButton>
+      <BasicButton onClick={onValidateTokenButtonClicked}>토큰 검증</BasicButton>
+      <BasicButton onClick={onTestAPICallButtonClicked}>API 호출</BasicButton>
     </div>
   )
 }

@@ -1,6 +1,10 @@
+import { IUser } from '@/interfaces/user/IUser'
+
 export interface IPost {
-  userId?: number
   id?: number
-  title: string
-  body: string
+  keywords?: string
+  result?: string
+  createdAt?: Date
+  updatedAt?: Date
+  user?: IUser
 }
