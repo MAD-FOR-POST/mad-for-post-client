@@ -19,6 +19,7 @@ export const AppRoutes = {
   index: '/',
   apiExample: '/examples/api',
   publishExample: '/examples/publish',
+  layoutExample: '/examples/layout',
   atomExample: '/examples/atom',
   input: '/input',
   inputText: '/input/text',
