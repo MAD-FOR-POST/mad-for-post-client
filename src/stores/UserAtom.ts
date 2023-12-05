@@ -11,3 +11,8 @@ export const userInputImages = atom<string[]>({
   key: 'InputImages',
   default: [],
 })
+
+export const userInputTexts = atom({
+  key:'InputTexts',
+  default: {keyword:[] as string[] , detail:''},
+})
