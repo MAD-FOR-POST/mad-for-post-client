@@ -9,6 +9,7 @@ interface KeywordInputProps {
 export const KeywordInput = ({ keyword, setPutKeyword, onEnterKeyDown }: KeywordInputProps) => {
   function onKeyDown(e: KeyboardEvent<HTMLInputElement>) {
     if (e.key === 'Enter') {
+      e.preventDefault();
       onEnterKeyDown()
     }
   }
