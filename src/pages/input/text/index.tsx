@@ -10,6 +10,7 @@ import { printLog } from '@/utils/LogUtil'
 export default function TextPage() {
   const [keywords, setKeywords] = useState<string[]>([])
   const [typedKeyword, setTypedKeyword] = useState('')
+  const router = useRouter()
 
   const onEnterKeyDown = () => {
     setKeywords((prevData) => [...prevData, typedKeyword])
@@ -23,8 +24,20 @@ export default function TextPage() {
       return newData
     })
   }
+  const onGoToImage = () => {
+    router.replace("/input/image")
+    // router.push("/image")
+  }
   // printLog(putKeyword)
   printLog(keywords)
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    const keywordForm= keywords
+    const detail = formData.get("detail") as string;
+    console.log('이거 확인해바!!!', keywordForm, detail)
+  };
+
   return (
     <Layout>
       <div className={'flex flex-col justify-between items-center bg-[#DDBCC5] w-full max-w-[428px] h-full pt-9 relative '}>
@@ -32,7 +45,7 @@ export default function TextPage() {
         <br />
         <div className={'relative w-full'}>
           <span className={'text-[#262A2F] text-[38px] font-bold top-[-86px] w-full text-center absolute'}>Give me words</span>
-          <div className={'flex flex-col items-center bg-white/50 w-full rounded-t-[40px] rounded-b-[20px] '}>
+          <form onSubmit={handleSubmit} className={'flex flex-col items-center bg-white/50 w-full rounded-t-[40px] rounded-b-[20px] '}>
             <div className={'flex flex-col bg-white rounded-[36.38px] w-[87%] min-h-[134px] mt-[43px] px-[10px] py-[11px] '}>
               <div className={'text-[#262A2F] text-[14px] font-bold text-center  mb-[16px]'}>Keywords</div>
               <KeywordInput keyword={typedKeyword} setPutKeyword={setTypedKeyword} onEnterKeyDown={onEnterKeyDown} />
@@ -44,10 +57,11 @@ export default function TextPage() {
                 style={{ resize: 'none' }}
                 className={'flex-grow h-full text-[16px] focus:outline-none hide-scrollbar'}
                 placeholder="Add more detail about keywords."
+                name="detail"
               ></textarea>
             </div>
-            <NextButton>Done</NextButton>
-          </div>
+            <NextButton onClick={onGoToImage}>Done</NextButton>
+          </form>
         </div>
       </div>
     </Layout>
