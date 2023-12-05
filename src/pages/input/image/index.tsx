@@ -49,12 +49,8 @@ export default function TailwindExample() {
           exit={{ opacity: 0 }}
           className="overflow-hidden flex flex-col justify-between items-center  bg-B5D9D9 w-full max-w-[428px] h-full pt-9 relative"
         >
-          <BackButton
-            onClick={() => {
-              router.back()
-            }}
-          />
-          <div className="font-poppins text-4xl w-[266px] text-center mt-[256px] font-bold ">Do you have any pictures?</div>
+          <BackButton />
+          <div className="font-poppins text-4xl w-[266px] text-center  font-bold ">Do you have any pictures?</div>
           <form
             className="relative grid grid-cols-3 gap-10 w-full h-96  px-10 pt-20 overflow-auto"
             style={{
