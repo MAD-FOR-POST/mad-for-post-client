@@ -7,7 +7,7 @@ interface Props {
   onClick?: () => void
 }
 
-export const BackButton: React.FC<Props> = ({}) => {
+export const BackButton: React.FC<Props> = ({ onClick }) => {
   const router = useRouter()
   const onButtonClicked = () => {
     router.back()
@@ -15,7 +15,7 @@ export const BackButton: React.FC<Props> = ({}) => {
 
   return (
     <div className="w-full px-[36px]">
-      <button className="bg-white py-9 px-7  rounded-full  start-10 z-10" onClick={onButtonClicked}>
+      <button className="bg-white py-9 px-7  rounded-full  start-10 z-10" onClick={onClick ? onClick : onButtonClicked}>
         <FontAwesomeIcon icon={faChevronLeft} size="2x" />
       </button>
     </div>
