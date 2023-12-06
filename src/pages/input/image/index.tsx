@@ -52,7 +52,7 @@ export default function TailwindExample() {
           <BackButton />
           <div className="font-poppins text-4xl w-[266px] text-center  font-bold ">Do you have any pictures?</div>
           <form
-            className="relative grid grid-cols-3 gap-10 w-full h-96  px-10 pt-20 overflow-auto"
+            className="relative grid grid-cols-3 gap-3 w-full h-96  px-[50px] pt-20 overflow-auto"
             style={{
               backgroundImage: 'url("/images/FormBackground.png")',
               backgroundSize: 'cover',
@@ -91,7 +91,7 @@ export default function TailwindExample() {
                 setIsLoading(false)
               }}
             />
-            <div className="flex  flex-col font-poppins text-4xl w-[220px] h-full  text-center mt-[256px] font-bold  ">
+            <div className="flex  flex-col font-poppins text-4xl w-[220px] h-full   text-center  justify-center font-bold  ">
               <span className="mb-10"> Magic is happening at the moment</span>
               <span> if you close, the magic will stop and need to start again</span>
             </div>
