@@ -4,12 +4,14 @@ export const Apis = {
   //인증
   login: '/api/v1/auth/login', //로그인
   refreshToken: '/api/v1/auth/refresh-token', //토큰 갱신
-  validateToken: '/validate-token', //토큰 검증
+  validateToken: '/api/v1/auth/validate-token', //토큰 검증
 
   //USER
   createUser: '/api/v1/users',
 
   //POST
+  getPosts: '/api/v1/posts',
+  getPost: (id: number) => `/api/v1/posts/${id}`,
   writePost: '/api/v1/posts',
 }
 
@@ -17,6 +19,7 @@ export const AppRoutes = {
   index: '/',
   apiExample: '/examples/api',
   publishExample: '/examples/publish',
+  layoutExample: '/examples/layout',
   atomExample: '/examples/atom',
   input: '/input',
   inputText: '/input/text',

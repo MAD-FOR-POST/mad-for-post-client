@@ -63,8 +63,8 @@ export default function ApiExample() {
             posts.map((post) => {
               return (
                 <div key={post.id} className={'flex flex-col'}>
-                  <span>{`- 제목 : ${post.title}}`}</span>
-                  <span>{`- 내용 : ${post.body}`}</span>
+                  <span>{`- 키워드 : ${post.keywords}}`}</span>
+                  <span>{`- 결과 : ${post.result}`}</span>
                 </div>
               )
             })}

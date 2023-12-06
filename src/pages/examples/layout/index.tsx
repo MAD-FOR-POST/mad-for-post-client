@@ -9,8 +9,11 @@ import { cookieService } from '@/services/CookieService'
 import { BasicInput } from '@/components/ui/input/BasicInput'
 import { postService } from '@/services/PostService'
 import LayoutTwo from '@/components/layout/LayoutTwo'
+import { BackButtonTwo } from '@/components/ui/button/BackButtonTwo'
+import { TitleText } from '@/components/ui/typography/TitleText'
+import { ConfirmButton } from '@/components/ui/button/ConfirmButton'
 
-export default function TailwindExample() {
+export default function LayoutExample() {
   const router = useRouter()
 
   const [state, setState] = useState({
@@ -54,13 +57,24 @@ export default function TailwindExample() {
 
   return (
     <LayoutTwo>
-      <span>로그인 테스트</span>
-      <BasicInput name={'email'} value={email} placeholder={'이메일'} onChange={onInputChanged} />
-      <BasicInput name={'password'} value={password} placeholder={'비밀번호'} onChange={onInputChanged} />
-      <BasicButton onClick={onLoginButtonClicked}>로그인</BasicButton>
-      <BasicButton onClick={onTokenRefreshButtonClicked}>토큰 리프레시</BasicButton>
-      <BasicButton onClick={onValidateTokenButtonClicked}>토큰 검증</BasicButton>
-      <BasicButton onClick={onTestAPICallButtonClicked}>API 호출</BasicButton>
+      <div className={'flex flex-col w-full min-h-full h-fit bg-blue-300'}>
+        <div className={'p-[24px]'}>
+          <BackButtonTwo />
+        </div>
+        <div className={'flex min-h-[300px] justify-center items-center bg-amber-500'}>
+          <TitleText>Give me words</TitleText>
+        </div>
+        <div className={'flex min-h-[300px] justify-center items-center bg-green-300'}>
+          <TitleText>Bottom Area</TitleText>
+        </div>
+        <div className={'flex min-h-[300px] justify-center items-center bg-blue-300'}>
+          <TitleText>Bottom Area2</TitleText>
+        </div>
+
+        <div className={'p-[24px] bg-emerald-200'}>
+          <ConfirmButton>Done</ConfirmButton>
+        </div>
+      </div>
     </LayoutTwo>
   )
 }

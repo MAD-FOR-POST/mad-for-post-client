@@ -9,7 +9,7 @@ const CookieKeys = {
 
 export const cookieService = {
   setCookie(key: string, value: string, option?: any) {
-    cookies.set(key, value, { path: '/', secure: false, sameSite: 'lax', ...option })
+    cookies.set(key, value, { path: '/', httpOnly: false, ...option })
   },
   getCookie(key: string) {
     return cookies.get(key)
