@@ -26,7 +26,7 @@ export const KeywordInput = ({ keyword, setPutKeyword, onEnterKeyDown }: Keyword
 
   return (
     <div className={'h-full px-[40px]'}>
-      <input type="text" required className={'text-[16px] w-[92%] focus:outline-none'} placeholder="Write keywords here." value={keyword} onChange={onInputChanged} onKeyDown={onKeyDown} />
+      <input type="text" required className={'text-[16px] w-[87%] focus:outline-none'} placeholder="Write keywords here." value={keyword} onChange={onInputChanged} onKeyDown={onKeyDown} />
       <button className={'text-[16px] text-[#116AEF] ml-[2px]'} onClick={handleButtonClick}>
         Add
       </button>

@@ -79,8 +79,16 @@ export default function TextPage() {
         <br />
         <div className={'relative w-full'}>
           <span className={'text-[#262A2F] text-[38px] font-bold top-[-86px] w-full text-center absolute'}>Give me words</span>
-          <form onSubmit={handleSubmit} className={'flex flex-col items-center bg-white/50 w-full rounded-t-[40px] '}>
-            <div className={'flex flex-col bg-white rounded-[36.38px] w-[87%] min-h-[134px] mt-[43px] px-[10px] py-[11px] '}>
+          <form 
+            onSubmit={handleSubmit} 
+            style={{
+              backgroundImage: 'url("/images/FormBackgroundLong.png")',
+              backgroundSize: '110%',
+              backgroundPosition: 'top',
+              transform: 'scale(1.0)',
+            }}
+            className={'flex flex-col items-center  w-full'}>
+            <div className={'flex flex-col bg-white rounded-[36.38px] w-[87%] min-h-[134px] mt-[63px] px-[10px] py-[11px]'}>
               <div className={'text-[#262A2F] text-[14px] font-bold text-center  mb-[16px]'}>Keywords</div>
               <KeywordInput keyword={typedKeyword} setPutKeyword={setTypedKeyword} onEnterKeyDown={onEnterKeyDown} />
               <KeywordList keywords={userInput.keyword} onRemoveKeywordButtonClicked={onRemoveKeywordButtonClicked} />
