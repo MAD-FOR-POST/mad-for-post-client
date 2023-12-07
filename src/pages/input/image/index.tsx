@@ -6,14 +6,16 @@ import { faXmark } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Layout from '@/components/layout'
 import { useEffect, useState } from 'react'
-import { useRecoilState } from 'recoil'
-import { userInputImages } from '@/stores/UserAtom'
+import { useRecoilState, useRecoilValue } from 'recoil'
+import { userInputImages, userInputTexts } from '@/stores/UserAtom'
 import { printLog } from '@/utils/LogUtil'
 import { motion, AnimatePresence } from 'framer-motion'
+import { postService } from '@/services/PostService'
 
 export default function TailwindExample() {
   const router = useRouter()
   const [selectedImagesArray, setSelectedImagesArray] = useRecoilState(userInputImages)
+  const text = useRecoilValue(userInputTexts)
   const [isLoading, setIsLoading] = useState(false)
 
   const onImageChange = (event: any) => {
@@ -36,9 +38,20 @@ export default function TailwindExample() {
     // Update the Recoil state
     setSelectedImagesArray(newArray)
   }
+
+  const onGenerateClick = async () => {
+    setIsLoading(true)
+
+    const gptResult = await postService.generatePost({
+      keywords: text.keyword.toString(),
+      description: text.detail,
+    })
+    alert(gptResult)
+  }
+
   useEffect(() => {
-    printLog(selectedImagesArray)
-  }, [selectedImagesArray])
+    console.log(text)
+  }, [])
 
   return (
     <Layout>
@@ -52,9 +65,9 @@ export default function TailwindExample() {
           <BackButton />
           <div className="font-poppins text-4xl w-[266px] text-center  font-bold ">Do you have any pictures?</div>
           <form
-            className="relative grid grid-cols-3 gap-3 w-full h-96  px-[50px] pt-20 overflow-auto"
+            className="relative grid grid-cols-3 gap-3 w-full h-[24rem]  px-[50px] pt-20 overflow-auto"
             style={{
-              backgroundImage: 'url("/images/FormBackground.png")',
+              backgroundImage: 'url("/images/FormBackgroundLong.png")',
               backgroundSize: 'cover',
               backgroundPosition: 'top',
               transform: 'scale(1.1)',
@@ -76,7 +89,7 @@ export default function TailwindExample() {
               </label>
             )}
           </form>
-          <NextButton onClick={() => setIsLoading(true)}>Skip and generate</NextButton>
+          <NextButton onClick={onGenerateClick}>Skip and generate</NextButton>
         </motion.div>
       ) : (
         <AnimatePresence>
