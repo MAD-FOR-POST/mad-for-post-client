@@ -13,6 +13,11 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { postService } from '@/services/PostService'
 import { AppRoutes } from '@/common/Constants'
 
+const fadeAnimation = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1 },
+}
+
 export default function TailwindExample() {
   const router = useRouter()
   const [selectedImagesArray, setSelectedImagesArray] = useRecoilState(userInputImagesAtom)
@@ -86,12 +91,12 @@ export default function TailwindExample() {
             <input type="file" accept="image/*" className="hidden" id="imageInput" onChange={onImageChanged} />
 
             {selectedImagesArray.map((imgUrl, index) => (
-              <div key={`${index}${imgUrl}`} className="relative">
+              <motion.div key={`${index}${imgUrl}`} initial="hidden" animate="visible" exit="hidden" variants={fadeAnimation} transition={{ duration: 0.5 }} className="relative">
                 <img key={index} src={imgUrl} alt="Selected" className="w-full h-full object-cover rounded-3xl  max-w-[100px] max-h-[100px]" />
                 <span className="absolute top-0 right-2 bg-white p-1 rounded-full w-6 h-6 flex justify-center items-center cursor-pointer" onClick={() => onDeleteImage(index)}>
                   <FontAwesomeIcon icon={faXmark} />
                 </span>
-              </div>
+              </motion.div>
             ))}
             {selectedImagesArray.length! < 3 && (
               <label htmlFor="imageInput" className="bg-white w-full  z-10 rounded-3xl max-w-[100px] max-h-[100px] flex justify-center items-center cursor-pointer">
