@@ -1,4 +1,4 @@
-import React, { ChangeEvent, KeyboardEvent } from 'react'
+import React, { ChangeEvent, KeyboardEvent, useRef } from 'react'
 
 interface KeywordInputProps {
   keyword: string
@@ -7,9 +7,11 @@ interface KeywordInputProps {
 }
 
 export const KeywordInput = ({ keyword, setPutKeyword, onEnterKeyDown }: KeywordInputProps) => {
+  const inputRef = useRef<HTMLInputElement>(null)
+
   function onKeyDown(e: KeyboardEvent<HTMLInputElement>) {
-    if (e.key === 'Enter' && keyword.trim() !== '' ) {
-      e.preventDefault();
+    if (e.key === 'Enter' && keyword.trim() !== '') {
+      e.preventDefault()
       onEnterKeyDown()
     }
   }
@@ -19,14 +21,24 @@ export const KeywordInput = ({ keyword, setPutKeyword, onEnterKeyDown }: Keyword
   }
 
   function handleButtonClick() {
-    if (keyword.trim() !== '' ) {
-    onEnterKeyDown()
+    if (keyword.trim() !== '') {
+      onEnterKeyDown()
+      inputRef?.current?.focus()
     }
   }
 
   return (
     <div className={'h-full px-[40px]'}>
-      <input type="text" required className={'text-[16px] w-[87%] focus:outline-none'} placeholder="Write keywords here." value={keyword} onChange={onInputChanged} onKeyDown={onKeyDown} />
+      <input
+        type="text"
+        required
+        ref={inputRef}
+        className={'text-[16px] w-[87%] focus:outline-none'}
+        placeholder="Write keywords here."
+        value={keyword}
+        onChange={onInputChanged}
+        onKeyDown={onKeyDown}
+      />
       <button className={'text-[16px] text-[#116AEF] ml-[2px]'} onClick={handleButtonClick}>
         Add
       </button>

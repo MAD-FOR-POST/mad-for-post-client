@@ -43,7 +43,7 @@ export default function TailwindExample() {
     setIsLoading(true)
 
     const gptResult = await postService.generatePost({
-      keywords: text.keyword.toString(),
+      keywords: text.keywords.toString(),
       description: text.detail,
     })
     alert(gptResult)

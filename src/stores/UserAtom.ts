@@ -1,5 +1,6 @@
 import { atom } from 'recoil'
 import { IUser } from '@/interfaces/user/IUser'
+import { IInputTexts } from '@/interfaces/post/IInputTexts'
 
 // 로그인 상태를 나타내는 atom
 export const userAtom = atom<IUser | null>({
@@ -12,7 +13,7 @@ export const userInputImages = atom<string[]>({
   default: [],
 })
 
-export const userInputTexts = atom({
+export const userInputTexts = atom<IInputTexts>({
   key: 'InputTexts',
-  default: { keyword: [] as string[], detail: '' },
+  default: { keywords: [], detail: '' },
 })
