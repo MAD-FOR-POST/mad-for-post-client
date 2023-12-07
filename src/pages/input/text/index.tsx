@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router'
 import Layout from '@/components/layout'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, ChangeEvent } from 'react'
 import { NextButton } from '@/components/ui/button/NextButton'
 import { BackButton } from '@/components/ui/button/BackButton'
 import { KeywordInput } from '@/components/ui/keyword/KeywordInput'
@@ -8,14 +8,14 @@ import { KeywordList } from '@/components/ui/keyword/KeywordList'
 import { printLog } from '@/utils/LogUtil'
 import { AppRoutes } from '@/common/Constants'
 import { useRecoilState } from 'recoil'
-import { userInputTexts } from '@/stores/UserAtom'
+import { userInputTextsAtom } from '@/stores/UserInfoAtom'
 
 export default function TextPage() {
   const [typedKeyword, setTypedKeyword] = useState('') //리스트 안에 각각
   const router = useRouter()
   const [textareaValue, setTextareaValue] = useState('')
   //recoil 써서 keyword와 detail값 넣기
-  const [userInput, setUserInput] = useRecoilState(userInputTexts)
+  const [userInput, setUserInput] = useRecoilState(userInputTextsAtom)
 
   const { keywords, detail } = userInput
 
@@ -46,33 +46,10 @@ export default function TextPage() {
       return
     }
 
-    // detail이 없을 경우 서버 에러가 나서, keyword를 참고하라는 프롬프트를 생성한다.
-    if (detail.length === 0) {
-      setUserInput({
-        ...userInput,
-        detail: 'Please create an appropriate description for each keyword',
-      })
-    }
-
     router.push(AppRoutes.inputImage)
   }
-  // printLog(keywords)
 
-  //keyword에 텍스트적혀있으면 handleSubmit이 적용되고 아니면 아예 handleSubmit 작동이 안되는데 이유 모름
-  // const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
-  //   e.preventDefault()
-  //   const formData = new FormData(e.currentTarget)
-  //   const keywordForm = userInput.keywords
-  //   const detail = formData.get('detail') as string
-  //   console.log('이거 확인해바!!!', keywordForm, detail)
-  //   setUserInput({
-  //     ...userInput,
-  //     keyword: keywordForm,
-  //     detail: detail,
-  //   })
-  // }
-
-  const handleTextareaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+  const handleTextareaChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     const newDetail = e.target.value
     setUserInput((prevUserInput) => ({
       ...prevUserInput,

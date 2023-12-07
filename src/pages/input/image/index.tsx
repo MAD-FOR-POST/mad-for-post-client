@@ -5,25 +5,28 @@ import { NextButton } from '@/components/ui/button/NextButton'
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Layout from '@/components/layout'
-import { useEffect, useState } from 'react'
+import { ChangeEvent, useEffect, useState } from 'react'
 import { useRecoilState, useRecoilValue } from 'recoil'
-import { userInputImages, userInputTexts } from '@/stores/UserAtom'
+import { gptResultsAtom, userInputImagesAtom, userInputTextsAtom } from '@/stores/UserInfoAtom'
 import { printLog } from '@/utils/LogUtil'
 import { motion, AnimatePresence } from 'framer-motion'
 import { postService } from '@/services/PostService'
+import { AppRoutes } from '@/common/Constants'
 
 export default function TailwindExample() {
   const router = useRouter()
-  const [selectedImagesArray, setSelectedImagesArray] = useRecoilState(userInputImages)
-  const text = useRecoilValue(userInputTexts)
+  const [selectedImagesArray, setSelectedImagesArray] = useRecoilState(userInputImagesAtom)
+  const [gptResults, setGPTResults] = useRecoilState(gptResultsAtom)
+  const text = useRecoilValue(userInputTextsAtom)
   const [isLoading, setIsLoading] = useState(false)
 
-  const onImageChange = (event: any) => {
-    const file = event.target.files[0]
+  const onImageChanged = (event: ChangeEvent<HTMLInputElement>) => {
+    if (!event?.target?.files) return
+
+    const file = event?.target?.files[0]
     if (file) {
       const reader = new FileReader()
       reader.onloadend = () => {
-        // setSelectedImage(reader.result as string)
         setSelectedImagesArray((prevStringArray) => [...prevStringArray, reader.result as string])
       }
       reader.readAsDataURL(file)
@@ -39,14 +42,21 @@ export default function TailwindExample() {
     setSelectedImagesArray(newArray)
   }
 
-  const onGenerateClick = async () => {
+  const onGPTGenerateButtonClicked = async () => {
     setIsLoading(true)
 
-    const gptResult = await postService.generatePost({
+    // detail데이터가 없는경우, 키워드 보고 적절히 만들어달라고 요청
+    const gptTextResult = await postService.generatePost({
       keywords: text.keywords.toString(),
-      description: text.detail,
+      description: text.detail.length > 0 ? text.detail : 'Please create an appropriate description for each keyword',
     })
-    alert(gptResult)
+
+    setGPTResults({
+      ...gptResults,
+      text: gptTextResult,
+    })
+
+    router.push(AppRoutes.resultPage)
   }
 
   useEffect(() => {
@@ -73,7 +83,7 @@ export default function TailwindExample() {
               transform: 'scale(1.1)',
             }}
           >
-            <input type="file" accept="image/*" className="hidden" id="imageInput" onChange={onImageChange} />
+            <input type="file" accept="image/*" className="hidden" id="imageInput" onChange={onImageChanged} />
 
             {selectedImagesArray.map((imgUrl, index) => (
               <div key={`${index}${imgUrl}`} className="relative">
@@ -89,7 +99,7 @@ export default function TailwindExample() {
               </label>
             )}
           </form>
-          <NextButton onClick={onGenerateClick}>Skip and generate</NextButton>
+          <NextButton onClick={onGPTGenerateButtonClicked}>Skip and generate</NextButton>
         </motion.div>
       ) : (
         <AnimatePresence>

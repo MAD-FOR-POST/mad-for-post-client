@@ -1,13 +1,13 @@
 import { useRouter } from 'next/router'
 import { useRecoilState, useRecoilValue } from 'recoil'
-import { userAtom } from '@/stores/UserAtom'
+import { userInfoAtom } from '@/stores/UserInfoAtom'
 import { BasicButton } from '@/components/ui/button/BasicButton'
 import Layout from '@/components/layout'
 import { ChangeEvent, useEffect, useState } from 'react'
 import { IUser } from '@/interfaces/user/IUser'
 
 export default function TailwindExample() {
-  const [userInfo, setUserInfo] = useRecoilState(userAtom)
+  const [userInfo, setUserInfo] = useRecoilState(userInfoAtom)
   const [typedData, setTypedData] = useState<IUser>({
     id: 0,
     email: '',

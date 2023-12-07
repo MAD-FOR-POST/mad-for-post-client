@@ -1,5 +1,6 @@
 import { NextResponse, userAgent } from 'next/server'
 import type { NextRequest } from 'next/server'
+import { AppRoutes } from '@/common/Constants'
 
 export function middleware(request: NextRequest) {
   const { isBot } = userAgent(request)
@@ -14,6 +15,10 @@ export function middleware(request: NextRequest) {
   }
 
   const accessToken = request.cookies.get('accessToken')
+
+  if (path === '/' && accessToken) {
+    return NextResponse.redirect(new URL(AppRoutes.input, request.url))
+  }
 
   if (!accessToken) return NextResponse.redirect(new URL(initialPageUrl, request.url))
 }
