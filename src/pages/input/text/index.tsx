@@ -9,6 +9,7 @@ import { printLog } from '@/utils/LogUtil'
 import { AppRoutes } from '@/common/Constants'
 import { useRecoilState } from 'recoil'
 import { userInputTextsAtom } from '@/stores/UserInfoAtom'
+import { SizedBox } from '@/components/ui/box/SizedBox'
 
 export default function TextPage() {
   const [typedKeyword, setTypedKeyword] = useState('') //리스트 안에 각각
@@ -81,6 +82,7 @@ export default function TextPage() {
             <div className={'flex flex-col bg-white rounded-[36.38px] w-[87%] min-h-[134px] mt-[63px] px-[10px] py-[11px]'}>
               <div className={'text-[#262A2F] text-[14px] font-bold text-center  mb-[16px]'}>Keywords</div>
               <KeywordInput keyword={typedKeyword} setPutKeyword={setTypedKeyword} onEnterKeyDown={onEnterKeyDown} />
+              <SizedBox height={12} />
               <KeywordList keywords={userInput.keywords} onRemoveKeywordButtonClicked={onRemoveKeywordButtonClicked} />
             </div>
             <div className={'flex flex-col bg-white rounded-[36.38px] w-[87%] min-h-[194px] mt-[14px] px-[40px] pt-[12px] pb-[24px] mb-[104px]'}>

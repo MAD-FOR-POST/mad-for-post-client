@@ -28,12 +28,12 @@ export const KeywordInput = ({ keyword, setPutKeyword, onEnterKeyDown }: Keyword
   }
 
   return (
-    <div className={'h-full px-[40px]'}>
+    <div className={'h-full w-full flex px-[24px] '}>
       <input
         type="text"
         required
         ref={inputRef}
-        className={'text-[16px] w-[87%] focus:outline-none'}
+        className={'text-[16px] focus:outline-none flex-1'}
         placeholder="Write keywords here."
         value={keyword}
         onChange={onInputChanged}
