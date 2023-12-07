@@ -41,6 +41,19 @@ export default function TextPage() {
   }
 
   const onGoToImage = () => {
+    if (keywords.length === 0) {
+      alert('Please enter one or more keywords')
+      return
+    }
+
+    // detail이 없을 경우 서버 에러가 나서, keyword를 참고하라는 프롬프트를 생성한다.
+    if (detail.length === 0) {
+      setUserInput({
+        ...userInput,
+        detail: 'Please create an appropriate description for each keyword',
+      })
+    }
+
     router.push(AppRoutes.inputImage)
   }
   // printLog(keywords)
