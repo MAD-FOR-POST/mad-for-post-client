@@ -1,9 +1,9 @@
-import Layout from '@/components/layout'
 import { useRouter } from 'next/router'
 import { AppRoutes } from '@/common/Constants'
 import { BasicButton } from '@/components/ui/button/BasicButton'
 import React from 'react'
 import ChevronRightAnimated from '@/components/ui/icon/ChevronRightAnimated'
+import Layout from '@/components/layout'
 
 export default function Home() {
   const router = useRouter()

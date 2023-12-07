@@ -1,14 +1,10 @@
 import { useRouter } from 'next/router'
-import { BasicButton } from '@/components/ui/button/BasicButton'
-import Layout from '@/components/layout'
-import { BackButton } from '@/components/ui/button/BackButton'
 import { ChangeEvent, useState } from 'react'
 import { authService } from '@/services/AuthService'
 import { printLog } from '@/utils/LogUtil'
 import { cookieService } from '@/services/CookieService'
-import { BasicInput } from '@/components/ui/input/BasicInput'
 import { postService } from '@/services/PostService'
-import LayoutTwo from '@/components/layout/LayoutTwo'
+import Layout from '@/components/layout'
 import { BackButtonTwo } from '@/components/ui/button/BackButtonTwo'
 import { TitleText } from '@/components/ui/typography/TitleText'
 import { ConfirmButton } from '@/components/ui/button/ConfirmButton'
@@ -56,7 +52,7 @@ export default function LayoutExample() {
   }
 
   return (
-    <LayoutTwo>
+    <Layout>
       <div className={'flex flex-col w-full min-h-full h-fit bg-blue-300'}>
         <div className={'p-[24px]'}>
           <BackButtonTwo />
@@ -75,6 +71,6 @@ export default function LayoutExample() {
           <ConfirmButton>Done</ConfirmButton>
         </div>
       </div>
-    </LayoutTwo>
+    </Layout>
   )
 }

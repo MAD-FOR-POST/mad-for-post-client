@@ -1,18 +1,12 @@
-import { useRouter } from 'next/router'
-import Layout from '@/components/layout'
 import { useState, useEffect, useRef } from 'react'
-import { NextButton } from '@/components/ui/button/NextButton'
 import { BackButton } from '@/components/ui/button/BackButton'
-import { KeywordInput } from '@/components/ui/keyword/KeywordInput'
-import { KeywordList } from '@/components/ui/keyword/KeywordList'
-import { printLog } from '@/utils/LogUtil'
-import { AppRoutes } from '@/common/Constants'
 import { useRecoilState, useRecoilValue } from 'recoil'
 import { gptResultsAtom, userInputTextsAtom } from '@/stores/UserInfoAtom'
 import Image from 'next/image'
 import { AnimatePresence, motion, useMotionValue, useTransform } from 'framer-motion'
 import ChevronRightAnimated from '@/components/ui/icon/ChevronRightAnimated'
 import { ISnsItem } from '@/interfaces/post/ISnsItem'
+import Layout from '@/components/layout'
 
 const SNSList: ISnsItem[] = [
   {
@@ -92,7 +86,7 @@ export default function ResultPage() {
             transform: 'scale(1.0)',
           }}
         >
-          <div className=" w-full flex flex-col items-center h-[500px] overflow-y-scroll">
+          <div className=" w-full flex flex-col items-center h-[500px] overflow-y-scroll hide-scrollbar">
             <img src="https://via.placeholder.com/364" alt="샘플이미지" className="w-[364px] h-[364px] " />
             {/* 글 */}
             <img src="/images/InstaEx.png" alt="샘플이미지" className="w-[364px]" />

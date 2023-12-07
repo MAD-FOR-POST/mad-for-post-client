@@ -1,9 +1,7 @@
-import Layout from '@/components/layout'
 import { useRouter } from 'next/router'
 import { AppRoutes } from '@/common/Constants'
 import { BasicButton } from '@/components/ui/button/BasicButton'
 import React, { ChangeEvent, useState } from 'react'
-import ChevronRightAnimated from '@/components/ui/icon/ChevronRightAnimated'
 import { BasicInput } from '@/components/ui/input/BasicInput'
 import { cookieService } from '@/services/CookieService'
 

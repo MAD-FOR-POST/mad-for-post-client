@@ -1,15 +1,14 @@
 import { useRouter } from 'next/router'
-import Layout from '@/components/layout'
 import { useState, useEffect, ChangeEvent } from 'react'
 import { NextButton } from '@/components/ui/button/NextButton'
 import { BackButton } from '@/components/ui/button/BackButton'
 import { KeywordInput } from '@/components/ui/keyword/KeywordInput'
 import { KeywordList } from '@/components/ui/keyword/KeywordList'
-import { printLog } from '@/utils/LogUtil'
 import { AppRoutes } from '@/common/Constants'
 import { useRecoilState } from 'recoil'
 import { userInputTextsAtom } from '@/stores/UserInfoAtom'
 import { SizedBox } from '@/components/ui/box/SizedBox'
+import Layout from '@/components/layout'
 
 export default function TextPage() {
   const [typedKeyword, setTypedKeyword] = useState('') //리스트 안에 각각

@@ -1,14 +1,12 @@
 import { useRouter } from 'next/router'
 import { BasicButton } from '@/components/ui/button/BasicButton'
-import Layout from '@/components/layout'
-import { BackButton } from '@/components/ui/button/BackButton'
 import { ChangeEvent, useState } from 'react'
 import { authService } from '@/services/AuthService'
 import { printLog } from '@/utils/LogUtil'
 import { cookieService } from '@/services/CookieService'
 import { BasicInput } from '@/components/ui/input/BasicInput'
 import { postService } from '@/services/PostService'
-import LayoutTwo from '@/components/layout/LayoutTwo'
+import Layout from '@/components/layout'
 
 export default function TailwindExample() {
   const router = useRouter()
@@ -53,7 +51,7 @@ export default function TailwindExample() {
   }
 
   return (
-    <LayoutTwo>
+    <Layout>
       <span>로그인 테스트</span>
       <BasicInput name={'email'} value={email} placeholder={'이메일'} onChange={onInputChanged} />
       <BasicInput name={'password'} value={password} placeholder={'비밀번호'} onChange={onInputChanged} />
@@ -61,6 +59,6 @@ export default function TailwindExample() {
       <BasicButton onClick={onTokenRefreshButtonClicked}>토큰 리프레시</BasicButton>
       <BasicButton onClick={onValidateTokenButtonClicked}>토큰 검증</BasicButton>
       <BasicButton onClick={onTestAPICallButtonClicked}>API 호출</BasicButton>
-    </LayoutTwo>
+    </Layout>
   )
 }

@@ -4,7 +4,6 @@ import { BackButton } from '@/components/ui/button/BackButton'
 import { NextButton } from '@/components/ui/button/NextButton'
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import Layout from '@/components/layout'
 import { ChangeEvent, useEffect, useState } from 'react'
 import { useRecoilState, useRecoilValue } from 'recoil'
 import { gptResultsAtom, userInputImagesAtom, userInputTextsAtom } from '@/stores/UserInfoAtom'
@@ -12,6 +11,7 @@ import { printLog } from '@/utils/LogUtil'
 import { motion, AnimatePresence } from 'framer-motion'
 import { postService } from '@/services/PostService'
 import { AppRoutes } from '@/common/Constants'
+import Layout from '@/components/layout'
 
 const fadeAnimation = {
   hidden: { opacity: 0 },
@@ -22,7 +22,7 @@ export default function TailwindExample() {
   const router = useRouter()
   const [selectedImagesArray, setSelectedImagesArray] = useRecoilState(userInputImagesAtom)
   const [gptResults, setGPTResults] = useRecoilState(gptResultsAtom)
-  const text = useRecoilValue(userInputTextsAtom)
+  const userInput = useRecoilValue(userInputTextsAtom)
   const [isLoading, setIsLoading] = useState(false)
 
   const onImageChanged = (event: ChangeEvent<HTMLInputElement>) => {
@@ -50,10 +50,16 @@ export default function TailwindExample() {
   const onGPTGenerateButtonClicked = async () => {
     setIsLoading(true)
 
+    //keyword가 없는 경우 GPT 생성을 할 수 없으므로, 키워드 입력 페이지로 이동한다.
+    if (userInput.keywords.length === 0) {
+      router.replace(AppRoutes.inputText)
+      return
+    }
+
     // detail데이터가 없는경우, 키워드 보고 적절히 만들어달라고 요청
     const gptTextResult = await postService.generatePost({
-      keywords: text.keywords.toString(),
-      description: text.detail.length > 0 ? text.detail : 'Please create an appropriate description for each keyword',
+      keywords: userInput.keywords.toString(),
+      description: userInput.detail.length > 0 ? userInput.detail : 'Please create an appropriate description for each keyword',
     })
 
     setGPTResults({
@@ -65,7 +71,7 @@ export default function TailwindExample() {
   }
 
   useEffect(() => {
-    console.log(text)
+    console.log(userInput)
   }, [])
 
   return (

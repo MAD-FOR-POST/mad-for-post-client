@@ -1,10 +1,10 @@
 // TailwindExample.tsx
 import { useRouter } from 'next/router'
-import Layout from '@/components/layout'
 import { AnimatePresence, motion, useMotionValue, useTransform } from 'framer-motion'
 import { useEffect, useRef, useState } from 'react'
 import { AppRoutes } from '@/common/Constants'
 import ChevronRightAnimated from '@/components/ui/icon/ChevronRightAnimated'
+import Layout from '@/components/layout'
 
 export default function TailwindExample() {
   const router = useRouter()

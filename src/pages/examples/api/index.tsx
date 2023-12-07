@@ -1,11 +1,11 @@
 import { useRouter } from 'next/router'
-import Layout from '@/components/layout'
 import { useState } from 'react'
 import { IPost } from '@/interfaces/post/IPost'
 import { printLog } from '@/utils/LogUtil'
 import { BasicButton } from '@/components/ui/button/BasicButton'
 import { postService } from '@/services/PostService'
 import { useMutation } from 'react-query'
+import Layout from '@/components/layout'
 
 export default function ApiExample() {
   const router = useRouter()
