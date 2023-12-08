@@ -58,7 +58,7 @@ export default function ApiExample() {
     setPosts([])
   }
   const onEditButtonClicked=()=>{
-    router.push(AppRoutes.inputImage)
+    router.push(AppRoutes.edit)
   }
   return (
     <Layout>

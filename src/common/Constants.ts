@@ -27,6 +27,7 @@ export const AppRoutes = {
   inputText: '/input/text',
   inputImage: '/input/image',
   resultPage: '/result',
+  edit:'/edit'
 }
 
 export enum HttpStatusCode {
