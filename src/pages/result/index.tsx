@@ -43,15 +43,19 @@ const SNSList: ISnsItem[] = [
 
 export default function ResultPage() {
   const gptResults = useRecoilValue(gptResultsAtom)
-
   const myComponentRef = useRef<HTMLDivElement>(null)
-
   const x = useMotionValue(0)
   const [currentWidth, setCurrentWidth] = useState(0)
-
+  const [imgNum, setImgNum] = useState(0)
   const newX = useTransform(x, [0, currentWidth - 100], [0, 1])
   const constraintsRef = useRef(null)
 
+  const onNextImgClick = () => {
+    setImgNum((prev) => prev + 1)
+  }
+  const onPrevImgClick = () => {
+    setImgNum((prev) => prev - 1)
+  }
   useEffect(() => {
     if (myComponentRef.current) {
       const componentWidth = myComponentRef.current.offsetWidth
@@ -76,10 +80,24 @@ export default function ResultPage() {
           </ul>
         </div>
         <img src="/images/FormBackgroundTop100.png" className={'relative top-[7px]'} />
-        <div className="bg-white w-full flex flex-col items-center h-[500px] overflow-y-scroll hide-scrollbar">
-          <img src={gptResults.image} alt="샘플이미지" className="w-[364px] h-[364px] " />
+        <div className="relative bg-white w-full flex flex-col items-center h-[500px] overflow-y-scroll hide-scrollbar">
+          <img src={gptResults.image && gptResults.image[imgNum]} alt="샘플이미지" className="w-[364px] h-[364px] " />
           {/* 글 */}
           <img src="/images/InstaEx.png" alt="샘플이미지" className="w-[364px]" />
+          {imgNum + 1 !== gptResults.image?.length ? (
+            <div onClick={onNextImgClick} className="absolute top-44 right-10 w-[20px] h-[20px] bg-white flex justify-center items-center rounded-full">
+              {'>'}
+            </div>
+          ) : (
+            <></>
+          )}
+          {imgNum !== 0 ? (
+            <div onClick={onPrevImgClick} className="absolute top-44 left-10 w-[20px] h-[20px] bg-white flex justify-center items-center rounded-full">
+              {'<'}
+            </div>
+          ) : (
+            <></>
+          )}
           <div className="w-[90%] bg-white p-[8px] mb-[12px]">
             <span>{gptResults.text}</span>
           </div>
