@@ -1,4 +1,4 @@
 export interface IGptResults {
-  image?: File
+  image?: string
   text?: string
 }

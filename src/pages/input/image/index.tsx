@@ -12,6 +12,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { postService } from '@/services/PostService'
 import { AppRoutes } from '@/common/Constants'
 import Layout from '@/components/layout'
+import { TitleText } from '@/components/ui/typography/TitleText'
 
 const fadeAnimation = {
   hidden: { opacity: 0 },
@@ -48,30 +49,47 @@ export default function TailwindExample() {
   }
 
   const onGPTGenerateButtonClicked = async () => {
-    setIsLoading(true)
-
     //keyword가 없는 경우 GPT 생성을 할 수 없으므로, 키워드 입력 페이지로 이동한다.
     if (userInput.keywords.length === 0) {
       router.replace(AppRoutes.inputText)
+      alert('Please add keywords')
       return
     }
-
-    // detail데이터가 없는경우, 키워드 보고 적절히 만들어달라고 요청
-    const gptTextResult = await postService.generatePost({
+    setIsLoading(true)
+    // Promises for text and image data
+    const textPromise = postService.generatePost({
       keywords: userInput.keywords.toString(),
       description: userInput.detail.length > 0 ? userInput.detail : 'Please create an appropriate description for each keyword',
     })
 
-    setGPTResults({
-      ...gptResults,
-      text: gptTextResult,
-    })
+    const imagePromise =
+      selectedImagesArray.length === 0
+        ? postService.generateImage({
+            keywords: userInput.keywords.toString(),
+            description: userInput.detail,
+          })
+        : Promise.resolve('') // Resolve with an empty string if images are already selected
 
-    router.push(AppRoutes.resultPage)
+    try {
+      // Wait for both promises to resolve
+      const [gptTextResult, gptImageResult] = await Promise.all([textPromise, imagePromise])
+
+      setGPTResults({
+        ...gptResults,
+        text: gptTextResult,
+        image: selectedImagesArray.length > 0 && selectedImagesArray[0] !== null ? selectedImagesArray[0] : gptImageResult,
+      })
+
+      router.push(AppRoutes.resultPage)
+    } catch (error) {
+      console.error('Error fetching data:', error)
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   useEffect(() => {
-    console.log(userInput)
+    // console.log(userInput)
   }, [])
 
   return (
@@ -84,7 +102,7 @@ export default function TailwindExample() {
           className="overflow-hidden flex flex-col justify-between items-center  bg-B5D9D9 w-full max-w-[428px] h-full pt-9 relative"
         >
           <BackButton />
-          <div className="font-poppins text-4xl w-[266px] text-center  font-bold ">Do you have any pictures?</div>
+          <TitleText>Do you have any pictures?</TitleText>
           <form
             className="relative grid grid-cols-3 gap-3 w-full h-[24rem]  px-[50px] pt-20 overflow-auto"
             style={{
@@ -99,7 +117,7 @@ export default function TailwindExample() {
             {selectedImagesArray.map((imgUrl, index) => (
               <motion.div key={`${index}${imgUrl}`} initial="hidden" animate="visible" exit="hidden" variants={fadeAnimation} transition={{ duration: 0.5 }} className="relative">
                 <img key={index} src={imgUrl} alt="Selected" className="w-full h-full object-cover rounded-3xl  max-w-[100px] max-h-[100px]" />
-                <span className="absolute top-0 right-2 bg-white p-1 rounded-full w-6 h-6 flex justify-center items-center cursor-pointer" onClick={() => onDeleteImage(index)}>
+                <span className="absolute top-0 right-0 bg-white p-1 rounded-full w-6 h-6 flex justify-center items-center cursor-pointer" onClick={() => onDeleteImage(index)}>
                   <FontAwesomeIcon icon={faXmark} />
                 </span>
               </motion.div>
