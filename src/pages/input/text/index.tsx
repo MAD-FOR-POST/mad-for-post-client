@@ -69,33 +69,27 @@ export default function TextPage() {
         <br />
         <div className={'relative w-full'}>
           <span className={'text-[#262A2F] text-[38px] font-bold top-[-86px] w-full text-center absolute'}>Give me words</span>
-          <div
-            style={{
-              backgroundImage: 'url("/images/FormBackgroundLong.png")',
-              backgroundSize: '110%',
-              backgroundPosition: 'top',
-              transform: 'scale(1.0)',
-            }}
-            className={'flex flex-col items-center  w-full'}
-          >
-            <div className={'flex flex-col bg-white rounded-[36.38px] w-[87%] min-h-[134px] mt-[63px] px-[10px] py-[11px]'}>
-              <div className={'text-[#262A2F] text-[14px] font-bold text-center  mb-[16px]'}>Keywords</div>
-              <KeywordInput keyword={typedKeyword} setPutKeyword={setTypedKeyword} onEnterKeyDown={onEnterKeyDown} />
-              <SizedBox height={12} />
-              <KeywordList keywords={userInput.keywords} onRemoveKeywordButtonClicked={onRemoveKeywordButtonClicked} />
-            </div>
-            <div className={'flex flex-col bg-white rounded-[36.38px] w-[87%] min-h-[194px] mt-[14px] px-[40px] pt-[12px] pb-[24px] mb-[104px]'}>
-              <div className={'text-[#262A2F] text-[14px] font-bold text-center  mb-[16px]'}>Any more detail?(optional)</div>
-              <textarea
-                style={{ resize: 'none' }}
-                className={'flex-grow h-full text-[16px] focus:outline-none hide-scrollbar'}
-                placeholder="Add more detail about keywords."
-                name="detail"
-                value={userInput.detail}
-                onChange={handleTextareaChange}
-              ></textarea>
-            </div>
-            <NextButton onClick={onGoToImage}>Done</NextButton>
+          <img src='/images/FormBackgroundTop.png'/>
+          <div className={'flex flex-col items-center  w-full bg-white bg-opacity-50'}>
+              <div className={'flex flex-col bg-white rounded-[36.38px] w-[87%] min-h-[134px] mt-[63px] px-[10px] py-[11px]'}>
+                <div className={'text-[#262A2F] text-[14px] font-bold text-center  mb-[16px]'}>Keywords</div>
+                <KeywordInput keyword={typedKeyword} setPutKeyword={setTypedKeyword} onEnterKeyDown={onEnterKeyDown} />
+                <SizedBox height={12} />
+                <KeywordList keywords={userInput.keywords} onRemoveKeywordButtonClicked={onRemoveKeywordButtonClicked} />
+              </div>
+              <div className={'flex flex-col bg-white rounded-[36.38px] w-[87%] min-h-[194px] mt-[14px] px-[40px] pt-[12px] pb-[24px] mb-[104px]'}>
+                <div className={'text-[#262A2F] text-[14px] font-bold text-center  mb-[16px]'}>Any more detail?(optional)</div>
+                <textarea
+                  style={{ resize: 'none' }}
+                  className={'flex-grow h-full text-[16px] focus:outline-none hide-scrollbar'}
+                  placeholder="Add more detail about keywords."
+                  name="detail"
+                  value={userInput.detail}
+                  onChange={handleTextareaChange}
+                ></textarea>
+              </div>
+              <NextButton onClick={onGoToImage}>Done</NextButton>
+
           </div>
         </div>
       </div>
