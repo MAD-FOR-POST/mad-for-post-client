@@ -1,4 +1,4 @@
 export interface IGptResults {
-  image?: string
+  image?: string[]
   text?: string
 }

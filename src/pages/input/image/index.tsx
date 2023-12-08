@@ -77,7 +77,7 @@ export default function TailwindExample() {
       setGPTResults({
         ...gptResults,
         text: gptTextResult,
-        image: selectedImagesArray.length > 0 && selectedImagesArray[0] !== null ? selectedImagesArray[0] : gptImageResult,
+        image: selectedImagesArray.length > 0 ? [...selectedImagesArray] : gptImageResult ? [gptImageResult] : [],
       })
 
       router.push(AppRoutes.resultPage)
