@@ -79,53 +79,66 @@ export default function ResultPage() {
             ))}
           </ul>
         </div>
-        <img src="/images/FormBackgroundTop100.png" className={'relative top-[7px]'} />
-        <div className="relative bg-white w-full flex flex-col items-center h-[500px] overflow-y-scroll hide-scrollbar">
-          <img src={gptResults.image && gptResults.image[imgNum]} alt="샘플이미지" className="w-[364px] h-[364px] " />
-          {/* 글 */}
-          <img src="/images/InstaEx.png" alt="샘플이미지" className="w-[364px]" />
-          {imgNum + 1 !== gptResults.image?.length ? (
-            <div onClick={onNextImgClick} className="absolute top-44 right-10 w-[20px] h-[20px] bg-white flex justify-center items-center rounded-full">
-              {'>'}
+        <div>
+          <img src="/images/FormBackgroundTop100.png" className={'relative top-[7px]'} />
+          <div className="relative bg-white w-full flex flex-col items-center h-[500px] overflow-y-scroll hide-scrollbar">
+            <div className="relative min-w-[364px] min-h-[364px] bg-black">
+              {gptResults.image && gptResults.image[imgNum] && (
+                <img
+                  src={gptResults.image[imgNum]}
+                  alt="샘플이미지"
+                  className="w-full h-full object-contain "
+                  style={{ objectPosition: '50% 50%' }} // Center the image within the container
+                />
+              )}
             </div>
-          ) : (
-            <></>
-          )}
-          {imgNum !== 0 ? (
-            <div onClick={onPrevImgClick} className="absolute top-44 left-10 w-[20px] h-[20px] bg-white flex justify-center items-center rounded-full">
-              {'<'}
-            </div>
-          ) : (
-            <></>
-          )}
-          <div className="w-[90%] bg-white p-[8px] mb-[12px]">
-            <span>{gptResults.text}</span>
-          </div>
 
-          {/* 슬라이드 */}
-          {/* <div ref={myComponentRef} className='mx-[32px] mb-[32px]'> */}
-          <div ref={myComponentRef} className="w-full">
-            <motion.div className="mx-[32px] mb-[32px] relative flex justify-center rounded-full items-center bg-[#303841] h-[80px]" ref={constraintsRef}>
-              <div className="text-white">
-                Baam! <br /> Lets uploaded
+            {/* 글 */}
+            <img src="/images/InstaEx.png" alt="샘플이미지" className="w-[364px]" />
+            {imgNum + 1 !== gptResults.image?.length ? (
+              <div onClick={onNextImgClick} className="absolute top-44 right-5 w-[20px] h-[20px] bg-white flex justify-center items-center rounded-full">
+                {'>'}
               </div>
-              <motion.div
-                drag="x"
-                style={{
-                  x,
-                  backgroundImage: 'url("/images/Baam.png")',
-                  backgroundSize: '100%',
-                  backgroundPosition: 'top',
-                  transform: 'scale(1.0)',
-                }}
-                className="absolute  flex justify-center items-center h-[70px] w-[70px]  rounded-full bg-white left-1 cursor-pointer"
-                dragConstraints={constraintsRef}
-                dragSnapToOrigin
-              ></motion.div>
-              <div className="absolute  right-[20px]">
-                <ChevronRightAnimated />
+            ) : (
+              <></>
+            )}
+            {imgNum !== 0 ? (
+              <div onClick={onPrevImgClick} className="absolute top-44 left-5 w-[20px] h-[20px] bg-white flex justify-center items-center rounded-full">
+                {'<'}
               </div>
-            </motion.div>
+            ) : (
+              <></>
+            )}
+
+            <div className="w-[90%] bg-white p-[8px] mb-[12px]">
+              <span>{gptResults.text}</span>
+            </div>
+
+            {/* 슬라이드 */}
+            {/* <div ref={myComponentRef} className='mx-[32px] mb-[32px]'> */}
+            <div ref={myComponentRef} className="w-full">
+              <motion.div className="mx-[32px] mb-[32px] relative flex justify-center rounded-full items-center bg-[#303841] h-[80px]" ref={constraintsRef}>
+                <div className="text-white">
+                  Baam! <br /> Lets uploaded
+                </div>
+                <motion.div
+                  drag="x"
+                  style={{
+                    x,
+                    backgroundImage: 'url("/images/Baam.png")',
+                    backgroundSize: '100%',
+                    backgroundPosition: 'top',
+                    transform: 'scale(1.0)',
+                  }}
+                  className="absolute  flex justify-center items-center h-[70px] w-[70px]  rounded-full bg-white left-1 cursor-pointer"
+                  dragConstraints={constraintsRef}
+                  dragSnapToOrigin
+                ></motion.div>
+                <div className="absolute  right-[20px]">
+                  <ChevronRightAnimated />
+                </div>
+              </motion.div>
+            </div>
           </div>
         </div>
       </div>
