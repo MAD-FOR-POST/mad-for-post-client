@@ -12,7 +12,8 @@ export const Apis = {
   //POST
   getPosts: '/api/v1/posts',
   getPost: (id: number) => `/api/v1/posts/${id}`,
-  writePost: '/api/v1/posts',
+  generatePost: '/api/v1/posts',
+  generateImage: '/api/v1/posts/image',
 }
 
 export const AppRoutes = {

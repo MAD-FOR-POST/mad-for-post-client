@@ -10,6 +10,7 @@ import Layout from '@/components/layout'
 export default function ApiExample() {
   const router = useRouter()
   const [posts, setPosts] = useState<IPost[]>([])
+  const [generatedImageBase64, setGenerateImageBase64] = useState<string>()
 
   const { mutate: generatePostMutate, isLoading: isGptDataLoading, error: gptDataFetchError, data: gptResult } = useMutation(postService.generatePost)
 
@@ -44,6 +45,14 @@ export default function ApiExample() {
     })
   }
 
+  const onGenerateImageButtonClicked = async () => {
+    const imageBase64 = await postService.generateImage({
+      keywords: 'travel, adventure',
+      description: 'Exploring the hidden gems of the city, uncovering new adventures at every turn.',
+    })
+    setGenerateImageBase64(imageBase64 ?? '')
+  }
+
   const onClearDataButtonClicked = async () => {
     setPosts([])
   }
@@ -56,6 +65,7 @@ export default function ApiExample() {
         <BasicButton onClick={onApiTest1ButtonClicked}>게시물 여러개 가져오기</BasicButton>
         <BasicButton onClick={onGeneratePostButtonClicked}>GPT생성요청</BasicButton>
         <BasicButton onClick={generatePostWithReactQuery}>GPT생성요청(React Query)</BasicButton>
+        <BasicButton onClick={onGenerateImageButtonClicked}>이미지 생성요청</BasicButton>
         <BasicButton onClick={onClearDataButtonClicked}>게시물 초기화</BasicButton>
 
         <div className={'flex flex-col gap-8'}>
@@ -69,6 +79,8 @@ export default function ApiExample() {
               )
             })}
         </div>
+
+        {generatedImageBase64 && <img src={generatedImageBase64 ?? ''} />}
 
         {isGptDataLoading && <span>GPT 데이터 로딩중</span>}
         {gptResult && <span>{gptResult}</span>}
