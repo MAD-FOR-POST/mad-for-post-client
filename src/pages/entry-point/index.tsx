@@ -4,6 +4,7 @@ import { BasicButton } from '@/components/ui/button/BasicButton'
 import React, { ChangeEvent, useState } from 'react'
 import { BasicInput } from '@/components/ui/input/BasicInput'
 import { cookieService } from '@/services/CookieService'
+import { authService } from '@/services/AuthService'
 
 export default function Home() {
   const router = useRouter()
@@ -21,9 +22,11 @@ export default function Home() {
     })
   }
 
-  const goToMainPageButtonClicked = () => {
+  const goToMainPageButtonClicked = async () => {
+    const isValidPassword = await authService.validateEntryPointPassword(entryPassword)
+
     //TODO: - API로 변경
-    if (entryPassword === '1234') {
+    if (isValidPassword) {
       cookieService.setAccessToken(
         'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1hZGZvcnBvc3RAZ21haWwuY29tIiwic3ViIjoxNiwicm9sZXMiOlsiQWRtaW4iXSwiaWF0IjoxNzAxOTUxNTEwLCJleHAiOjIwMTc1Mjc1MTB9.HEAedxVWiwdb4jRlq4J--VelnPSjWFQ1OJY0Td0aUPM',
       )

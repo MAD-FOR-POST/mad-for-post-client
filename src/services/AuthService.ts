@@ -27,4 +27,11 @@ export const authService = {
     const response: AxiosResponse<IApiResponse<boolean>> = await axiosInstance.post(Apis.validateToken)
     return response.data.data
   },
+  async validateEntryPointPassword(password: string): Promise<boolean> {
+    const params = {
+      password,
+    }
+    const response: AxiosResponse<IApiResponse<boolean>> = await axiosInstance.post(Apis.validateEntryPointPassword, params)
+    return response.data.data
+  },
 }

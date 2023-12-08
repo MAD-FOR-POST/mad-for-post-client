@@ -5,6 +5,7 @@ export const Apis = {
   login: '/api/v1/auth/login', //로그인
   refreshToken: '/api/v1/auth/refresh-token', //토큰 갱신
   validateToken: '/api/v1/auth/validate-token', //토큰 검증
+  validateEntryPointPassword: '/api/v1/auth/validate-entry-point-password', //토큰 검증
 
   //USER
   createUser: '/api/v1/users',
