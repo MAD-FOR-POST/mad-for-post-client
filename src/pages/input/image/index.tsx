@@ -56,23 +56,40 @@ export default function TailwindExample() {
       return
     }
     setIsLoading(true)
-
-    // detail데이터가 없는경우, 키워드 보고 적절히 만들어달라고 요청
-    const gptTextResult = await postService.generatePost({
+    // Promises for text and image data
+    const textPromise = postService.generatePost({
       keywords: userInput.keywords.toString(),
       description: userInput.detail.length > 0 ? userInput.detail : 'Please create an appropriate description for each keyword',
     })
 
-    setGPTResults({
-      ...gptResults,
-      text: gptTextResult,
-    })
+    const imagePromise =
+      selectedImagesArray.length === 0
+        ? postService.generateImage({
+            keywords: userInput.keywords.toString(),
+            description: userInput.detail,
+          })
+        : Promise.resolve('') // Resolve with an empty string if images are already selected
 
-    router.push(AppRoutes.resultPage)
+    try {
+      // Wait for both promises to resolve
+      const [gptTextResult, gptImageResult] = await Promise.all([textPromise, imagePromise])
+
+      setGPTResults({
+        ...gptResults,
+        text: gptTextResult,
+        image: selectedImagesArray.length > 0 && selectedImagesArray[0] !== null ? selectedImagesArray[0] : gptImageResult,
+      })
+
+      router.push(AppRoutes.resultPage)
+    } catch (error) {
+      console.error('Error fetching data:', error)
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   useEffect(() => {
-    console.log(userInput)
+    // console.log(userInput)
   }, [])
 
   return (
