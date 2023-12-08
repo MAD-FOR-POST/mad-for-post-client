@@ -48,13 +48,13 @@ export default function TailwindExample() {
   }
 
   const onGPTGenerateButtonClicked = async () => {
-    setIsLoading(true)
-
     //keyword가 없는 경우 GPT 생성을 할 수 없으므로, 키워드 입력 페이지로 이동한다.
     if (userInput.keywords.length === 0) {
       router.replace(AppRoutes.inputText)
+      alert('Please add keywords')
       return
     }
+    setIsLoading(true)
 
     // detail데이터가 없는경우, 키워드 보고 적절히 만들어달라고 요청
     const gptTextResult = await postService.generatePost({
@@ -99,7 +99,7 @@ export default function TailwindExample() {
             {selectedImagesArray.map((imgUrl, index) => (
               <motion.div key={`${index}${imgUrl}`} initial="hidden" animate="visible" exit="hidden" variants={fadeAnimation} transition={{ duration: 0.5 }} className="relative">
                 <img key={index} src={imgUrl} alt="Selected" className="w-full h-full object-cover rounded-3xl  max-w-[100px] max-h-[100px]" />
-                <span className="absolute top-0 right-2 bg-white p-1 rounded-full w-6 h-6 flex justify-center items-center cursor-pointer" onClick={() => onDeleteImage(index)}>
+                <span className="absolute top-0 right-0 bg-white p-1 rounded-full w-6 h-6 flex justify-center items-center cursor-pointer" onClick={() => onDeleteImage(index)}>
                   <FontAwesomeIcon icon={faXmark} />
                 </span>
               </motion.div>
