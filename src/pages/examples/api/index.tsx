@@ -6,7 +6,8 @@ import { BasicButton } from '@/components/ui/button/BasicButton'
 import { postService } from '@/services/PostService'
 import { useMutation } from 'react-query'
 import Layout from '@/components/layout'
-
+import {EditButton} from '@/components/ui/button/EditButton'
+import { AppRoutes } from '@/common/Constants'
 export default function ApiExample() {
   const router = useRouter()
   const [posts, setPosts] = useState<IPost[]>([])
@@ -56,7 +57,9 @@ export default function ApiExample() {
   const onClearDataButtonClicked = async () => {
     setPosts([])
   }
-
+  const onEditButtonClicked=()=>{
+    router.push(AppRoutes.inputImage)
+  }
   return (
     <Layout>
       <div className={'flex flex-col justify-start items-center rounded-[20px] bg-white w-full max-w-[512px] h-full overflow-y-scroll'}>
@@ -80,7 +83,12 @@ export default function ApiExample() {
             })}
         </div>
 
-        {generatedImageBase64 && <img src={generatedImageBase64 ?? ''} />}
+        {generatedImageBase64 && 
+        <>
+          <img src={generatedImageBase64 ?? ''} />
+          <EditButton onClick={onEditButtonClicked}/>
+        </>
+        }
 
         {isGptDataLoading && <span>GPT 데이터 로딩중</span>}
         {gptResult && <span>{gptResult}</span>}
