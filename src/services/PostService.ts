@@ -15,8 +15,12 @@ export const postService = {
     return response.data.data
   },
   async generatePost(params: IGeneratePostRequest): Promise<string> {
-    const response = await axiosInstance.post<IApiResponse<string>>(Apis.writePost, params)
+    const response = await axiosInstance.post<IApiResponse<string>>(Apis.generatePost, params)
     printLog(`response.data.data ${response.data.data}`)
+    return response.data.data
+  },
+  async generateImage(params: IGeneratePostRequest): Promise<string> {
+    const response = await axiosInstance.post<IApiResponse<string>>(Apis.generateImage, params)
     return response.data.data
   },
 }

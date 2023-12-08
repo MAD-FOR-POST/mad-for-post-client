@@ -75,18 +75,8 @@ export default function ResultPage() {
             ))}
           </ul>
         </div>
-
-        {/* <div className='pt-[63px] w-full flex flex-col items-center' style={{backgroundImage: 'url("/images/FormBackgroundLong.png")',backgroundSize: '110%',backgroundPosition: 'top',transform: 'scale(1.0)',overflowY:'scroll', height: '80%'}} > */}
-        <div
-          className="pt-[63px]"
-          style={{
-            backgroundImage: 'url("/images/FormBackgroundLong.png")',
-            backgroundSize: '110%',
-            backgroundPosition: 'top',
-            transform: 'scale(1.0)',
-          }}
-        >
-          <div className=" w-full flex flex-col items-center h-[500px] overflow-y-scroll hide-scrollbar">
+        <img src='/images/FormBackgroundTop100.png' className={'relative top-[7px]'}/>
+          <div className="bg-white w-full flex flex-col items-center h-[500px] overflow-y-scroll hide-scrollbar">
             <img src="https://via.placeholder.com/364" alt="샘플이미지" className="w-[364px] h-[364px] " />
             {/* 글 */}
             <img src="/images/InstaEx.png" alt="샘플이미지" className="w-[364px]" />
@@ -121,7 +111,6 @@ export default function ResultPage() {
             </div>
           </div>
         </div>
-      </div>
     </Layout>
   )
 }
