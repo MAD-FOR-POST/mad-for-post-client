@@ -14,7 +14,7 @@ const fadeAnimation = {
 
 export const KeywordList = ({ keywords, onRemoveKeywordButtonClicked }: KeywordListProps) => {
   return (
-    <div className={'w-full p-[4px] mx-[16px]'}>
+    <div className={'max-w-full p-[4px] mx-[16px]'}>
       <div className={'flex flex-row flex-wrap justify-start text-[16px] gap-[10px]'}>
         {keywords.map((keyword, index) => (
           <motion.div
