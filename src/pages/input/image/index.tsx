@@ -12,6 +12,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { postService } from '@/services/PostService'
 import { AppRoutes } from '@/common/Constants'
 import Layout from '@/components/layout'
+import { TitleText } from '@/components/ui/typography/TitleText'
 
 const fadeAnimation = {
   hidden: { opacity: 0 },
@@ -84,7 +85,7 @@ export default function TailwindExample() {
           className="overflow-hidden flex flex-col justify-between items-center  bg-B5D9D9 w-full max-w-[428px] h-full pt-9 relative"
         >
           <BackButton />
-          <div className="font-poppins text-4xl w-[266px] text-center  font-bold ">Do you have any pictures?</div>
+          <TitleText>Do you have any pictures?</TitleText>
           <form
             className="relative grid grid-cols-3 gap-3 w-full h-[24rem]  px-[50px] pt-20 overflow-auto"
             style={{
