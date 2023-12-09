@@ -13,6 +13,7 @@ import { postService } from '@/services/PostService'
 import { AppRoutes } from '@/common/Constants'
 import Layout from '@/components/layout'
 import { TitleText } from '@/components/ui/typography/TitleText'
+import { useMutation, useQuery } from 'react-query'
 
 const fadeAnimation = {
   hidden: { opacity: 0 },
@@ -25,6 +26,8 @@ export default function TailwindExample() {
   const [gptResults, setGPTResults] = useRecoilState(gptResultsAtom)
   const userInput = useRecoilValue(userInputTextsAtom)
   const [isLoading, setIsLoading] = useState(false)
+  const { mutate: generatePostMutate, isLoading: gptLoading, error: gptDataFetchError, data: gptTextResult } = useMutation(postService.generatePost)
+  const { mutate: generateImageMutate, isLoading: gptImgLoading, error: gptImgDataFetchError, data: gptImageResult } = useMutation(postService.generateImage)
 
   const onImageChanged = (event: ChangeEvent<HTMLInputElement>) => {
     if (!event?.target?.files) return
@@ -48,6 +51,16 @@ export default function TailwindExample() {
     setSelectedImagesArray(newArray)
   }
 
+  const generatePostWithReactQuery = async () => {
+    generatePostMutate({
+      keywords: userInput.keywords.toString(),
+      description: userInput.detail ? userInput.detail : '.',
+    })
+    generateImageMutate({
+      keywords: userInput.keywords.toString(),
+      description: userInput.detail ? userInput.detail : '.',
+    })
+  }
   const onGPTGenerateButtonClicked = async () => {
     //keyword가 없는 경우 GPT 생성을 할 수 없으므로, 키워드 입력 페이지로 이동한다.
     if (userInput.keywords.length === 0) {
@@ -57,30 +70,12 @@ export default function TailwindExample() {
     }
     setIsLoading(true)
     // Promises for text and image data
-    const textPromise = postService.generatePost({
-      keywords: userInput.keywords.toString(),
-      description: userInput.detail.length > 0 ? userInput.detail : 'Please create an appropriate description for each keyword',
-    })
-
-    const imagePromise =
-      selectedImagesArray.length === 0
-        ? postService.generateImage({
-            keywords: userInput.keywords.toString(),
-            description: userInput.detail.length > 0 ? userInput.detail : 'Please create an appropriate description for each keyword',
-          })
-        : Promise.resolve('') // Resolve with an empty string if images are already selected
 
     try {
       // Wait for both promises to resolve
-      const [gptTextResult, gptImageResult] = await Promise.all([textPromise, imagePromise])
+      generatePostWithReactQuery()
 
-      setGPTResults({
-        ...gptResults,
-        text: gptTextResult,
-        image: selectedImagesArray.length > 0 ? [...selectedImagesArray] : gptImageResult ? [gptImageResult] : [],
-      })
-
-      router.push(AppRoutes.resultPage)
+      // !gptLoading && router.push(AppRoutes.resultPage)
     } catch (error) {
       console.error('Error fetching data:', error)
     } finally {
@@ -89,12 +84,19 @@ export default function TailwindExample() {
   }
 
   useEffect(() => {
-    // console.log(userInput)
-  }, [])
+    if (gptTextResult) {
+      setGPTResults({
+        ...gptResults,
+        text: gptTextResult,
+        image: selectedImagesArray.length > 0 ? [...selectedImagesArray] : gptImageResult ? [gptImageResult] : [],
+      })
+      router.push(AppRoutes.resultPage)
+    }
+  }, [gptLoading, gptImgLoading])
 
   return (
     <Layout>
-      {!isLoading ? (
+      {!gptLoading ? (
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
