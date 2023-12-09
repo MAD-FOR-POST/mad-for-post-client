@@ -42,7 +42,7 @@ export default function Home() {
 
   return (
     <div className={'w-screen h-screen flex flex-col items-center justify-center bg-blue-200'}>
-      <div className={'flex flex-col items-start p-[24px] bg-white gap-4 rounded'}>
+      <div className={'flex flex-col items-start p-[24px] bg-white gap-4 rounded max-w-full'}>
         <span className={'text-lg'}>Type Hash Code</span>
         <div className={'flex gap-4'}>
           <BasicInput name={'entryPassword'} value={entryPassword} placeholder={'1234'} onChange={onInputChanged} />

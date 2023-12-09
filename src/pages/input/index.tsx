@@ -56,10 +56,10 @@ export default function TailwindExample() {
               <img src="/images/SocialIcons.png" className="scale-[8]  mb-[120px] " />
             </div>
           </div>
-          <div className="absolute   flex flex-col  justify-between  shadow-3xl bg-white w-full h-2/5 bottom-0 p-8 ">
+          <div className="absolute  flex flex-col  justify-between  shadow-3xl w-full min-h-[320px] bg-white bottom-0 p-[24px] ">
             <div className="h-2/3 flex flex-col items-center">
-              <div className="font-poppins text-4xl  text-center font-bold w-5/6 ">Let me just be efficient</div>
-              <div className="text-center mt-3 text-gray-400  ">
+              <div className="font-poppins text-4xl text-center font-bold">Let me just be efficient</div>
+              <div className="text-center mt-[24px] text-gray-400  ">
                 Generate SNS contents and boom!
                 <br /> Upload done!
               </div>
@@ -70,7 +70,7 @@ export default function TailwindExample() {
                 <motion.div
                   drag="x"
                   style={{ x }}
-                  className="absolute  flex justify-center items-center h-[70px] w-[70px]  rounded-full bg-white left-1 cursor-pointer"
+                  className="absolute  flex justify-center items-center h-[70px] w-[70px] z-10  rounded-full bg-white left-1 cursor-pointer"
                   dragConstraints={constraintsRef}
                   dragSnapToOrigin
                 >
