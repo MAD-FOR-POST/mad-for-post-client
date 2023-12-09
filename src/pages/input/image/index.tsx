@@ -66,7 +66,7 @@ export default function TailwindExample() {
       selectedImagesArray.length === 0
         ? postService.generateImage({
             keywords: userInput.keywords.toString(),
-            description: userInput.detail.length > 0 ? userInput.detail.length : 'Please create an appropriate description for each keyword',
+            description: userInput.detail.length > 0 ? userInput.detail : 'Please create an appropriate description for each keyword',
           })
         : Promise.resolve('') // Resolve with an empty string if images are already selected
 
