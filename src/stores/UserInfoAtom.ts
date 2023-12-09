@@ -21,5 +21,5 @@ export const userInputTextsAtom = atom<IInputTexts>({
 
 export const gptResultsAtom = atom<IGptResults>({
   key: 'GptTextResult',
-  default: { image: undefined, text: '' },
+  default: { image: [], text: '' },
 })

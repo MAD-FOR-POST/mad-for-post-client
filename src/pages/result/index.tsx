@@ -12,66 +12,86 @@ const SNSList: ISnsItem[] = [
   {
     title: 'instagram',
     image: '/images/SNS/InstagramIcon.png',
-    link: 'https://www.instagram.com/',
+    // link: 'https://www.instagram.com/',
   },
   {
     title: 'threads',
     image: '/images/SNS/ThreadsIcon.png',
-    link: 'https://www.instagram.com/',
+    // link: 'https://www.instagram.com/',
   },
   {
     title: 'X',
     image: '/images/SNS/XIcon.png',
-    link: 'https://twitter.com/',
+    // link: 'https://twitter.com/',
   },
   {
     title: 'wordpress',
     image: '/images/SNS/WIcon.png',
-    link: 'https://wordpress.com/ko/',
+    // link: 'https://wordpress.com/ko/',
   },
   {
     title: 'brunchstory',
     image: '/images/SNS/BIcon.png',
-    link: 'https://brunch.co.kr/',
+    // link: 'https://brunch.co.kr/',
   },
   {
     title: 'blog',
     image: '/images/SNS/BlogIcon.png',
-    link: 'https://section.blog.naver.com/',
+    // link: 'https://section.blog.naver.com/',
   },
 ]
+const box = {
+  entry: (back: boolean) => ({
+    x: back ? -500 : 500,
+    opacity: 0,
+  }),
+  center: {
+    x: 0,
+    opacity: 1,
+    transition: {
+      duration: 0.8,
+    },
+  },
+  exit: (back: boolean) => ({
+    x: back ? 500 : -500,
+    opacity: 1,
+    transition: {
+      duration: 0.8,
+    },
+  }),
+}
 
 export default function ResultPage() {
   const gptResults = useRecoilValue(gptResultsAtom)
   const myComponentRef = useRef<HTMLDivElement>(null)
   const x = useMotionValue(0)
-  const [currentWidth, setCurrentWidth] = useState(0)
-  const [imgNum, setImgNum] = useState(0)
-  const newX = useTransform(x, [0, currentWidth - 100], [0, 1])
+  const [visible, setVisible] = useState(0)
+  const [clickedSNS, setClickedSNS] = useState(SNSList[0].title)
+  const [back, setBack] = useState(false)
   const constraintsRef = useRef(null)
 
-  const onNextImgClick = () => {
-    setImgNum((prev) => prev + 1)
+  const onNextImgClick = async () => {
+    await setBack(false)
+
+    setVisible((prev) => (prev === gptResults.image?.length ? gptResults.image.length : prev + 1))
   }
   const onPrevImgClick = () => {
-    setImgNum((prev) => prev - 1)
+    setBack(true)
+    setVisible((prev) => (prev === 0 ? 0 : prev - 1))
   }
-  useEffect(() => {
-    if (myComponentRef.current) {
-      const componentWidth = myComponentRef.current.offsetWidth
-      setCurrentWidth(componentWidth)
-    }
-  }, [])
+  const onSNSClick = (current: string) => {
+    setClickedSNS(current)
+  }
 
   return (
     <Layout>
-      <div className={'flex flex-col justify-between items-center bg-[#DDBCC5] w-full max-w-[428px] h-full pt-9 relative '}>
+      <div className={'flex flex-col  justify-between items-center bg-[#DDBCC5] w-full max-w-[428px] h-full pt-9 relative '}>
         <BackButton />
         <div>
           <div className={'text-center text-[#262A2F] text-[38px] font-bold '}>Boom!</div>
-          <ul className={'flex flex-row flex-wrap justify-start w-[80%] m-auto'}>
+          <ul className={'flex flex-row flex-wrap mt-3 justify-center gap-2 w-[80%] m-auto'}>
             {SNSList.map(({ title, image, link }) => (
-              <li key={title} className={'mx-[7px] my-[8px]'}>
+              <li key={title} className={`mx-[7px] my-[8px] transition-all ${clickedSNS === title ? 'rounded-3xl shadow-lg scale-110' : ''}`} onClick={() => onSNSClick(title)}>
                 <a href={link}>
                   <Image src={image ?? ''} alt={title ?? ''} width={70} height={70} />
                 </a>
@@ -79,31 +99,43 @@ export default function ResultPage() {
             ))}
           </ul>
         </div>
-        <div>
+        <div className="">
           <img src="/images/FormBackgroundTop100.png" className={'relative top-[7px]'} />
-          <div className="relative bg-white w-full flex flex-col items-center h-[500px] overflow-y-scroll hide-scrollbar">
+          <div className="relative bg-white w-full flex flex-col items-center h-[500px] overflow-y-scroll hide-scrollbar px-8 overflow-hidden pb-[100px]">
             <div className="relative min-w-[364px] min-h-[364px] bg-black">
-              {gptResults.image && gptResults.image[imgNum] && (
-                <img
-                  src={gptResults.image[imgNum]}
-                  alt="샘플이미지"
-                  className="w-full h-full object-contain "
-                  style={{ objectPosition: '50% 50%' }} // Center the image within the container
-                />
+              {gptResults.image && (
+                <AnimatePresence custom={back}>
+                  {gptResults.image.map((i, index) =>
+                    index === visible ? (
+                      <motion.img
+                        key={i}
+                        src={i}
+                        custom={back}
+                        variants={box}
+                        initial="entry"
+                        animate="center"
+                        exit="exit"
+                        alt="샘플이미지"
+                        className="w-full h-full object-contain absolute "
+                        style={{ objectPosition: '50% 50%' }} // Center the image within the container
+                      />
+                    ) : null,
+                  )}
+                </AnimatePresence>
               )}
             </div>
 
             {/* 글 */}
             <img src="/images/InstaEx.png" alt="샘플이미지" className="w-[364px]" />
-            {imgNum + 1 !== gptResults.image?.length ? (
-              <div onClick={onNextImgClick} className="absolute top-44 right-5 w-[20px] h-[20px] bg-white flex justify-center items-center rounded-full">
+            {visible + 1 !== gptResults.image?.length ? (
+              <div onClick={onNextImgClick} className="absolute top-44 right-10 w-[25px] h-[25px] bg-white opacity-75  flex justify-center items-center rounded-full">
                 {'>'}
               </div>
             ) : (
               <></>
             )}
-            {imgNum !== 0 ? (
-              <div onClick={onPrevImgClick} className="absolute top-44 left-5 w-[20px] h-[20px] bg-white flex justify-center items-center rounded-full">
+            {visible !== 0 ? (
+              <div onClick={onPrevImgClick} className="absolute top-44 left-10 w-[25px] h-[25px] bg-white opacity-75 flex justify-center items-center rounded-full">
                 {'<'}
               </div>
             ) : (
@@ -113,32 +145,31 @@ export default function ResultPage() {
             <div className="w-[90%] bg-white p-[8px] mb-[12px]">
               <span>{gptResults.text}</span>
             </div>
-
-            {/* 슬라이드 */}
-            {/* <div ref={myComponentRef} className='mx-[32px] mb-[32px]'> */}
-            <div ref={myComponentRef} className="w-full">
-              <motion.div className="mx-[32px] mb-[32px] relative flex justify-center rounded-full items-center bg-[#303841] h-[80px]" ref={constraintsRef}>
-                <div className="text-white">
-                  Baam! <br /> Lets uploaded
-                </div>
-                <motion.div
-                  drag="x"
-                  style={{
-                    x,
-                    backgroundImage: 'url("/images/Baam.png")',
-                    backgroundSize: '100%',
-                    backgroundPosition: 'top',
-                    transform: 'scale(1.0)',
-                  }}
-                  className="absolute  flex justify-center items-center h-[70px] w-[70px]  rounded-full bg-white left-1 cursor-pointer"
-                  dragConstraints={constraintsRef}
-                  dragSnapToOrigin
-                ></motion.div>
-                <div className="absolute  right-[20px]">
-                  <ChevronRightAnimated />
-                </div>
-              </motion.div>
-            </div>
+          </div>
+          {/* 슬라이드 */}
+          {/* <div ref={myComponentRef} className='mx-[32px] mb-[32px]'> */}
+          <div ref={myComponentRef} className="w-full  absolute bottom-0 left-0 px-3 ">
+            <motion.div className=" mb-[32px] relative flex justify-center rounded-full items-center bg-[#303841] h-[80px] w-full" ref={constraintsRef}>
+              <div className="text-white">
+                Baam! <br /> Lets uploaded
+              </div>
+              <motion.div
+                drag="x"
+                style={{
+                  x,
+                  backgroundImage: 'url("/images/Baam.png")',
+                  backgroundSize: '100%',
+                  backgroundPosition: 'top',
+                  transform: 'scale(1.0)',
+                }}
+                className="absolute  flex justify-center items-center h-[70px] w-[70px]  rounded-full bg-white left-1 cursor-pointer"
+                dragConstraints={constraintsRef}
+                dragSnapToOrigin
+              ></motion.div>
+              <div className="absolute  right-[20px]">
+                <ChevronRightAnimated />
+              </div>
+            </motion.div>
           </div>
         </div>
       </div>
