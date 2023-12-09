@@ -13,6 +13,7 @@ import { postService } from '@/services/PostService'
 import { AppRoutes } from '@/common/Constants'
 import Layout from '@/components/layout'
 import { TitleText } from '@/components/ui/typography/TitleText'
+import Typewriter from 'typewriter-effect'
 import { useMutation, useQuery } from 'react-query'
 
 const fadeAnimation = {
@@ -28,6 +29,7 @@ export default function TailwindExample() {
   const [isLoading, setIsLoading] = useState(false)
   const { mutate: generatePostMutate, isLoading: gptLoading, error: gptDataFetchError, data: gptTextResult } = useMutation(postService.generatePost)
   const { mutate: generateImageMutate, isLoading: gptImgLoading, error: gptImgDataFetchError, data: gptImageResult } = useMutation(postService.generateImage)
+  const loadingTextSplitted = gptLoading ? ['Magic is happening at the moment', 'if you close the magic will stop and need to start again'] : []
 
   const onImageChanged = (event: ChangeEvent<HTMLInputElement>) => {
     if (!event?.target?.files) return
@@ -146,8 +148,13 @@ export default function TailwindExample() {
               }}
             />
             <div className="flex  flex-col font-poppins text-4xl w-[220px] h-full   text-center  justify-center font-bold  ">
-              <span className="mb-10"> Magic is happening at the moment</span>
-              <span> if you close, the magic will stop and need to start again</span>
+              <Typewriter
+                options={{
+                  strings: loadingTextSplitted,
+                  autoStart: true,
+                  loop: true,
+                }}
+              />
             </div>
           </motion.div>
         </AnimatePresence>
