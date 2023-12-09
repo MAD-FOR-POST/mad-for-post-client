@@ -28,20 +28,20 @@ export const KeywordInput = ({ keyword, setPutKeyword, onEnterKeyDown }: Keyword
   }
 
   return (
-    <div className={'h-full w-full flex px-[24px] '}>
+    <div className={'flex justify-between px-[24px] w-full'}>
       <input
         type="text"
         required
         ref={inputRef}
-        className={'text-[16px] focus:outline-none flex-1'}
+        className={'text-[16px] focus:outline-none flex-1 max-w-[220px]'}
         placeholder="Write keywords here."
         value={keyword}
         onChange={onInputChanged}
         onKeyDown={onKeyDown}
       />
-      <button className={'text-[16px] text-[#116AEF] ml-[2px]'} onClick={handleButtonClick}>
+      <div className={'text-[16px] text-[#116AEF] ml-[2px]'} onClick={handleButtonClick}>
         Add
-      </button>
+      </div>
     </div>
   )
 }
