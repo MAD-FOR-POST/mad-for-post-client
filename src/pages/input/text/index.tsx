@@ -9,7 +9,7 @@ import { useRecoilState } from 'recoil'
 import { userInputTextsAtom } from '@/stores/UserInfoAtom'
 import { SizedBox } from '@/components/ui/box/SizedBox'
 import Layout from '@/components/layout'
-
+import { TitleText } from '@/components/ui/typography/TitleText'
 export default function TextPage() {
   const [typedKeyword, setTypedKeyword] = useState('') //리스트 안에 각각
   const router = useRouter()
@@ -66,9 +66,8 @@ export default function TextPage() {
     <Layout>
       <div className={'flex flex-col justify-between items-center bg-[#DDBCC5] w-full max-w-[428px] h-full pt-9 relative '}>
         <BackButton />
-        <br />
+        <TitleText>Give me words</TitleText>
         <div className={'relative w-full'}>
-          <span className={'text-[#262A2F] text-[38px] font-bold top-[-86px] w-full text-center absolute'}>Give me words</span>
           <img src='/images/FormBackgroundTop.png'/>
           <div className={'flex flex-col items-center  w-full bg-white bg-opacity-50'}>
               <div className={'flex flex-col bg-white rounded-[36.38px] w-[87%] min-h-[134px] mt-[63px] px-[10px] py-[11px]'}>
