@@ -142,7 +142,7 @@ export default function ResultPage() {
               <></>
             )}
 
-            <div className="w-[90%] bg-white p-[8px] mb-[12px]">
+            <div className="bg-white mb-[12px]">
               <span>{gptResults.text}</span>
             </div>
           </div>
