@@ -54,14 +54,17 @@ export default function TailwindExample() {
   }
 
   const generatePostWithReactQuery = async () => {
-    generatePostMutate({
-      keywords: userInput.keywords.toString(),
-      description: userInput.detail ? userInput.detail : '.',
-    })
-    generateImageMutate({
-      keywords: userInput.keywords.toString(),
-      description: userInput.detail ? userInput.detail : '.',
-    })
+    await Promise.all([
+      generatePostMutate({
+        keywords: userInput.keywords.toString(),
+        description: userInput.detail ? userInput.detail : '.',
+      }),
+      selectedImagesArray.length === 0 &&
+        generateImageMutate({
+          keywords: userInput.keywords.toString(),
+          description: userInput.detail ? userInput.detail : '.',
+        }),
+    ])
   }
   const onGPTGenerateButtonClicked = async () => {
     //keyword가 없는 경우 GPT 생성을 할 수 없으므로, 키워드 입력 페이지로 이동한다.
