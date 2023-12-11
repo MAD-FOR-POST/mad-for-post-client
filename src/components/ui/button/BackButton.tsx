@@ -14,7 +14,7 @@ export const BackButton: React.FC<Props> = ({ onClick }) => {
   }
 
   return (
-    <div className="absolute w-full px-8">
+    <div className=" w-full px-8">
       <button className="bg-white w-[50px] h-[70px]  rounded-full  start-10 z-10 " onClick={onClick ? onClick : onButtonClicked}>
         <FontAwesomeIcon icon={faChevronLeft} />
       </button>

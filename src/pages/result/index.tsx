@@ -101,7 +101,7 @@ export default function ResultPage() {
         </div>
         <div className="">
           <img src="/images/FormBackgroundTop100.png" className={'relative top-[7px]'} />
-          <div className="relative bg-white w-full flex flex-col items-center h-[500px] overflow-y-scroll hide-scrollbar px-8 overflow-hidden pb-[100px]">
+          <div className="relative bg-white w-full flex flex-col items-center h-[400px] overflow-y-scroll hide-scrollbar px-8 overflow-hidden pb-[100px]">
             <div className="relative min-w-[364px] min-h-[364px] bg-black">
               {gptResults.image && (
                 <AnimatePresence custom={back}>
