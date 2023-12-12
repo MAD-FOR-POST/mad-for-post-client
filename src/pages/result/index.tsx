@@ -68,6 +68,7 @@ export default function ResultPage() {
   const [visible, setVisible] = useState(0)
   const [clickedSNS, setClickedSNS] = useState(SNSList[0].title)
   const [back, setBack] = useState(false)
+  const [isBackgroundClicked, setIsBackgroundClicked] = useState(false)
   const constraintsRef = useRef(null)
 
   const onNextImgClick = async () => {
@@ -85,9 +86,9 @@ export default function ResultPage() {
 
   return (
     <Layout>
-      <div className={'flex flex-col  justify-between items-center bg-[#DDBCC5] w-full max-w-[428px] h-full pt-9 relative '}>
-        <BackButton />
-        <div>
+      <div className={'flex flex-col  justify-front items-front bg-[#DDBCC5] w-full max-w-[428px] h-full pt-9  relative '}>
+        <BackButton extraStyles="absolute" />
+        <div className="h-1/3">
           <div className={'text-center text-[#262A2F] text-[38px] font-bold '}>Boom!</div>
           <ul className={'flex flex-row flex-wrap mt-3 justify-center gap-2 w-[80%] m-auto'}>
             {SNSList.map(({ title, image, link }) => (
@@ -99,10 +100,11 @@ export default function ResultPage() {
             ))}
           </ul>
         </div>
-        <div className="">
+
+        <div className=" flex flex-col h-2/3  bottom-0 w-full ">
           <img src="/images/FormBackgroundTop100.png" className={'relative top-[7px]'} />
-          <div className="relative bg-white w-full flex flex-col items-center h-[400px] overflow-y-scroll hide-scrollbar px-8 overflow-hidden pb-[100px]">
-            <div className="relative min-w-[364px] min-h-[364px] bg-black">
+          <div className="relative bg-white w-full h-full flex flex-col items-center  overflow-y-scroll hide-scrollbar px-8 overflow-hidden pb-[100px]">
+            <div className="relative min-w-full min-h-full bg-black">
               {gptResults.image && (
                 <AnimatePresence custom={back}>
                   {gptResults.image.map((i, index) =>
@@ -146,31 +148,31 @@ export default function ResultPage() {
               <span>{gptResults.text}</span>
             </div>
           </div>
-          {/* 슬라이드 */}
-          {/* <div ref={myComponentRef} className='mx-[32px] mb-[32px]'> */}
-          <div ref={myComponentRef} className="w-full  absolute bottom-0 left-0 px-3 ">
-            <motion.div className=" mb-[32px] relative flex justify-center rounded-full items-center bg-[#303841] h-[80px] w-full" ref={constraintsRef}>
-              <div className="text-white">
-                Baam! <br /> Lets uploaded
-              </div>
-              <motion.div
-                drag="x"
-                style={{
-                  x,
-                  backgroundImage: 'url("/images/Baam.png")',
-                  backgroundSize: '100%',
-                  backgroundPosition: 'top',
-                  transform: 'scale(1.0)',
-                }}
-                className="absolute  flex justify-center items-center h-[70px] w-[70px]  rounded-full bg-white left-1 cursor-pointer"
-                dragConstraints={constraintsRef}
-                dragSnapToOrigin
-              ></motion.div>
-              <div className="absolute  right-[20px]">
-                <ChevronRightAnimated />
-              </div>
-            </motion.div>
-          </div>
+        </div>
+
+        {/* 슬라이드 */}
+        <div ref={myComponentRef} className="w-full  absolute bottom-0 left-0 px-3 ">
+          <motion.div className=" mb-[32px] relative flex justify-center rounded-full items-center bg-[#303841] h-[80px] w-full" ref={constraintsRef}>
+            <div className="text-white">
+              Baam! <br /> Lets uploaded
+            </div>
+            <motion.div
+              drag="x"
+              style={{
+                x,
+                backgroundImage: 'url("/images/Baam.png")',
+                backgroundSize: '100%',
+                backgroundPosition: 'top',
+                transform: 'scale(1.0)',
+              }}
+              className="absolute  flex justify-center items-center h-[70px] w-[70px]  rounded-full bg-white left-1 cursor-pointer"
+              dragConstraints={constraintsRef}
+              dragSnapToOrigin
+            ></motion.div>
+            <div className="absolute  right-[20px]">
+              <ChevronRightAnimated />
+            </div>
+          </motion.div>
         </div>
       </div>
     </Layout>
