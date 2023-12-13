@@ -12,14 +12,14 @@ jobs:
       with:
         ref: develop  # develop 브랜치를 체크아웃
 
-    - name: Set up SSH
-      uses: webfactory/ssh-agent@v0.5.1
-      with:
-        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+    - name: Install sshpass
+      run: sudo apt-get install -y sshpass
 
     - name: SSH and Run Script
+      env:
+        SSH_PASSWORD: ${{ secrets.SSH_PASSWORD }}
       run: |
-        ssh -o "StrictHostKeyChecking=no" -p 31220 billi@129.154.207.190 << 'EOF'
+        sshpass -p $SSH_PASSWORD ssh -o "StrictHostKeyChecking=no" -p 31220 billi@129.154.207.190 << 'EOF'
           cd /home/billi/Projects/mad-for-post-client
           git pull
           pm2 delete "mad4post-client"
