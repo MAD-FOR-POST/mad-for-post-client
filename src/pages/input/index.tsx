@@ -19,10 +19,11 @@ export default function TailwindExample() {
 
   useEffect(() => {
     newX.onChange(() => {
-      if (newX.get() === 1 && !routerPushed) {
+      if (newX.get() > 0.6 && !routerPushed) {
         setRouterPushed(true)
         router.push(AppRoutes.inputText)
       }
+      console.log(newX.get())
     })
   }, [x])
 
