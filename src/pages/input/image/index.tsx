@@ -72,7 +72,7 @@ export default function TailwindExample() {
   const onGPTGenerateButtonClicked = async () => {
     //keyword가 없는 경우 GPT 생성을 할 수 없으므로, 키워드 입력 페이지로 이동한다.
     if (userInput.keywords.length === 0) {
-      router.replace(AppRoutes.inputText)
+      router.replace(AppRoutes.inputTextKeyword)
       alert('Please add keywords')
       return
     }

@@ -24,10 +24,12 @@ export const AppRoutes = {
   layoutExample: '/examples/layout',
   atomExample: '/examples/atom',
   input: '/input',
-  inputText: '/input/text',
+  // inputText: '/input/text',
   inputImage: '/input/image',
   resultPage: '/result',
-  edit:'/edit'
+  edit:'/edit',
+  inputTextKeyword:'/input/text/keyword',
+  inputTextOptional:'/input/text/optional',
 }
 
 export enum HttpStatusCode {
