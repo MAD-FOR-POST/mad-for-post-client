@@ -6,11 +6,14 @@ interface LayoutProps {
 }
 
 const Layout: React.FC<LayoutProps> = ({ children, backgroundColor }) => {
-  const [layoutHeight, setLayoutHeight] = useState<number | string>('100vh') // 기본값으로 브라우저 높이를 사용
+  const [layoutHeight, setLayoutHeight] = useState<number | string>('100vh')
+  const [isMdMedia, setIsMdMedia] = useState<boolean>(false) // 모바일이 아닌 경우를 판단하는 상태
 
   const updateLayoutHeight = () => {
-    const isMdMedia = window.matchMedia('(min-width: 768px)').matches
-    if (isMdMedia) {
+    const mediaQuery = window.matchMedia('(min-width: 768px)')
+    setIsMdMedia(mediaQuery.matches) // 미디어 쿼리 상태 업데이트
+
+    if (mediaQuery.matches) {
       const windowHeight = Math.min(window.innerHeight, 926)
       setLayoutHeight(windowHeight + 'px')
     } else {
@@ -18,27 +21,26 @@ const Layout: React.FC<LayoutProps> = ({ children, backgroundColor }) => {
     }
   }
 
-  const init = () => {
+  useEffect(() => {
     updateLayoutHeight()
     window.addEventListener('resize', updateLayoutHeight)
-  }
 
-  const deInit = () => {
-    window.removeEventListener('resize', updateLayoutHeight)
-  }
-
-  useEffect(() => {
-    init()
     return () => {
-      deInit()
+      window.removeEventListener('resize', updateLayoutHeight)
     }
   }, [])
 
   return (
     <div className={'flex items-center justify-center fixed left-0 top-0 right-0 bottom-0'} style={{ backgroundColor: backgroundColor ?? '#E2D9E2' }}>
-      <div style={{ height: layoutHeight }} className={'flex flex-col justify-start box-border items-center bg-white w-[428px] h-full overflow-y-scroll hide-scrollbar'}>
-        {children}
-      </div>
+      {isMdMedia ? (
+        // 모바일이 아닌 경우에만 적용되는 스타일
+        <div style={{ height: layoutHeight }} className={'flex flex-col justify-start box-border items-center bg-white w-[428px] h-full overflow-y-scroll hide-scrollbar'}>
+          {children}
+        </div>
+      ) : (
+        // 모바일 환경에서 적용되는 기본 스타일
+        <div className={'flex flex-col justify-start box-border items-center bg-white w-full h-full overflow-y-scroll hide-scrollbar'}>{children}</div>
+      )}
     </div>
   )
 }
