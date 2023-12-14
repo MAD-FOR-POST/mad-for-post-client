@@ -10,8 +10,7 @@ import { userInputTextsAtom } from '@/stores/UserInfoAtom'
 import { SizedBox } from '@/components/ui/box/SizedBox'
 import Layout from '@/components/layout'
 import { TitleText } from '@/components/ui/typography/TitleText'
-export default function TextPage() {
-  const [typedKeyword, setTypedKeyword] = useState('') //리스트 안에 각각
+export default function TextOptionalPage() {
   const router = useRouter()
   const [textareaValue, setTextareaValue] = useState('')
   //recoil 써서 keyword와 detail값 넣기
@@ -19,33 +18,7 @@ export default function TextPage() {
 
   const { keywords, detail } = userInput
 
-  const onEnterKeyDown = () => {
-    setUserInput({
-      ...userInput,
-      keywords: keywords.concat([typedKeyword]),
-    })
-
-    setTypedKeyword('')
-  }
-
-  const onRemoveKeywordButtonClicked = (index: number) => {
-    setUserInput((currentInput) => {
-      const newKeywords = [...currentInput.keywords]
-      newKeywords.splice(index, 1)
-
-      return {
-        ...currentInput,
-        keywords: newKeywords,
-      }
-    })
-  }
-
   const onGoToImage = () => {
-    if (keywords.length === 0) {
-      alert('Please enter one or more keywords')
-      return
-    }
-
     router.push(AppRoutes.inputImage)
   }
 
@@ -70,13 +43,7 @@ export default function TextPage() {
         <div className={'relative w-full'}>
           <img src='/images/FormBackgroundTop.png'/>
           <div className={'flex flex-col items-center  w-full bg-white bg-opacity-50'}>
-              <div className={'flex flex-col bg-white rounded-[36.38px] w-[87%] min-h-[134px] mt-[63px] px-[10px] py-[11px]'}>
-                <div className={'text-[#262A2F] text-[14px] font-bold text-center  mb-[16px]'}>Keywords</div>
-                <KeywordInput keyword={typedKeyword} setPutKeyword={setTypedKeyword} onEnterKeyDown={onEnterKeyDown} />
-                <SizedBox height={12} />
-                <KeywordList keywords={userInput.keywords} onRemoveKeywordButtonClicked={onRemoveKeywordButtonClicked} />
-              </div>
-              <div className={'flex flex-col bg-white rounded-[36.38px] w-[87%] min-h-[194px] mt-[14px] px-[40px] pt-[12px] pb-[24px] mb-[104px]'}>
+              <div className={'flex flex-col bg-white rounded-[36.38px] w-[87%] min-h-[300px] mt-[14px] px-[40px] pt-[12px] pb-[24px] mb-[104px]'}>
                 <div className={'text-[#262A2F] text-[14px] font-bold text-center  mb-[16px]'}>Any more detail?(optional)</div>
                 <textarea
                   style={{ resize: 'none' }}

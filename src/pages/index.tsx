@@ -24,7 +24,7 @@ export default function Home() {
     router.push(AppRoutes.atomExample)
   }
   const onUITextButtonClicked = () => {
-    router.push(AppRoutes.inputText)
+    router.push(AppRoutes.inputTextKeyword)
   }
   const onUIImageButtonClicked = () => {
     router.push(AppRoutes.input)
