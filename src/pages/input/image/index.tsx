@@ -81,30 +81,29 @@ export default function TailwindExample() {
 
     try {
       // Wait for both promises to resolve
-      generatePostWithReactQuery()
+      await generatePostWithReactQuery()
 
       // !gptLoading && router.push(AppRoutes.resultPage)
     } catch (error) {
       console.error('Error fetching data:', error)
-    } finally {
-      setIsLoading(false)
     }
   }
 
   useEffect(() => {
+    console.log(isLoading)
     if (gptTextResult) {
       setGPTResults({
         ...gptResults,
         text: gptTextResult,
         image: selectedImagesArray.length > 0 ? [...selectedImagesArray] : gptImageResult ? [gptImageResult] : [],
       })
-      router.push(AppRoutes.resultPage)
+      isLoading && router.push(AppRoutes.resultPage)
     }
-  }, [gptLoading, gptImgLoading])
+  }, [gptLoading, gptImgLoading, isLoading])
 
   return (
     <Layout>
-      {!gptLoading ? (
+      {!gptLoading || !isLoading ? (
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -113,8 +112,18 @@ export default function TailwindExample() {
         >
           <BackButton />
           <TitleText>Do you have any pictures?</TitleText>
+          <div className="flex flex-col items-center justy-center h-1/3 ">
+            <div className="text-center mb-5">
+              If you put pictures in it,
+              <br /> you get more accurate and better results.
+            </div>
+            <div className="text-center">
+              If you don’t? Don’t worry,
+              <br /> we’ll do it for you.
+            </div>
+          </div>
           <form
-            className="relative flex flex-col gap-3 w-full h-[24rem]  px-[50px] pt-20 overflow-auto"
+            className="relative flex flex-col gap-3 w-full h-[20rem]  px-10  pt-12 overflow-auto"
             style={{
               backgroundImage: 'url("/images/FormBackgroundLong.png")',
               backgroundSize: 'cover',
@@ -123,17 +132,20 @@ export default function TailwindExample() {
             }}
           >
             <input type="file" accept="image/*" className="hidden" id="imageInput" onChange={onImageChanged} />
-            <div className="flex  gap-3 overflow-scroll  h-full">
+            <div className="flex  gap-3  h-full">
               {selectedImagesArray.map((imgUrl, index) => (
                 <motion.div key={`${index}${imgUrl}`} initial="hidden" animate="visible" exit="hidden" variants={fadeAnimation} transition={{ duration: 0.5 }} className="relative">
-                  <img key={index} src={imgUrl} alt="Selected" className=" object-cover rounded-3xl  min-w-[100px] min-h-[100px] " />
+                  <img key={index} src={imgUrl} alt="Selected" className=" object-cover rounded-3xl  max-w-[100px] max-h-[100px] min-w-[100px] min-h-[100px] " />
                   <span className="absolute top-0 right-0 bg-white p-1 rounded-full w-6 h-6 flex justify-center items-center cursor-pointer" onClick={() => onDeleteImage(index)}>
                     <FontAwesomeIcon icon={faXmark} />
                   </span>
                 </motion.div>
               ))}
               {selectedImagesArray.length! < 6 && (
-                <label htmlFor="imageInput" className="bg-white w-full  z-10 rounded-3xl min-w-[100px] max-h-[100px] flex justify-center items-center cursor-pointer">
+                <label
+                  htmlFor="imageInput"
+                  className="bg-white w-full  z-10 rounded-3xl max-w-[100px] max-h-[100px] min-w-[100px] min-h-[100px]  flex justify-center items-center cursor-pointer"
+                >
                   <span className="text-slate-300 text-sm w-3/5 text-center">Add Picture</span>
                 </label>
               )}

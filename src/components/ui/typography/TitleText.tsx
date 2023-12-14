@@ -5,5 +5,5 @@ interface Props {
 }
 
 export const TitleText: React.FC<Props> = ({ children }) => {
-  return <span className={'font-bold text-[38px] text-center h-1/2 flex justify-center items-center'}>{children}</span>
+  return <span className={'font-bold text-[38px] text-center h-1/3 flex justify-center items-center'}>{children}</span>
 }
