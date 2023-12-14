@@ -23,7 +23,6 @@ export default function TailwindExample() {
         setRouterPushed(true)
         router.push(AppRoutes.inputText)
       }
-      console.log(newX.get())
     })
   }, [x])
 
@@ -67,7 +66,7 @@ export default function TailwindExample() {
             </div>
             <div ref={myComponentRef}>
               <motion.div className="relative flex justify-center rounded-full items-center bg-orange-pink h-[80px] bottom-0 " ref={constraintsRef}>
-                <div className="text-white">Start Experience</div>
+                <div className="text-white animate-blink">Start Experience</div>
                 <motion.div
                   drag="x"
                   style={{ x }}
