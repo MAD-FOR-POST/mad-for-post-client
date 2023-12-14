@@ -45,12 +45,15 @@ export default function TailwindExample() {
   }
 
   const onDeleteImage = (index: number) => {
-    // Copy the current array
-    const newArray = [...selectedImagesArray]
-    // Remove the image at the specified index
-    newArray.splice(index, 1)
-    // Update the Recoil state
-    setSelectedImagesArray(newArray)
+    const confirmed = confirm('Do you want to delete?')
+    if (confirmed) {
+      // Copy the current array
+      const newArray = [...selectedImagesArray]
+      // Remove the image at the specified index
+      newArray.splice(index, 1)
+      // Update the Recoil state
+      setSelectedImagesArray(newArray)
+    }
   }
 
   const generatePostWithReactQuery = async () => {
@@ -111,7 +114,7 @@ export default function TailwindExample() {
           <BackButton />
           <TitleText>Do you have any pictures?</TitleText>
           <form
-            className="relative grid grid-cols-3 gap-3 w-full h-[24rem]  px-[50px] pt-20 overflow-auto"
+            className="relative flex flex-col gap-3 w-full h-[24rem]  px-[50px] pt-20 overflow-auto"
             style={{
               backgroundImage: 'url("/images/FormBackgroundLong.png")',
               backgroundSize: 'cover',
@@ -120,20 +123,21 @@ export default function TailwindExample() {
             }}
           >
             <input type="file" accept="image/*" className="hidden" id="imageInput" onChange={onImageChanged} />
-
-            {selectedImagesArray.map((imgUrl, index) => (
-              <motion.div key={`${index}${imgUrl}`} initial="hidden" animate="visible" exit="hidden" variants={fadeAnimation} transition={{ duration: 0.5 }} className="relative">
-                <img key={index} src={imgUrl} alt="Selected" className="w-full h-full object-cover rounded-3xl  max-w-[100px] max-h-[100px]" />
-                <span className="absolute top-0 right-0 bg-white p-1 rounded-full w-6 h-6 flex justify-center items-center cursor-pointer" onClick={() => onDeleteImage(index)}>
-                  <FontAwesomeIcon icon={faXmark} />
-                </span>
-              </motion.div>
-            ))}
-            {selectedImagesArray.length! < 3 && (
-              <label htmlFor="imageInput" className="bg-white w-full  z-10 rounded-3xl max-w-[100px] max-h-[100px] flex justify-center items-center cursor-pointer">
-                <span className="text-slate-300 text-sm w-3/5 text-center">Add Picture</span>
-              </label>
-            )}
+            <div className="flex  gap-3 overflow-scroll  h-full">
+              {selectedImagesArray.map((imgUrl, index) => (
+                <motion.div key={`${index}${imgUrl}`} initial="hidden" animate="visible" exit="hidden" variants={fadeAnimation} transition={{ duration: 0.5 }} className="relative">
+                  <img key={index} src={imgUrl} alt="Selected" className=" object-cover rounded-3xl  min-w-[100px] min-h-[100px] " />
+                  <span className="absolute top-0 right-0 bg-white p-1 rounded-full w-6 h-6 flex justify-center items-center cursor-pointer" onClick={() => onDeleteImage(index)}>
+                    <FontAwesomeIcon icon={faXmark} />
+                  </span>
+                </motion.div>
+              ))}
+              {selectedImagesArray.length! < 6 && (
+                <label htmlFor="imageInput" className="bg-white w-full  z-10 rounded-3xl min-w-[100px] max-h-[100px] flex justify-center items-center cursor-pointer">
+                  <span className="text-slate-300 text-sm w-3/5 text-center">Add Picture</span>
+                </label>
+              )}
+            </div>
           </form>
           <NextButton onClick={onGPTGenerateButtonClicked}>Skip and generate</NextButton>
         </motion.div>
