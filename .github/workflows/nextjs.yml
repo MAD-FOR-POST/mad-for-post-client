@@ -12,18 +12,18 @@ jobs:
       with:
         ref: develop  # develop 브랜치를 체크아웃
 
-    - name: Install sshpass
-      run: sudo apt-get install -y sshpass
+    - name: Set up SSH
+      uses: webfactory/ssh-agent@v0.5.1
+      with:
+        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
     - name: SSH and Run Script
-      env:
-        SSH_PASSWORD: ${{ secrets.SSH_PASSWORD }}
       run: |
-        sshpass -p $SSH_PASSWORD ssh -o "StrictHostKeyChecking=no" -p 31220 billi@129.154.207.190 << 'EOF'
-          cd /home/billi/Projects/mad-for-post-client
+        ssh -o "StrictHostKeyChecking=no" username@yourserver.com << 'EOF'
+          echo "Starting script execution"
+          # 여기에 실행할 명령어들을 추가하세요
+          cd /path/to/directory
           git pull
-          pm2 delete "mad4post-client"
-          npm run build
-          pm2 start npm --name "mad4post-client" -- run start 
+          ./run_some_tasks.sh
           echo "Script execution completed"
         EOF
