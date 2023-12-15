@@ -1,8 +1,31 @@
 import React, { memo, useEffect, useState } from 'react'
+import { motion, Variants, Transition } from 'framer-motion'
 
 interface LayoutProps {
   children: React.ReactNode
   backgroundColor?: string
+}
+
+const pageVariants: Variants = {
+  initial: {
+    opacity: 0,
+    x: '-100vw', // 왼쪽에서 시작
+  },
+  animate: {
+    opacity: 1,
+    x: 0, // 중앙으로 이동
+  },
+  exit: {
+    opacity: 0,
+    x: '100vw', // 오른쪽으로 나감
+  },
+}
+
+// 애니메이션 전환 설정
+const pageTransition: Transition = {
+  type: 'tween',
+  ease: 'easeInOut',
+  duration: 0.3,
 }
 
 const Layout: React.FC<LayoutProps> = ({ children, backgroundColor }) => {
@@ -32,15 +55,17 @@ const Layout: React.FC<LayoutProps> = ({ children, backgroundColor }) => {
 
   return (
     <div className={'flex items-center justify-center fixed left-0 top-0 right-0 bottom-0'} style={{ backgroundColor: backgroundColor ?? '#E2D9E2' }}>
-      {isMdMedia ? (
-        // 모바일이 아닌 경우에만 적용되는 스타일
-        <div style={{ height: layoutHeight }} className={'flex flex-col justify-start box-border items-center bg-white w-[428px] h-full overflow-y-scroll hide-scrollbar'}>
-          {children}
-        </div>
-      ) : (
-        // 모바일 환경에서 적용되는 기본 스타일
-        <div className={'flex flex-col justify-start box-border items-center bg-white w-full h-full overflow-y-scroll hide-scrollbar'}>{children}</div>
-      )}
+      <motion.div initial="initial" animate="animate" exit="exit" variants={pageVariants} transition={pageTransition} className={'flex items-center justify-center w-full h-full'}>
+        {isMdMedia ? (
+          // 모바일이 아닌 경우에만 적용되는 스타일
+          <div style={{ height: layoutHeight }} className={'flex flex-col justify-start box-border items-center bg-white w-[428px] h-full overflow-y-scroll hide-scrollbar'}>
+            {children}
+          </div>
+        ) : (
+          // 모바일 환경에서 적용되는 기본 스타일
+          <div className={'flex flex-col justify-start box-border items-center bg-white w-full h-full overflow-y-scroll hide-scrollbar'}>{children}</div>
+        )}
+      </motion.div>
     </div>
   )
 }
