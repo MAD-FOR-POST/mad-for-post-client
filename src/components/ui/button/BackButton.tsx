@@ -15,7 +15,7 @@ export const BackButton: React.FC<Props> = ({ onClick, extraStyles }) => {
   }
 
   // Combine the default styles with extraStyles
-  const buttonStyles = `bg-white w-[50px] h-[70px] rounded-full start-10 z-10 ${extraStyles}`
+  const buttonStyles = `bg-white w-[48px] h-[48px] rounded-full start-10 z-10 ${extraStyles}`
 
   return (
     <div className="w-full px-8">
