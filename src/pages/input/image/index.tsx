@@ -4,7 +4,7 @@ import { BackButton } from '@/components/ui/button/BackButton'
 import { NextButton } from '@/components/ui/button/NextButton'
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { ChangeEvent, useEffect, useState } from 'react'
+import { ChangeEvent, useCallback, useEffect, useState } from 'react'
 import { useRecoilState, useRecoilValue } from 'recoil'
 import { gptResultsAtom, userInputImagesAtom, userInputTextsAtom } from '@/stores/UserInfoAtom'
 import { printLog } from '@/utils/LogUtil'
@@ -29,7 +29,8 @@ export default function TailwindExample() {
   const [isLoading, setIsLoading] = useState(false)
   const { mutate: generatePostMutate, isLoading: gptLoading, error: gptDataFetchError, data: gptTextResult } = useMutation(postService.generatePost)
   const { mutate: generateImageMutate, isLoading: gptImgLoading, error: gptImgDataFetchError, data: gptImageResult } = useMutation(postService.generateImage)
-  const loadingTextSplitted = gptLoading ? ['Magic is happening at the moment', 'if you close the magic will stop and need to start again'] : []
+  const loadingTextSplitted = isLoading ? ['Magic is happening at the moment', 'if you close the magic will stop and need to start again'] : []
+  const needWaitGPTImage = selectedImagesArray.length === 0 //선택된 이미지가 있는 경우에는 GPT이미지를 기다리지 않는다.
 
   const onImageChanged = (event: ChangeEvent<HTMLInputElement>) => {
     if (!event?.target?.files) return
@@ -89,21 +90,37 @@ export default function TailwindExample() {
     }
   }
 
-  useEffect(() => {
-    console.log(isLoading)
-    if (gptTextResult) {
-      setGPTResults({
-        ...gptResults,
+  const updateResultsAndNavigate = useCallback(
+    (images: string[]) => {
+      setGPTResults((prevResults) => ({
+        ...prevResults,
         text: gptTextResult,
-        image: selectedImagesArray.length > 0 ? [...selectedImagesArray] : gptImageResult ? [gptImageResult] : [],
-      })
-      isLoading && router.push(AppRoutes.resultPage)
+        image: images,
+      }))
+    },
+    [gptTextResult, setGPTResults],
+  )
+
+  useEffect(() => {
+    //사용자가 선택한 이미지가 없는 경우: 텍스트만 기다린다.
+    if (needWaitGPTImage && gptTextResult && gptImageResult) {
+      printLog('11111')
+      updateResultsAndNavigate([gptImageResult])
+      router.push(AppRoutes.resultPage)
+      return
     }
-  }, [gptLoading, gptImgLoading, isLoading])
+
+    //사용자가 선택한 이미지가 1개이상 있는 경우: 텍스트만 기다린다.
+    if (!needWaitGPTImage && gptTextResult) {
+      updateResultsAndNavigate([...selectedImagesArray])
+      router.push(AppRoutes.resultPage)
+      return
+    }
+  }, [gptLoading, gptImgLoading])
 
   return (
     <Layout>
-      {!gptLoading || !isLoading ? (
+      {!isLoading ? (
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
