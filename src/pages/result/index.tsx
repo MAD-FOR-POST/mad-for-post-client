@@ -7,6 +7,7 @@ import { AnimatePresence, motion, useMotionValue, useTransform } from 'framer-mo
 import ChevronRightAnimated from '@/components/ui/icon/ChevronRightAnimated'
 import { ISnsItem } from '@/interfaces/post/ISnsItem'
 import Layout from '@/components/layout'
+import { ensureBase64DataUrlPrefix } from '@/utils/StringUtil'
 
 const SNSList: ISnsItem[] = [
   {
@@ -107,11 +108,11 @@ export default function ResultPage() {
             <div className="relative min-w-full min-h-full bg-black">
               {gptResults.image && (
                 <AnimatePresence custom={back}>
-                  {gptResults.image.map((i, index) =>
+                  {gptResults.image.map((imgBase64Data, index) =>
                     index === visible ? (
                       <motion.img
-                        key={i}
-                        src={i}
+                        key={imgBase64Data}
+                        src={ensureBase64DataUrlPrefix(imgBase64Data)}
                         custom={back}
                         variants={box}
                         initial="entry"
