@@ -54,7 +54,6 @@ export default function Home() {
       //코드입력 내용
       const [code, setCode] = useState<string[]>(Array(codeInputRefs.length).fill(''));
       const onInputChanged = (index: number, value: string ) => {
-
         const newCode=[...code]
         newCode[index]=value;
         setCode(newCode);
@@ -81,7 +80,7 @@ export default function Home() {
         <div className={'flex flex-col items-center w-full max-w-[428px] h-full pt-9 relative '}>
           <BackButton />
           <div className={'text-center w-full flex justify-center  flex-col h-[85%]'}>
-            <h1 className={'font-bold text-[38px] '}>Hello✨</h1>
+            <h1 className={'font-bold text-[38px]'}>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Hello✨</h1>
             <p className={'text-[16px] mt-5 mb-6'}>
               Type your abraca-code
               <br/>
@@ -93,6 +92,7 @@ export default function Home() {
                 <div className={'font-bold text-[14px] pt-[11px] pb-[16px]'}>Magic code</div>
                 {codeInputRefs.map((ref, index) => (
                   <input
+                    type='number'
                     ref={ref}
                     key={index}
                     maxLength={1}
@@ -107,7 +107,7 @@ export default function Home() {
                         handleArrowKey(index,'right')
                       }
                     }}
-                    className={'w-[44px] h-[60px] text-center rounded-[10px] mx-[5px] border-[1px] border-[#ffffff] appearance-none border-2 focus:outline-none focus:bg-white focus:border-[#23C164]'}
+                    className={'w-[44px] h-[60px] text-center rounded-[10px] mx-[5px] border-[1px] border-[#ffffff] appearance-none border-2 focus:outline-none focus:bg-white focus:border-[#23C164] hide-scrollbar'}
                     />
                     ))}
               </div>
@@ -146,7 +146,8 @@ export default function Home() {
             <p className={'text-[16px] mt-5 '}>
               You don&apos;t have a code,
               <br/> 
-              please contact use here
+              please contact use&nbsp;
+              <a href="https://open.kakao.com/o/gTUm3dSf" className={'underline'}>here</a>
             </p>
           </div>
         
