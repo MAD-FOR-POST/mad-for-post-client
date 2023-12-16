@@ -5,6 +5,7 @@ import { ILoginResponse } from '@/interfaces/auth/ILoginResponse'
 import { AxiosResponse } from 'axios'
 import { cookieService } from '@/services/CookieService'
 import { IRefreshTokenResponse } from '@/interfaces/auth/IRefreshTokenResponse'
+import { printLog } from '@/utils/LogUtil'
 
 export const authService = {
   async requestLogin(username: string, password: string): Promise<ILoginResponse> {
@@ -21,6 +22,8 @@ export const authService = {
       refreshToken,
     }
     const response: AxiosResponse<IApiResponse<IRefreshTokenResponse>> = await axiosInstance.post(Apis.refreshToken, reqParams)
+    cookieService.setAccessToken(response.data.data.accessToken ?? '')
+    cookieService.setRefreshToken(response.data.data.refreshToken ?? '')
     return response.data.data
   },
   async validateToken(): Promise<boolean> {
