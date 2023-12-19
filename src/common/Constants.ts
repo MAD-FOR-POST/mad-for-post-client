@@ -15,6 +15,7 @@ export const Apis = {
   getPost: (id: number) => `/api/v1/posts/${id}`,
   generatePost: '/api/v1/posts',
   generateImage: '/api/v1/posts/image',
+  generateImages: '/api/v1/posts/images',
 }
 
 export const AppRoutes = {
@@ -27,9 +28,9 @@ export const AppRoutes = {
   // inputText: '/input/text',
   inputImage: '/input/image',
   resultPage: '/result',
-  edit:'/edit',
-  inputTextKeyword:'/input/text/keyword',
-  inputTextOptional:'/input/text/optional',
+  edit: '/edit',
+  inputTextKeyword: '/input/text/keyword',
+  inputTextOptional: '/input/text/optional',
 }
 
 export enum HttpStatusCode {
