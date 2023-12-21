@@ -10,12 +10,13 @@ import { userInputTextsAtom } from '@/stores/UserInfoAtom'
 import { SizedBox } from '@/components/ui/box/SizedBox'
 import Layout from '@/components/layout'
 import { TitleText } from '@/components/ui/typography/TitleText'
+import { KeywordModal } from '@/components/ui/modal/KeywordModal'
 export default function TextKeywordPage() {
   const [typedKeyword, setTypedKeyword] = useState('') //리스트 안에 각각
   const router = useRouter()
   //recoil 써서 keyword와 detail값 넣기
   const [userInput, setUserInput] = useRecoilState(userInputTextsAtom)
-
+  const [isModalOpen, setModalOpen] = useState(false);
   const { keywords, detail } = userInput
 
   const onEnterKeyDown = () => {
@@ -40,8 +41,8 @@ export default function TextKeywordPage() {
   }
 
   const onGoToTextOptional = () => {
-    if (keywords.length === 0) {
-      alert('Please enter one or more keywords')
+    if (keywords.length < 3) {
+      setModalOpen(true);
       return
     }
 
@@ -63,15 +64,26 @@ export default function TextKeywordPage() {
           <img src='/images/FormBackgroundTop.png'/>
           <div className={'flex flex-col items-center  w-full bg-white bg-opacity-50'}>
               <div className={'flex flex-col bg-white rounded-[36.38px] w-[87%] min-h-[250px] px-[10px] py-[11px] mb-[104px]'}>
-                <div className={'text-[#262A2F] text-[14px] font-bold text-center  mb-[16px]'}>Keywords</div>
+                <div className={'text-center'}>
+                  <p className={'text-[#262A2F] text-[14px] font-bold '}>Keywords</p>
+                  <p  className={'text-[#E71C40] text-[14px] '}>* Min : 3 words, Max : 10 words</p>
+                </div>
+                {userInput.keywords.length<10 &&
                 <KeywordInput keyword={typedKeyword} setPutKeyword={setTypedKeyword} onEnterKeyDown={onEnterKeyDown} />
+                }
                 <SizedBox height={12} />
                 <KeywordList keywords={userInput.keywords} onRemoveKeywordButtonClicked={onRemoveKeywordButtonClicked} />
               </div>
               <NextButton onClick={onGoToTextOptional}>Done</NextButton>
-
           </div>
         </div>
+      {isModalOpen && (
+        <KeywordModal
+          Title={"You must enter at least 3 keywords!"}
+          SubTitle={"* Number of keywords required : 3 to 10"}
+          setKeywordModalOpen={setModalOpen}
+          />
+      )}
       </div>
     </Layout>
   )

@@ -28,12 +28,12 @@ export const KeywordInput = ({ keyword, setPutKeyword, onEnterKeyDown }: Keyword
   }
 
   return (
-    <div className={'flex justify-between px-[24px] w-full'}>
+    <div className={'flex justify-between items-center px-[24px] w-full'}>
       <input
         type="text"
         required
         ref={inputRef}
-        className={'text-[16px] focus:outline-none flex-1 max-w-[220px]'}
+        className={'text-[16px] focus:outline-none flex-1 max-w-[220px] py-[20px]'}
         placeholder="Write keywords here."
         value={keyword}
         onChange={onInputChanged}
