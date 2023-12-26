@@ -7,7 +7,10 @@ import { AnimatePresence, motion, useMotionValue, useTransform } from 'framer-mo
 import ChevronRightAnimated from '@/components/ui/icon/ChevronRightAnimated'
 import { ISnsItem } from '@/interfaces/post/ISnsItem'
 import Layout from '@/components/layout'
-import { ensureBase64DataUrlPrefix } from '@/utils/StringUtil'
+
+import axios from 'axios'
+import { InboxArrowDownIcon, MinusIcon, PlusIcon, DocumentDuplicateIcon } from '@heroicons/react/16/solid'
+import { EditButton } from '@/components/ui/button/EditButton'
 
 const SNSList: ISnsItem[] = [
   {
@@ -85,9 +88,23 @@ export default function ResultPage() {
     setClickedSNS(current)
   }
 
-  useEffect(() => {
-    console.log(gptResults)
-  }, [])
+  const onImgDownload = async (url: string) => {
+    await axios
+      .get(url, { responseType: 'blob' })
+      .then((response) => {
+        const imageUrl = URL.createObjectURL(response.data)
+        // Now you can use imageUrl as the source for an image tag, or save it, etc.
+        const link = document.createElement('a')
+        link.href = imageUrl
+        link.download = 'image file name here'
+        document.body.appendChild(link)
+        link.click()
+        document.body.removeChild(link)
+      })
+      .catch((error: any) => {
+        console.error(error)
+      })
+  }
 
   return (
     <Layout>
@@ -114,25 +131,41 @@ export default function ResultPage() {
                 <AnimatePresence custom={back}>
                   {gptResults.image.map((imgBase64Data, index) =>
                     index === visible ? (
-                      <motion.img
-                        key={imgBase64Data}
-                        src={imgBase64Data}
-                        custom={back}
-                        variants={box}
-                        initial="entry"
-                        animate="center"
-                        exit="exit"
-                        alt="샘플이미지"
-                        className="w-full h-full object-contain absolute "
-                        style={{ objectPosition: '50% 50%' }} // Center the image within the container
-                      />
+                      <div className="relative flex flex-col w-full h-full">
+                        <motion.img
+                          key={index}
+                          src={imgBase64Data}
+                          custom={back}
+                          variants={box}
+                          initial="entry"
+                          animate="center"
+                          exit="exit"
+                          alt="샘플이미지"
+                          className="w-full h-full object-contain absolute z-1"
+                          style={{ objectPosition: '50% 50%' }} // Center the image within the container
+                        />
+                        <div className="absoute z-20 flex justify-between mt-4 px-2">
+                          <div className="w-1/2 flex justify-around">
+                            <EditButton>
+                              <MinusIcon className="h-6 w-6 text-black" />
+                            </EditButton>
+                            <EditButton>
+                              <PlusIcon className="h-6 w-6 text-black" />
+                            </EditButton>
+                            <EditButton onClick={() => onImgDownload(imgBase64Data)}>
+                              <InboxArrowDownIcon className="h-6 w-6 text-black" />
+                            </EditButton>
+                          </div>
+                          <EditButton>Regenerate</EditButton>
+                        </div>
+                      </div>
                     ) : null,
                   )}
                 </AnimatePresence>
               )}
             </div>
 
-            {/* 글 */}
+            {/* 이동 버튼 */}
             <img src="/images/InstaEx.png" alt="샘플이미지" className="w-[364px]" />
             {visible + 1 !== gptResults.image?.length ? (
               <div onClick={onNextImgClick} className="absolute top-44 right-10 w-[25px] h-[25px] bg-white opacity-75  flex justify-center items-center rounded-full">

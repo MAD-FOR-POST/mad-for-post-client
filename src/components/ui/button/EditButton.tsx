@@ -5,14 +5,10 @@ interface Props {
   children?: React.ReactNode
 }
 
-export const EditButton: React.FC<Props> = ( {onClick}) => {
-    return (
-      <button
-        className="bg-[#F4B7A8]  text-white font-bold  py-[12px] px-[28px] border rounded-[60px] relative top-[-400px] right-[-150px]"
-        onClick={onClick}
-      >
-        Edit
-      </button>
-    )
-  }
-
+export const EditButton: React.FC<Props> = ({ onClick, children }) => {
+  return (
+    <button className="bg-[#F4B7A8]  text-black font-bold  min-w-[20px] min-h-[20px]  py-[12px] px-[12px]  rounded-[60px]   top-0 right-0  z-30 " onClick={onClick}>
+      {children}
+    </button>
+  )
+}

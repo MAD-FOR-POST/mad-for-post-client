@@ -8,6 +8,7 @@ import { useMutation } from 'react-query'
 import Layout from '@/components/layout'
 import { EditButton } from '@/components/ui/button/EditButton'
 import { AppRoutes } from '@/common/Constants'
+import { InboxArrowDownIcon } from '@heroicons/react/16/solid'
 
 export default function ApiExample() {
   const router = useRouter()
@@ -98,17 +99,19 @@ export default function ApiExample() {
 
         {generatedImageBase64 &&
           generatedImagesBase64?.map((image) => (
-            <>
+            <div className="relative">
               <img src={image ?? ''} />
-              <EditButton onClick={onEditButtonClicked} />
-            </>
+              <EditButton onClick={onEditButtonClicked}></EditButton>
+            </div>
           ))}
 
         {generatedImageBase64 && (
-          <>
+          <div className="relative">
             <img src={generatedImageBase64 ?? ''} />
-            <EditButton onClick={onEditButtonClicked} />
-          </>
+            <EditButton onClick={onEditButtonClicked}>
+              <InboxArrowDownIcon className="h-6 w-6 text-black" />
+            </EditButton>
+          </div>
         )}
 
         {isGptDataLoading && <span>GPT 데이터 로딩중</span>}
