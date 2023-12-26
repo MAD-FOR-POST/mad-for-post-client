@@ -13,6 +13,7 @@ export default function ApiExample() {
   const router = useRouter()
   const [posts, setPosts] = useState<IPost[]>([])
   const [generatedImageBase64, setGenerateImageBase64] = useState<string>()
+  const [generatedImagesBase64, setGenerateImagesBase64] = useState<string[]>()
 
   const { mutate: generatePostMutate, isLoading: isGptDataLoading, error: gptDataFetchError, data: gptResult } = useMutation(postService.generatePost)
 
@@ -57,12 +58,12 @@ export default function ApiExample() {
 
   const onGenerateImageButtonClicked2 = async () => {
     const imageUrls = await postService.generateImages({
-      keywords: 'travel, adventure',
-      description: 'Exploring the hidden gems of the city, uncovering new adventures at every turn.',
+      keywords: 'travel, adventure, future war with ailen',
+      description: 'buildings in 5080BC years , super realistic, one photo',
     })
-
     const firstImageUrl = imageUrls[0]
     setGenerateImageBase64(firstImageUrl ?? '')
+    setGenerateImagesBase64(imageUrls)
   }
 
   const onClearDataButtonClicked = async () => {
@@ -94,6 +95,14 @@ export default function ApiExample() {
               )
             })}
         </div>
+
+        {generatedImageBase64 &&
+          generatedImagesBase64?.map((image) => (
+            <>
+              <img src={image ?? ''} />
+              <EditButton onClick={onEditButtonClicked} />
+            </>
+          ))}
 
         {generatedImageBase64 && (
           <>

@@ -85,6 +85,10 @@ export default function ResultPage() {
     setClickedSNS(current)
   }
 
+  useEffect(() => {
+    console.log(gptResults)
+  }, [])
+
   return (
     <Layout>
       <div className={'flex flex-col  justify-front items-front bg-[#DDBCC5] w-full max-w-[428px] h-full pt-9  relative '}>
@@ -112,7 +116,7 @@ export default function ResultPage() {
                     index === visible ? (
                       <motion.img
                         key={imgBase64Data}
-                        src={ensureBase64DataUrlPrefix(imgBase64Data)}
+                        src={imgBase64Data}
                         custom={back}
                         variants={box}
                         initial="entry"

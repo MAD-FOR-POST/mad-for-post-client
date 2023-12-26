@@ -28,7 +28,7 @@ export default function TailwindExample() {
   const userInput = useRecoilValue(userInputTextsAtom)
   const [isLoading, setIsLoading] = useState(false)
   const { mutate: generatePostMutate, isLoading: gptLoading, error: gptDataFetchError, data: gptTextResult } = useMutation(postService.generatePost)
-  const { mutate: generateImageMutate, isLoading: gptImgLoading, error: gptImgDataFetchError, data: gptImageResult } = useMutation(postService.generateImage)
+  const { mutate: generateImageMutate, isLoading: gptImgLoading, error: gptImgDataFetchError, data: gptImageResults } = useMutation(postService.generateImages)
   const loadingTextSplitted = isLoading ? ['Magic is happening at the moment', 'if you close the magic will stop and need to start again'] : []
   const needWaitGPTImage = selectedImagesArray.length === 0 //선택된 이미지가 있는 경우에는 GPT이미지를 기다리지 않는다.
 
@@ -103,9 +103,10 @@ export default function TailwindExample() {
 
   useEffect(() => {
     //사용자가 선택한 이미지가 없는 경우: 텍스트만 기다린다.
-    if (needWaitGPTImage && gptTextResult && gptImageResult) {
+    if (needWaitGPTImage && gptTextResult && gptImageResults) {
       printLog('11111')
-      updateResultsAndNavigate([gptImageResult])
+      updateResultsAndNavigate([...gptImageResults])
+      console.log(gptImageResults)
       router.push(AppRoutes.resultPage)
       return
     }
