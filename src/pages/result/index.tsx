@@ -146,12 +146,6 @@ export default function ResultPage() {
                         />
                         <div className="absoute z-20 flex justify-between mt-4 px-2">
                           <div className="w-1/2 flex justify-around">
-                            <EditButton>
-                              <MinusIcon className="h-6 w-6 text-black" />
-                            </EditButton>
-                            <EditButton>
-                              <PlusIcon className="h-6 w-6 text-black" />
-                            </EditButton>
                             <EditButton onClick={() => onImgDownload(imgBase64Data)}>
                               <InboxArrowDownIcon className="h-6 w-6 text-black" />
                             </EditButton>

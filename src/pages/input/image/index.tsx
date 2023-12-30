@@ -12,9 +12,9 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { postService } from '@/services/PostService'
 import { AppRoutes } from '@/common/Constants'
 import Layout from '@/components/layout'
-import { TitleText } from '@/components/ui/typography/TitleText'
-import Typewriter from 'typewriter-effect'
+
 import { useMutation, useQuery } from 'react-query'
+import Loading from '@/components/ui/loading/Loading'
 
 const fadeAnimation = {
   hidden: { opacity: 0 },
@@ -27,11 +27,11 @@ export default function TailwindExample() {
   const [gptResults, setGPTResults] = useRecoilState(gptResultsAtom)
   const userInput = useRecoilValue(userInputTextsAtom)
   const [isLoading, setIsLoading] = useState(false)
-  const { mutate: generatePostMutate, isLoading: gptLoading, error: gptDataFetchError, data: gptTextResult } = useMutation(postService.generatePost)
-  const { mutate: generateImageMutate, isLoading: gptImgLoading, error: gptImgDataFetchError, data: gptImageResults } = useMutation(postService.generateImages)
-  const loadingTextSplitted = isLoading ? ['Magic is happening at the moment', 'if you close the magic will stop and need to start again'] : []
-  const needWaitGPTImage = selectedImagesArray.length === 0 //선택된 이미지가 있는 경우에는 GPT이미지를 기다리지 않는다.
 
+  const { mutate: generateImageMutate, isLoading: gptImgLoading, error: gptImgDataFetchError, data: gptImageResults } = useMutation(postService.generateImages)
+
+  const [clickedImg, setClickedImg] = useState(gptResults.image ? gptResults.image[0] : '')
+  const [clickedImgIndex, setClickedImgIndex] = useState(0)
   const onImageChanged = (event: ChangeEvent<HTMLInputElement>) => {
     if (!event?.target?.files) return
 
@@ -58,18 +58,20 @@ export default function TailwindExample() {
   }
 
   const generatePostWithReactQuery = async () => {
-    await Promise.all([
-      generatePostMutate({
+    try {
+      const response = await generateImageMutate({
         keywords: userInput.keywords.toString(),
         description: userInput.detail ? userInput.detail : '.',
-      }),
-      selectedImagesArray.length === 0 &&
-        generateImageMutate({
-          keywords: userInput.keywords.toString(),
-          description: userInput.detail ? userInput.detail : '.',
-        }),
-    ])
+      })
+
+      console.log(response)
+      return response // Assuming you want to return the response to the caller
+    } catch (error) {
+      console.error(error)
+      throw error // Rethrow the error for further handling if needed
+    }
   }
+
   const onGPTGenerateButtonClicked = async () => {
     //keyword가 없는 경우 GPT 생성을 할 수 없으므로, 키워드 입력 페이지로 이동한다.
     if (userInput.keywords.length === 0) {
@@ -83,8 +85,6 @@ export default function TailwindExample() {
     try {
       // Wait for both promises to resolve
       await generatePostWithReactQuery()
-
-      // !gptLoading && router.push(AppRoutes.resultPage)
     } catch (error) {
       console.error('Error fetching data:', error)
     }
@@ -94,30 +94,44 @@ export default function TailwindExample() {
     (images: string[]) => {
       setGPTResults((prevResults) => ({
         ...prevResults,
-        text: gptTextResult,
+        text: prevResults.text,
         image: images,
       }))
     },
-    [gptTextResult, setGPTResults],
+    [setGPTResults],
   )
 
+  const onImageClick = (imageUrl: string, index: number) => {
+    setClickedImg(imageUrl)
+    setClickedImgIndex(index)
+  }
+
   useEffect(() => {
+    // console.log('result', gptResults?.image)
+
     //사용자가 선택한 이미지가 없는 경우: 텍스트만 기다린다.
-    if (needWaitGPTImage && gptTextResult && gptImageResults) {
+    if (gptImageResults) {
       printLog('11111')
       updateResultsAndNavigate([...gptImageResults])
       console.log(gptImageResults)
-      router.push(AppRoutes.resultPage)
+      setClickedImg(gptImageResults[0])
+      setClickedImgIndex(0)
+      setIsLoading(false)
       return
     }
 
-    //사용자가 선택한 이미지가 1개이상 있는 경우: 텍스트만 기다린다.
-    if (!needWaitGPTImage && gptTextResult) {
-      updateResultsAndNavigate([...selectedImagesArray])
-      router.push(AppRoutes.resultPage)
-      return
+    // //사용자가 선택한 이미지가 1개이상 있는 경우: 텍스트만 기다린다.
+    // if ( gptTextResult) {
+    //   updateResultsAndNavigate([...selectedImagesArray])
+    //   // router.push(AppRoutes.resultPage)
+    //   return
+    // }
+  }, [gptImgLoading, gptImageResults])
+
+  useEffect(() => {
+    if (gptImageResults) {
     }
-  }, [gptLoading, gptImgLoading])
+  }, [gptImageResults])
 
   return (
     <Layout>
@@ -129,15 +143,25 @@ export default function TailwindExample() {
           className="overflow-hidden flex flex-col justify-between items-center  bg-B5D9D9 w-full max-w-[428px] h-full pt-9 relative"
         >
           <BackButton />
-          <TitleText>Do you have any pictures?</TitleText>
-          <div className="flex flex-col items-center justy-center h-1/3 ">
-            <div className="text-center mb-5">
-              If you put pictures in it,
-              <br /> you get more accurate and better results.
+          <div className="h-1/2 w-full bg-[#95BABA] rounded-3xl flex flex-col justify-between items-center pb-4">
+            <div className=" w-full flex justify-between items-center p-4 font-bold">
+              <div className="text-2xl ">AI Images</div>
+              <div className="text-xl bg-[#5BAFC1] p-2 rounded-full cursor-pointer" onClick={onGPTGenerateButtonClicked}>
+                Regenerate
+              </div>
             </div>
-            <div className="text-center">
-              If you don’t? Don’t worry,
-              <br /> we’ll do it for you.
+            <img src={clickedImg} className="w-[200px] h-[200px] items-center" />
+            <div className="flex items-center justify-center">
+              {/* {gptResults.image && gptResults?.image?.map((image, index) => <div key={index} className="w-[40px] h-[40px] border-black border cursor-pointer"></div>)} */}
+              {gptResults?.image?.map((image, index) => (
+                <img
+                  key={index}
+                  src={image} // Make sure `image` contains the correct URL
+                  className={`transition w-[40px] h-[40px] border-black border cursor-pointer ${index === clickedImgIndex && 'scale-125 '}`}
+                  alt={`Image ${index}`}
+                  onClick={() => onImageClick(image, index)}
+                />
+              ))}{' '}
             </div>
           </div>
           <form
@@ -172,29 +196,7 @@ export default function TailwindExample() {
           <NextButton onClick={onGPTGenerateButtonClicked}>Skip and generate</NextButton>
         </motion.div>
       ) : (
-        <AnimatePresence>
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="overflow-hidden flex flex-col justify-between items-center  bg-[#DADDBC] w-full max-w-[428px] h-full pt-9 relative"
-          >
-            <BackButton
-              onClick={() => {
-                setIsLoading(false)
-              }}
-            />
-            <div className="flex  flex-col font-poppins text-4xl w-[220px] h-full   text-center  justify-center font-bold  ">
-              <Typewriter
-                options={{
-                  strings: loadingTextSplitted,
-                  autoStart: true,
-                  loop: true,
-                }}
-              />
-            </div>
-          </motion.div>
-        </AnimatePresence>
+        <Loading setIsLoading={setIsLoading} />
       )}
     </Layout>
   )
