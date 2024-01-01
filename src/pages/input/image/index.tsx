@@ -3,6 +3,7 @@ import { useRouter } from 'next/router'
 import { BackButton } from '@/components/ui/button/BackButton'
 import { NextButton } from '@/components/ui/button/NextButton'
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
+import { faCircleQuestion } from '@fortawesome/free-regular-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { ChangeEvent, useCallback, useEffect, useState } from 'react'
 import { useRecoilState, useRecoilValue } from 'recoil'
@@ -15,6 +16,7 @@ import Layout from '@/components/layout'
 
 import { useMutation, useQuery } from 'react-query'
 import Loading from '@/components/ui/loading/Loading'
+import { KeywordModal } from '@/components/ui/modal/KeywordModal'
 
 const fadeAnimation = {
   hidden: { opacity: 0 },
@@ -27,7 +29,7 @@ export default function TailwindExample() {
   const [gptResults, setGPTResults] = useRecoilState(gptResultsAtom)
   const userInput = useRecoilValue(userInputTextsAtom)
   const [isLoading, setIsLoading] = useState(false)
-
+  const [modalOpen, setModalOpen] = useState(false)
   const { mutate: generateImageMutate, isLoading: gptImgLoading, error: gptImgDataFetchError, data: gptImageResults } = useMutation(postService.generateImages)
 
   const [clickedImg, setClickedImg] = useState(gptResults.image ? gptResults.image[0] : '')
@@ -141,27 +143,30 @@ export default function TailwindExample() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="overflow-hidden flex flex-col justify-between items-center  bg-B5D9D9 w-full max-w-[428px] h-full pt-9 relative"
+          className="overflow-hidden flex flex-col justify-between items-center  bg-[#A7E4E4] w-full max-w-[428px] h-full pt-9 relative"
         >
           <div className="flex w-full items-center justify-between px-5">
             <BackButton />
+            <div className="text-4xl font-bold">Ta-da!</div>
+            <div className="text-2xl cursor-pointer ">
+              <FontAwesomeIcon icon={faCircleQuestion} />
+            </div>
           </div>
 
-          <div className="h-1/2 w-full bg-[#95BABA] rounded-3xl flex flex-col justify-between items-center pb-4">
-            <div className=" w-full flex justify-between items-center p-4 font-bold">
-              <div className="text-2xl ">AI Images</div>
-              <div className="text-xl bg-[#5BAFC1] p-2 rounded-full cursor-pointer" onClick={onGPTGenerateButtonClicked}>
+          <div className=" h-1/2 w-full rounded-3xl flex flex-col justify-between items-center pb-4">
+            <div className="relative w-full flex justify-center items-center p-4 font-bold">
+              <img src={clickedImg} className="min-w-[180px] min-h-[180px] w-1/2 items-center rounded-[40px]" />
+              <div className=" bg-[#DFBFC7] p-2 px-5 rounded-full cursor-pointer absolute bottom-6 right-10" onClick={onGPTGenerateButtonClicked}>
                 Regenerate
               </div>
             </div>
-            <img src={clickedImg} className="w-[200px] h-[200px] items-center" />
-            <div className="flex items-center justify-center">
+            <div className="flex transition-all overflow-scroll  w-full px-4">
               {/* {gptResults.image && gptResults?.image?.map((image, index) => <div key={index} className="w-[40px] h-[40px] border-black border cursor-pointer"></div>)} */}
               {gptResults?.image?.map((image, index) => (
                 <img
                   key={index}
                   src={image} // Make sure `image` contains the correct URL
-                  className={`transition w-[40px] h-[40px] border-black border cursor-pointer ${index === clickedImgIndex && 'scale-125 '}`}
+                  className={` min-w-[65px] min-h-[65px] w-1/2 border-black  cursor-pointer mr-1 ${index === clickedImgIndex && 'mx-1 '}`}
                   alt={`Image ${index}`}
                   onClick={() => onImageClick(image, index)}
                 />
@@ -197,7 +202,8 @@ export default function TailwindExample() {
               )}
             </div>
           </form>
-          <NextButton onClick={onGPTGenerateButtonClicked}>Skip and generate</NextButton>
+          <NextButton>Done</NextButton>
+          {modalOpen && <KeywordModal setKeywordModalOpen={setModalOpen} />}
         </motion.div>
       ) : (
         <Loading setIsLoading={setIsLoading} />
