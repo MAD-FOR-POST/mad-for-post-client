@@ -24,21 +24,8 @@ export default function TextOptionalPage() {
   const [isLoading, setIsLoading] = useState(false)
   const { mutate: generatePostMutate, isLoading: gptLoading, error: gptDataFetchError, data: gptTextResult } = useMutation(postService.generatePost)
   const { mutate: generateImageMutate, isLoading: gptImgLoading, error: gptImgDataFetchError, data: gptImageResults } = useMutation(postService.generateImages)
-  const loadingTextSplitted = isLoading ? ['Magic is happening at the moment', 'if you close the magic will stop and need to start again'] : []
-  const [gptResults, setGPTResults] = useRecoilState(gptResultsAtom)
 
-  const generatePostWithReactQuery = async () => {
-    await Promise.all([
-      generatePostMutate({
-        keywords: userInput.keywords.toString(),
-        description: userInput.detail ? userInput.detail : '.',
-      }),
-      generateImageMutate({
-        keywords: userInput.keywords.toString(),
-        description: userInput.detail ? userInput.detail : '.',
-      }),
-    ])
-  }
+  const [gptResults, setGPTResults] = useRecoilState(gptResultsAtom)
 
   const onGPTGenerateButtonClicked = async () => {
     //keyword가 없는 경우 GPT 생성을 할 수 없으므로, 키워드 입력 페이지로 이동한다.
@@ -52,7 +39,16 @@ export default function TextOptionalPage() {
 
     try {
       // Wait for both promises to resolve
-      await generatePostWithReactQuery()
+      await Promise.all([
+        generatePostMutate({
+          keywords: userInput.keywords.toString(),
+          description: userInput.detail ? userInput.detail : '.',
+        }),
+        generateImageMutate({
+          keywords: userInput.keywords.toString(),
+          description: userInput.detail ? userInput.detail : '.',
+        }),
+      ])
 
       // !gptLoading && router.push(AppRoutes.resultPage)
     } catch (error) {
@@ -75,17 +71,10 @@ export default function TextOptionalPage() {
     //사용자가 선택한 이미지가 없는 경우: 텍스트만 기다린다.
     if (gptTextResult && gptImageResults) {
       updateResultsAndNavigate([...gptImageResults])
-      console.log(gptImageResults)
       router.push(AppRoutes.inputImage)
       return
     }
-  }, [gptLoading, gptImgLoading])
-
-  const { keywords, detail } = userInput
-
-  const onGoToImage = () => {
-    router.push(AppRoutes.inputImage)
-  }
+  }, [gptTextResult, gptImageResults])
 
   const handleTextareaChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     const newDetail = e.target.value
@@ -99,20 +88,23 @@ export default function TextOptionalPage() {
   return (
     <Layout>
       {!isLoading ? (
-        <div className={'flex flex-col justify-between items-center bg-[#DDBCC5] w-full max-w-[428px] h-full pt-9 relative '}>
+        <div className={'flex flex-col justify-between items-center bg-[#272727] w-full max-w-[428px] h-full pt-9 relative '}>
           <div className="flex w-full items-center justify-between px-5">
             <BackButton />
           </div>
-          <TitleText>Give me words</TitleText>
+          <TitleText color="#DDBCC5">Add more detail!</TitleText>
           <div className={'relative w-full'}>
             <img src="/images/FormBackgroundTop.png" />
             <div className={'flex flex-col items-center  w-full bg-white bg-opacity-50'}>
               <div className={'flex flex-col bg-white rounded-[36.38px] w-[87%] min-h-[300px] mt-[14px] px-[40px] pt-[12px] pb-[24px] mb-[104px]'}>
-                <div className={'text-[#262A2F] text-[14px] font-bold text-center  mb-[16px]'}>Any more detail?(optional)</div>
+                <div className={'text-[#262A2F] text-[14px] font-bold text-center  mb-[16px]'}>
+                  Write anything to
+                  <br /> add more detail (optional)
+                </div>
                 <textarea
                   style={{ resize: 'none' }}
                   className={'flex-grow h-full text-[16px] focus:outline-none hide-scrollbar'}
-                  placeholder="Add more detail about keywords."
+                  placeholder="Write anything and let us do magic"
                   name="detail"
                   value={userInput.detail}
                   onChange={handleTextareaChange}

@@ -143,7 +143,10 @@ export default function TailwindExample() {
           exit={{ opacity: 0 }}
           className="overflow-hidden flex flex-col justify-between items-center  bg-B5D9D9 w-full max-w-[428px] h-full pt-9 relative"
         >
-          <BackButton />
+          <div className="flex w-full items-center justify-between px-5">
+            <BackButton />
+          </div>
+
           <div className="h-1/2 w-full bg-[#95BABA] rounded-3xl flex flex-col justify-between items-center pb-4">
             <div className=" w-full flex justify-between items-center p-4 font-bold">
               <div className="text-2xl ">AI Images</div>
