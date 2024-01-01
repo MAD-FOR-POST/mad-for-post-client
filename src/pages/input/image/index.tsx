@@ -32,18 +32,6 @@ export default function TailwindExample() {
 
   const [clickedImg, setClickedImg] = useState(gptResults.image ? gptResults.image[0] : '')
   const [clickedImgIndex, setClickedImgIndex] = useState(0)
-  const onImageChanged = (event: ChangeEvent<HTMLInputElement>) => {
-    if (!event?.target?.files) return
-
-    const file = event?.target?.files[0]
-    if (file) {
-      const reader = new FileReader()
-      reader.onloadend = () => {
-        setSelectedImagesArray((prevStringArray) => [...prevStringArray, reader.result as string])
-      }
-      reader.readAsDataURL(file)
-    }
-  }
 
   const onDeleteImage = (index: number) => {
     const confirmed = confirm('Do you want to delete?')
@@ -104,6 +92,19 @@ export default function TailwindExample() {
   const onImageClick = (imageUrl: string, index: number) => {
     setClickedImg(imageUrl)
     setClickedImgIndex(index)
+  }
+
+  const onImageChanged = (event: ChangeEvent<HTMLInputElement>) => {
+    if (!event?.target?.files) return
+
+    const file = event?.target?.files[0]
+    if (file) {
+      const reader = new FileReader()
+      reader.onloadend = () => {
+        setSelectedImagesArray((prevStringArray) => [...prevStringArray, reader.result as string])
+      }
+      reader.readAsDataURL(file)
+    }
   }
 
   useEffect(() => {
@@ -183,7 +184,7 @@ export default function TailwindExample() {
                   </span>
                 </motion.div>
               ))}
-              {selectedImagesArray.length! < 6 && (
+              {selectedImagesArray.length! < 10 && (
                 <label
                   htmlFor="imageInput"
                   className="bg-white w-full  z-10 rounded-3xl max-w-[100px] max-h-[100px] min-w-[100px] min-h-[100px]  flex justify-center items-center cursor-pointer"

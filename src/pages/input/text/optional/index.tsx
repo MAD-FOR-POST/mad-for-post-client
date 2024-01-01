@@ -100,7 +100,9 @@ export default function TextOptionalPage() {
     <Layout>
       {!isLoading ? (
         <div className={'flex flex-col justify-between items-center bg-[#DDBCC5] w-full max-w-[428px] h-full pt-9 relative '}>
-          <BackButton />
+          <div className="flex w-full items-center justify-between px-5">
+            <BackButton />
+          </div>
           <TitleText>Give me words</TitleText>
           <div className={'relative w-full'}>
             <img src="/images/FormBackgroundTop.png" />
