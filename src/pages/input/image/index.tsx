@@ -18,6 +18,8 @@ import { useMutation, useQuery } from 'react-query'
 import Loading from '@/components/ui/loading/Loading'
 import { KeywordModal } from '@/components/ui/modal/KeywordModal'
 
+import { DragDropContext, Draggable, DropResult, Droppable } from 'react-beautiful-dnd'
+
 const fadeAnimation = {
   hidden: { opacity: 0 },
   visible: { opacity: 1 },
@@ -27,9 +29,11 @@ export default function TailwindExample() {
   const router = useRouter()
   const [selectedImagesArray, setSelectedImagesArray] = useRecoilState(userInputImagesAtom)
   const [gptResults, setGPTResults] = useRecoilState(gptResultsAtom)
+
   const userInput = useRecoilValue(userInputTextsAtom)
   const [isLoading, setIsLoading] = useState(false)
   const [modalOpen, setModalOpen] = useState(false)
+  const [stageError, setStageError] = useState(false)
   const { mutate: generateImageMutate, isLoading: gptImgLoading, error: gptImgDataFetchError, data: gptImageResults } = useMutation(postService.generateImages)
 
   const [clickedImg, setClickedImg] = useState(gptResults.image ? gptResults.image[0] : '')
@@ -132,79 +136,143 @@ export default function TailwindExample() {
   }, [gptImgLoading, gptImageResults])
 
   useEffect(() => {
-    if (gptImageResults) {
+    if (gptResults.image?.length === 0) {
+      onGPTGenerateButtonClicked()
     }
-  }, [gptImageResults])
+  }, [gptResults])
 
+  const onDragEnd = ({ draggableId, destination, source }: DropResult) => {
+    console.log(destination, source, draggableId)
+    // console.log(selectedImagesArray)
+    if (destination?.droppableId === source.droppableId && destination.droppableId === 'selectedImages') {
+      setSelectedImagesArray((oldArray) => {
+        const selectedArrCopy = [...oldArray]
+        selectedArrCopy.splice(source.index, 1)
+        selectedArrCopy.splice(destination.index, 0, draggableId)
+        return selectedArrCopy
+      })
+    } else if (destination?.droppableId === 'selectedImages') {
+      setSelectedImagesArray((oldArray) => {
+        const selectedArrCopy = [...oldArray]
+        selectedArrCopy.splice(destination.index, 0, draggableId)
+        return selectedArrCopy
+      })
+    }
+  }
+
+  const onClickDone = () => {
+    selectedImagesArray.length === 0 && setStageError(true)
+  }
   return (
     <Layout>
       {!isLoading ? (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          className="overflow-hidden flex flex-col justify-between items-center  bg-[#A7E4E4] w-full max-w-[428px] h-full pt-9 relative"
-        >
-          <div className="flex w-full items-center justify-between px-5">
-            <BackButton />
-            <div className="text-4xl font-bold">Ta-da!</div>
-            <div className="text-2xl cursor-pointer ">
-              <FontAwesomeIcon icon={faCircleQuestion} />
-            </div>
-          </div>
-
-          <div className=" h-1/2 w-full rounded-3xl flex flex-col justify-between items-center pb-4">
-            <div className="relative w-full flex justify-center items-center p-4 font-bold">
-              <img src={clickedImg} className="min-w-[180px] min-h-[180px] w-1/2 items-center rounded-[40px]" />
-              <div className=" bg-[#DFBFC7] p-2 px-5 rounded-full cursor-pointer absolute bottom-6 right-10" onClick={onGPTGenerateButtonClicked}>
-                Regenerate
+        <DragDropContext onDragEnd={onDragEnd}>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="overflow-hidden flex flex-col justify-between items-center  bg-[#A7E4E4] w-full max-w-[428px] h-full pt-9 relative"
+          >
+            <div className="flex w-full items-center justify-between px-5">
+              <BackButton />
+              <div className="text-4xl font-bold">Ta-da!</div>
+              <div className="text-2xl cursor-pointer ">
+                <FontAwesomeIcon icon={faCircleQuestion} />
               </div>
             </div>
-            <div className="flex transition-all overflow-scroll  w-full px-4">
-              {/* {gptResults.image && gptResults?.image?.map((image, index) => <div key={index} className="w-[40px] h-[40px] border-black border cursor-pointer"></div>)} */}
-              {gptResults?.image?.map((image, index) => (
-                <img
-                  key={index}
-                  src={image} // Make sure `image` contains the correct URL
-                  className={` min-w-[65px] min-h-[65px] w-1/2 border-black  cursor-pointer mr-1 ${index === clickedImgIndex && 'mx-1 '}`}
-                  alt={`Image ${index}`}
-                  onClick={() => onImageClick(image, index)}
-                />
-              ))}{' '}
+
+            <div className=" h-1/2 w-full rounded-3xl flex flex-col justify-between items-center pb-4">
+              <div className="relative w-full flex justify-center items-center p-4 font-bold">
+                <Droppable droppableId="mainImage">
+                  {(magic) => (
+                    <div {...magic.droppableProps} ref={magic.innerRef} className=" flex items-center justify-center">
+                      <div
+                        className=" bg-[#D3F1F2] shadow-[inset_0px_0px_15px_5px_rgba(0,0,0,0.2)]
+
+  min-w-[180px] min-h-[180px] w-2/5 rounded-[40px]"
+                      >
+                        {gptResults?.image?.map(
+                          (image) =>
+                            image === clickedImg && (
+                              <Draggable draggableId={clickedImg} index={0}>
+                                {(magic) => (
+                                  <div {...magic.dragHandleProps} {...magic.draggableProps} ref={magic.innerRef} className="flex justify-center ">
+                                    {!selectedImagesArray.includes(clickedImg) && (
+                                      <img src={clickedImg} className="min-w-[180px] min-h-[180px] cursor-pointer w-1/2 items-center rounded-[40px]" />
+                                    )}
+                                  </div>
+                                )}
+                              </Draggable>
+                            ),
+                        )}
+                        {magic.placeholder}
+                      </div>
+                    </div>
+                  )}
+                </Droppable>
+                <div className=" bg-[#DFBFC7] p-2 px-5 rounded-full cursor-pointer absolute bottom-6 right-10" onClick={onGPTGenerateButtonClicked}>
+                  Regenerate
+                </div>
+              </div>
+              <div className="flex transition-all overflow-scroll  w-full px-4 gap-1">
+                {gptResults?.image?.map((image, index) => (
+                  <img
+                    key={index}
+                    src={image} // Make sure `image` contains the correct URL
+                    className={` min-w-[65px] min-h-[65px] w-1/2 border-black  cursor-pointer  ${index === clickedImgIndex && ' mx-1'}`}
+                    alt={`Image ${index}`}
+                    onClick={() => onImageClick(image, index)}
+                  />
+                ))}{' '}
+              </div>
             </div>
-          </div>
-          <form
-            className="relative flex flex-col gap-3 w-full h-[20rem]  px-10  pt-12 overflow-auto"
-            style={{
-              backgroundImage: 'url("/images/FormBackgroundLong.png")',
-              backgroundSize: 'cover',
-              backgroundPosition: 'top',
-              transform: 'scale(1.1)',
-            }}
-          >
-            <input type="file" accept="image/*" className="hidden" id="imageInput" onChange={onImageChanged} />
-            <div className="flex  gap-3  h-full">
-              {selectedImagesArray.map((imgUrl, index) => (
-                <motion.div key={`${index}${imgUrl}`} initial="hidden" animate="visible" exit="hidden" variants={fadeAnimation} transition={{ duration: 0.5 }} className="relative">
-                  <img key={index} src={imgUrl} alt="Selected" className=" object-cover rounded-3xl  max-w-[100px] max-h-[100px] min-w-[100px] min-h-[100px] " />
-                  <span className="absolute top-0 right-0 bg-white p-1 rounded-full w-6 h-6 flex justify-center items-center cursor-pointer" onClick={() => onDeleteImage(index)}>
-                    <FontAwesomeIcon icon={faXmark} />
-                  </span>
-                </motion.div>
-              ))}
-              {selectedImagesArray.length! < 10 && (
-                <label
-                  htmlFor="imageInput"
-                  className="bg-white w-full  z-10 rounded-3xl max-w-[100px] max-h-[100px] min-w-[100px] min-h-[100px]  flex justify-center items-center cursor-pointer"
-                >
-                  <span className="text-slate-300 text-sm w-3/5 text-center">Add Picture</span>
-                </label>
-              )}
-            </div>
-          </form>
-          <NextButton>Done</NextButton>
-          {modalOpen && <KeywordModal setKeywordModalOpen={setModalOpen} />}
-        </motion.div>
+            <div></div>
+            <form
+              className="relative flex flex-col w-full h-[20rem]  px-10  pt-12 "
+              style={{
+                backgroundImage: 'url("/images/FormBackgroundLong.png")',
+                backgroundSize: 'cover',
+                backgroundPosition: 'top',
+                width: `${window.innerWidth + 40 > 468 ? 468 : window.innerWidth + 40}px`,
+              }}
+            >
+              <input type="file" accept="image/*" className="hidden" id="imageInput" onChange={onImageChanged} />
+              <Droppable droppableId="selectedImages" direction="horizontal">
+                {(provided) => (
+                  <div className="flex  gap-3  overflow-scroll" {...provided.droppableProps} ref={provided.innerRef}>
+                    {selectedImagesArray.map((imgUrl, index) => (
+                      <Draggable draggableId={imgUrl} index={index} key={`${index}${imgUrl}`}>
+                        {(provided) => (
+                          <div {...provided.dragHandleProps} {...provided.draggableProps} ref={provided.innerRef} key={`${index}${imgUrl}`} className="relative">
+                            <img key={index} src={imgUrl} alt="Selected" className=" object-cover rounded-3xl  max-w-[100px] max-h-[100px] min-w-[100px] min-h-[100px] " />
+                            <span
+                              className="absolute top-0 right-0 bg-white p-1 rounded-full w-6 h-6 flex justify-center items-center cursor-pointer"
+                              onClick={() => onDeleteImage(index)}
+                            >
+                              <FontAwesomeIcon icon={faXmark} />
+                            </span>
+                          </div>
+                        )}
+                      </Draggable>
+                    ))}
+                    {provided.placeholder} {/* Include the placeholder here */}
+                    {selectedImagesArray.length! < 10 && (
+                      <label
+                        htmlFor="imageInput"
+                        className="bg-white w-full  z-10 rounded-3xl max-w-[100px] max-h-[100px] min-w-[100px] min-h-[100px]  flex justify-center items-center cursor-pointer"
+                      >
+                        <span className="text-slate-300 text-sm w-full text-center">Drag & Drop pictures here</span>
+                      </label>
+                    )}
+                  </div>
+                )}
+              </Droppable>
+              {stageError && <div className="text-center text-red-500 ">Please select at least 1 photo</div>}
+            </form>
+            <NextButton onClick={onClickDone}>Done</NextButton>
+            {modalOpen && <KeywordModal setKeywordModalOpen={setModalOpen} />}
+          </motion.div>
+        </DragDropContext>
       ) : (
         <Loading setIsLoading={setIsLoading} />
       )}
