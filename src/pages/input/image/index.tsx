@@ -209,7 +209,7 @@ export default function TailwindExample() {
                                     {!selectedImagesArray.includes(clickedImg) && (
                                       <img
                                         src={clickedImg}
-                                        className={`min-w-[180px] min-h-[180px] cursor-pointer w-1/2 items-center rounded-[40px] z-10  border-red-500 ${maxImgError && 'border-4'}`}
+                                        className={`min-w-[180px] min-h-[180px] cursor-pointer w-1/2 items-center rounded-[40px] z-0  border-red-500 ${maxImgError && 'border-4'}`}
                                       />
                                     )}
                                   </div>
@@ -222,7 +222,7 @@ export default function TailwindExample() {
                     </div>
                   )}
                 </Droppable>
-                <div className=" bg-[#DFBFC7] p-2 px-5 rounded-full cursor-pointer absolute bottom-6 right-10 z-20" onClick={onGPTGenerateButtonClicked}>
+                <div className=" bg-[#DFBFC7] p-2 px-5 rounded-full cursor-pointer absolute bottom-6 right-10 z-0" onClick={onGPTGenerateButtonClicked}>
                   Regenerate
                 </div>
               </div>
