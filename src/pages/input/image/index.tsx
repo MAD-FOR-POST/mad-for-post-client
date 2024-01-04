@@ -176,7 +176,7 @@ export default function TailwindExample() {
             <div className="flex w-full items-center justify-between px-5">
               <BackButton />
               <div className="text-4xl font-bold">Ta-da!</div>
-              <div className="text-2xl cursor-pointer ">
+              <div className="text-2xl cursor-pointer " onClick={() => setModalOpen(true)}>
                 <FontAwesomeIcon icon={faCircleQuestion} />
               </div>
             </div>
@@ -259,9 +259,9 @@ export default function TailwindExample() {
                     {selectedImagesArray.length! < 10 && (
                       <label
                         htmlFor="imageInput"
-                        className="bg-white w-full  z-10 rounded-3xl max-w-[100px] max-h-[100px] min-w-[100px] min-h-[100px]  flex justify-center items-center cursor-pointer"
+                        className="bg-white w-full   rounded-3xl max-w-[100px] max-h-[100px] min-w-[100px] min-h-[100px]  flex justify-center items-center cursor-pointer "
                       >
-                        <span className="text-slate-300 text-sm w-full text-center">Drag & Drop pictures here</span>
+                        <span className="text-slate-300 text-sm w-full text-center ">Drag & Drop pictures here</span>
                       </label>
                     )}
                   </div>
@@ -270,7 +270,16 @@ export default function TailwindExample() {
               {stageError && <div className="text-center text-red-500 ">Please select at least 1 photo</div>}
             </form>
             <NextButton onClick={onClickDone}>Done</NextButton>
-            {modalOpen && <KeywordModal setKeywordModalOpen={setModalOpen} />}
+            {modalOpen && (
+              <KeywordModal setKeywordModalOpen={setModalOpen} title="Help">
+                <div className="border-b-2 pb-2">
+                  <div className={'text-[14px] mb-5'}>
+                    1. Drag the ai-generated image and place it on the stage below! Posts are generated in the order of the images that are staged.
+                  </div>
+                  <div className={'text-[14px]'}>2. Pressing the regenerate button will create 10 new images in 9 seconds, and the images on the stage will not disappear.</div>
+                </div>
+              </KeywordModal>
+            )}
           </motion.div>
         </DragDropContext>
       ) : (
