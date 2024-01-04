@@ -34,6 +34,7 @@ export default function TailwindExample() {
   const [isLoading, setIsLoading] = useState(false)
   const [modalOpen, setModalOpen] = useState(false)
   const [stageError, setStageError] = useState(false)
+  const [maxImgError, setMaxImgError] = useState(false)
   const { mutate: generateImageMutate, isLoading: gptImgLoading, error: gptImgDataFetchError, data: gptImageResults } = useMutation(postService.generateImages)
 
   const [clickedImg, setClickedImg] = useState(gptResults.image ? gptResults.image[0] : '')
@@ -142,8 +143,7 @@ export default function TailwindExample() {
   }, [gptResults])
 
   const onDragEnd = ({ draggableId, destination, source }: DropResult) => {
-    console.log(destination, source, draggableId)
-    // console.log(selectedImagesArray)
+    if (selectedImagesArray.length === 10) return
     if (destination?.droppableId === source.droppableId && destination.droppableId === 'selectedImages') {
       setSelectedImagesArray((oldArray) => {
         const selectedArrCopy = [...oldArray]
@@ -158,15 +158,23 @@ export default function TailwindExample() {
         return selectedArrCopy
       })
     }
+    setMaxImgError(false)
+  }
+  const onDragStart = () => {
+    selectedImagesArray.length === 10 && setMaxImgError(true)
   }
 
   const onClickDone = () => {
     selectedImagesArray.length === 0 && setStageError(true)
   }
+
+  useEffect(() => {
+    setMaxImgError(false)
+  }, [selectedImagesArray])
   return (
     <Layout>
       {!isLoading ? (
-        <DragDropContext onDragEnd={onDragEnd}>
+        <DragDropContext onDragEnd={onDragEnd} onDragStart={onDragStart}>
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -189,8 +197,9 @@ export default function TailwindExample() {
                       <div
                         className=" bg-[#D3F1F2] shadow-[inset_0px_0px_15px_5px_rgba(0,0,0,0.2)]
 
-  min-w-[180px] min-h-[180px] w-2/5 rounded-[40px]"
+  min-w-[180px] min-h-[180px] w-2/5 rounded-[40px] flex justify-center items-center"
                       >
+                        <span className="items-center absolute z-0  w-1/3 text-center text-red-600 text-sm  ">{maxImgError && `You can only select max 10 pictures`}</span>
                         {gptResults?.image?.map(
                           (image) =>
                             image === clickedImg && (
@@ -198,7 +207,10 @@ export default function TailwindExample() {
                                 {(magic) => (
                                   <div {...magic.dragHandleProps} {...magic.draggableProps} ref={magic.innerRef} className="flex justify-center ">
                                     {!selectedImagesArray.includes(clickedImg) && (
-                                      <img src={clickedImg} className="min-w-[180px] min-h-[180px] cursor-pointer w-1/2 items-center rounded-[40px]" />
+                                      <img
+                                        src={clickedImg}
+                                        className={`min-w-[180px] min-h-[180px] cursor-pointer w-1/2 items-center rounded-[40px] z-10  border-red-500 ${maxImgError && 'border-4'}`}
+                                      />
                                     )}
                                   </div>
                                 )}
@@ -210,7 +222,7 @@ export default function TailwindExample() {
                     </div>
                   )}
                 </Droppable>
-                <div className=" bg-[#DFBFC7] p-2 px-5 rounded-full cursor-pointer absolute bottom-6 right-10" onClick={onGPTGenerateButtonClicked}>
+                <div className=" bg-[#DFBFC7] p-2 px-5 rounded-full cursor-pointer absolute bottom-6 right-10 z-20" onClick={onGPTGenerateButtonClicked}>
                   Regenerate
                 </div>
               </div>
@@ -223,10 +235,10 @@ export default function TailwindExample() {
                     alt={`Image ${index}`}
                     onClick={() => onImageClick(image, index)}
                   />
-                ))}{' '}
+                ))}
               </div>
             </div>
-            <div></div>
+
             <form
               className="relative flex flex-col w-full h-[20rem]  px-10  pt-12 "
               style={{
@@ -236,6 +248,7 @@ export default function TailwindExample() {
                 width: `${window.innerWidth + 40 > 468 ? 468 : window.innerWidth + 40}px`,
               }}
             >
+              <div className="font-bold mb-4">Stage</div>
               <input type="file" accept="image/*" className="hidden" id="imageInput" onChange={onImageChanged} />
               <Droppable droppableId="selectedImages" direction="horizontal">
                 {(provided) => (
