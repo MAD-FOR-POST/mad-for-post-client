@@ -20,11 +20,6 @@ import { KeywordModal } from '@/components/ui/modal/KeywordModal'
 
 import { DragDropContext, Draggable, DropResult, Droppable } from 'react-beautiful-dnd'
 
-const fadeAnimation = {
-  hidden: { opacity: 0 },
-  visible: { opacity: 1 },
-}
-
 export default function TailwindExample() {
   const router = useRouter()
   const [selectedImagesArray, setSelectedImagesArray] = useRecoilState(userInputImagesAtom)
@@ -58,8 +53,6 @@ export default function TailwindExample() {
         keywords: userInput.keywords.toString(),
         description: userInput.detail ? userInput.detail : '.',
       })
-
-      console.log(response)
       return response // Assuming you want to return the response to the caller
     } catch (error) {
       console.error(error)
@@ -115,11 +108,8 @@ export default function TailwindExample() {
   }
 
   useEffect(() => {
-    // console.log('result', gptResults?.image)
-
     //사용자가 선택한 이미지가 없는 경우: 텍스트만 기다린다.
     if (gptImageResults) {
-      printLog('11111')
       updateResultsAndNavigate([...gptImageResults])
       console.log(gptImageResults)
       setClickedImg(gptImageResults[0])
@@ -127,13 +117,6 @@ export default function TailwindExample() {
       setIsLoading(false)
       return
     }
-
-    // //사용자가 선택한 이미지가 1개이상 있는 경우: 텍스트만 기다린다.
-    // if ( gptTextResult) {
-    //   updateResultsAndNavigate([...selectedImagesArray])
-    //   // router.push(AppRoutes.resultPage)
-    //   return
-    // }
   }, [gptImgLoading, gptImageResults])
 
   useEffect(() => {
@@ -143,7 +126,6 @@ export default function TailwindExample() {
   }, [gptResults])
 
   const onDragEnd = ({ draggableId, destination, source }: DropResult) => {
-    if (selectedImagesArray.length === 10) return
     if (destination?.droppableId === source.droppableId && destination.droppableId === 'selectedImages') {
       setSelectedImagesArray((oldArray) => {
         const selectedArrCopy = [...oldArray]
@@ -152,6 +134,8 @@ export default function TailwindExample() {
         return selectedArrCopy
       })
     } else if (destination?.droppableId === 'selectedImages') {
+      if (selectedImagesArray.length === 10) return
+
       setSelectedImagesArray((oldArray) => {
         const selectedArrCopy = [...oldArray]
         selectedArrCopy.splice(destination.index, 0, draggableId)

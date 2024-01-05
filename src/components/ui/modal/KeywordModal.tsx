@@ -13,6 +13,7 @@ export const KeywordModal: React.FC<KeywordModalProps> = ({ setKeywordModalOpen,
   const onOkClick = () => {
     setKeywordModalOpen(false)
   }
+  const onButtonClick = () => {}
   return (
     <div className={'absolute top-0 w-full h-full flex justify-center items-center backdrop-blur-md'}>
       <div className={'blur-none w-[95%] gap-4 border bg-white text-center flex flex-col justify-center rounded-[36px] p-5 z-20'}>
@@ -26,9 +27,12 @@ export const KeywordModal: React.FC<KeywordModalProps> = ({ setKeywordModalOpen,
           </div>
         </div>
         {children}
-        <div className="flex justify-center items-center text-white py-5 px-7  rounded-full  bottom-5 text-xl font-bold max-w-[380px]  bg-[#303841] hover:shadow-xl transition-shadow">
+        <a
+          href="https://open.kakao.com/o/gTUm3dSf"
+          className="flex justify-center items-center text-white py-5 px-7  rounded-full  bottom-5 text-xl font-bold max-w-[380px]  bg-[#303841] hover:shadow-xl transition-shadow"
+        >
           Join us now!
-        </div>
+        </a>
       </div>
     </div>
   )
