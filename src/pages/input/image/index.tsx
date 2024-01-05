@@ -149,7 +149,11 @@ export default function TailwindExample() {
   }
 
   const onClickDone = () => {
-    selectedImagesArray.length === 0 && setStageError(true)
+    if (selectedImagesArray.length === 0) {
+      setStageError(true)
+      return
+    }
+    router.push(AppRoutes.resultPage)
   }
 
   useEffect(() => {
