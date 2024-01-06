@@ -11,7 +11,7 @@ import { NextButton } from '@/components/ui/button/NextButton'
 import axios from 'axios'
 import { InboxArrowDownIcon, MinusIcon, PlusIcon, DocumentDuplicateIcon } from '@heroicons/react/16/solid'
 import { EditButton } from '@/components/ui/button/EditButton'
-
+import { CopySuccessModal } from '@/components/ui/modal/CopySuccessModal'
 const SNSList: ISnsItem[] = [
   {
     title: 'instagram',
@@ -71,6 +71,9 @@ export default function ResultPage() {
 
   const myComponentRef = useRef<HTMLDivElement>(null)
   const x = useMotionValue(0)
+  const [currentWidth, setCurrentWidth] = useState(0)  
+  const [routerPushed, setRouterPushed] = useState(false)
+  const newX = useTransform(x, [0, currentWidth - 100], [0, 1])
   const [visible, setVisible] = useState(0)
   const [clickedSNS, setClickedSNS] = useState(SNSList[0].title)
   const [back, setBack] = useState(false)
@@ -81,7 +84,27 @@ export default function ResultPage() {
   const [modifySuccess,setModifySuccess] = useState(false);  //수정한 부분 '저장'버튼 눌렀을때 알기위해
   const [showButton, setShowButton] = useState(false);
   const [modifyContent,setModifyContent]=useState(gptResults.text)
+  const [copySuccess,setCopySuccess] = useState(false); 
+  const [downloadSuccess,setDownloadSuccess] = useState(false); 
 
+  console.log('이거 뭐냐', selectedImagesArray)
+  useEffect(() => {
+    if (myComponentRef.current) {
+      const componentWidth = myComponentRef.current.offsetWidth
+      setCurrentWidth(componentWidth)
+    }
+    console.log('x',newX)
+    newX.onChange(() => {
+      if (newX.get() > 0.99 ) {
+        console.log('복사하고 사진 저장!! 하기!! ')
+        copyToClipboard();
+        setDownloadSuccess(true)
+        selectedImagesArray.forEach((url,index) => {
+          onImgDownload(url,index);
+        });
+      }
+    })
+  }, [])
   useEffect(() => {
     if (modifySuccess) {
       setShowButton(true);
@@ -93,6 +116,19 @@ export default function ResultPage() {
     }
   }, [modifySuccess]);
   
+  const copyToClipboard = () => {
+    const textToCopy = modifyContent || ''; // 복사하고 싶은 내용을 지정하세요
+
+    navigator.clipboard.writeText(textToCopy)
+      .then(() => {
+        console.log('클립보드에 복사되었습니다.');
+        setCopySuccess(true)
+
+      })
+      .catch((error) => {
+        console.error('클립보드 복사 실패:', error);
+      });
+  };
   const onNextImgClick = async () => {
     await setBack(false)
 
@@ -106,7 +142,7 @@ export default function ResultPage() {
     setClickedSNS(current)
   }
 
-  const onImgDownload = async (url: string) => {
+  const onImgDownload = async (url: string, index:number) => {
     await axios
       .get(url, { responseType: 'blob' })
       .then((response) => {
@@ -114,7 +150,7 @@ export default function ResultPage() {
         // Now you can use imageUrl as the source for an image tag, or save it, etc.
         const link = document.createElement('a')
         link.href = imageUrl
-        link.download = 'image file name here'
+        link.download = `gpt Img ${index}`
         document.body.appendChild(link)
         link.click()
         document.body.removeChild(link)
@@ -148,6 +184,16 @@ export default function ResultPage() {
           <img src="/images/FormBackgroundTop100.png" className={'relative top-[7px]'} />
           <div className="relative bg-white w-full h-full flex flex-col items-center  overflow-y-scroll hide-scrollbar px-8 overflow-hidden pb-[100px]">
             <div className="relative min-w-full min-h-[70%] ">
+            {downloadSuccess && (
+              <div className="w-full h-full bg-[#000000]/50 absolute z-10 flex flex-col justify-center items-center">
+                  <img src="/images/check-square.png" className="w-[40%]" />
+                  <div className="text-white font-bold text-[22px] text-center">
+                    사진 전체
+                    <br/>
+                    다운로드 완료! 
+                  </div>
+              </div>
+            )}
               {selectedImagesArray && (
                 <AnimatePresence custom={back}>
                   {selectedImagesArray.map((imgBase64Data, index) =>
@@ -216,6 +262,9 @@ export default function ResultPage() {
                     <div className="absolute translate-x-[130%] top-[25%] flex text-[22px] bg-[#5B5B5B] w-[104px] h-[53px] rounded-[60px] items-center justify-center text-white">
                       저장!
                     </div>
+                  )}
+                  {copySuccess &&(
+                    <CopySuccessModal/>
                   )}
                   <span>{modifyContent}</span> 
                   </div>
