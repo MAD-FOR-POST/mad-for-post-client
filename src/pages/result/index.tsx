@@ -7,7 +7,7 @@ import { AnimatePresence, motion, useMotionValue, useTransform } from 'framer-mo
 import ChevronRightAnimated from '@/components/ui/icon/ChevronRightAnimated'
 import { ISnsItem } from '@/interfaces/post/ISnsItem'
 import Layout from '@/components/layout'
-
+import { NextButton } from '@/components/ui/button/NextButton'
 import axios from 'axios'
 import { InboxArrowDownIcon, MinusIcon, PlusIcon, DocumentDuplicateIcon } from '@heroicons/react/16/solid'
 import { EditButton } from '@/components/ui/button/EditButton'
@@ -77,6 +77,22 @@ export default function ResultPage() {
   const [isBackgroundClicked, setIsBackgroundClicked] = useState(false)
   const constraintsRef = useRef(null)
 
+  const [modify,setModify] = useState(false);  //'텍스트수정'버튼 눌렀을때 구분하기 위해서
+  const [modifySuccess,setModifySuccess] = useState(false);  //수정한 부분 '저장'버튼 눌렀을때 알기위해
+  const [showButton, setShowButton] = useState(false);
+  const [modifyContent,setModifyContent]=useState(gptResults.text)
+
+  useEffect(() => {
+    if (modifySuccess) {
+      setShowButton(true);
+      const timeoutId = setTimeout(() => {
+        setShowButton(false);
+        setModifySuccess(false);
+      }, 1000);
+      return () => clearTimeout(timeoutId);
+    }
+  }, [modifySuccess]);
+  
   const onNextImgClick = async () => {
     await setBack(false)
 
@@ -107,13 +123,16 @@ export default function ResultPage() {
         console.error(error)
       })
   }
-
   return (
     <Layout>
       <div className={'flex flex-col  justify-front items-front bg-[#DDBCC5] w-full max-w-[428px] h-full pt-9  relative '}>
         <div className="flex w-full items-center justify-between px-5">
           <BackButton />
-          <div className="text-4xl font-bold">Boom!</div>
+          {modify ? (
+            <div className="text-4xl font-bold">텍스트 수정 중</div>
+            ) : (
+            <div className="text-4xl font-bold">Boom!</div>
+            )}
           <div>
             <ul className={'flex flex-row flex-wrap mt-3 justify-center gap-2 w-[80%] m-auto'}>
               {SNSList.map(({ title, image, link }) => (
@@ -133,9 +152,8 @@ export default function ResultPage() {
                 <AnimatePresence custom={back}>
                   {selectedImagesArray.map((imgBase64Data, index) =>
                     index === visible ? (
-                      <div className="relative flex flex-col w-full h-full">
+                      <div key={index} className="relative flex flex-col w-full h-full">
                         <motion.img
-                          key={index}
                           src={imgBase64Data}
                           custom={back}
                           variants={box}
@@ -157,7 +175,16 @@ export default function ResultPage() {
             </div>
 
             {/* 이동 버튼 */}
+            <div className="relative">
             <img src="/images/InstaEx.png" alt="샘플이미지" className="w-[364px]" />
+            {!modify && (
+              <div 
+                onClick={()=>setModify(true)}
+                className="text-[#116AEF] text-[16px] absolute right-0 bottom-0 cursor-pointer">
+                텍스트 수정
+              </div>
+            )}
+            </div>
             {visible + 1 !== selectedImagesArray?.length ? (
               <div onClick={onNextImgClick} className="absolute top-44 right-10 w-[25px] h-[25px] bg-white opacity-75  flex justify-center items-center rounded-full">
                 {'>'}
@@ -173,36 +200,64 @@ export default function ResultPage() {
               <></>
             )}
 
-            <div className="bg-white mb-[12px]">
-              <span>{gptResults.text}</span>
+            <div className="bg-white mb-[12px] w-full flex-1">
+              {modify ? 
+                ( 
+                  <textarea
+                    className="w-full resize-y h-full"
+                    value={modifyContent}
+                    onChange={(e) => setModifyContent(e.target.value)}
+                  />
+
+                ): 
+                (
+                  <div className="relative">
+                  {showButton && (
+                    <div className="absolute translate-x-[130%] top-[25%] flex text-[22px] bg-[#5B5B5B] w-[104px] h-[53px] rounded-[60px] items-center justify-center text-white">
+                      저장!
+                    </div>
+                  )}
+                  <span>{modifyContent}</span> 
+                  </div>
+                ) 
+              }
             </div>
           </div>
         </div>
 
         {/* 슬라이드 */}
-        <div ref={myComponentRef} className="w-full  absolute bottom-0 left-0 px-3 ">
-          <motion.div className=" mb-[32px] relative flex justify-center rounded-full items-center bg-[#303841] h-[80px] w-full" ref={constraintsRef}>
-            <div className="text-white">
-              Baam! <br /> Lets uploaded
+        {modify ? 
+          ( <div className="flex justify-center">
+              <NextButton onClick={()=>{
+                setModify(false)
+                setModifySuccess(true)}}>저장
+              </NextButton>
             </div>
-            <motion.div
-              drag="x"
-              style={{
-                x,
-                backgroundImage: 'url("/images/Baam.png")',
-                backgroundSize: '100%',
-                backgroundPosition: 'top',
-                transform: 'scale(1.0)',
-              }}
-              className="absolute  flex justify-center items-center h-[70px] w-[70px]  rounded-full bg-white left-1 cursor-pointer"
-              dragConstraints={constraintsRef}
-              dragSnapToOrigin
-            ></motion.div>
-            <div className="absolute  right-[20px]">
-              <ChevronRightAnimated />
+          ):(
+            <div ref={myComponentRef} className="w-full  absolute bottom-0 left-0 px-3 ">
+              <motion.div className=" mb-[32px] relative flex justify-center rounded-full items-center bg-[#303841] h-[80px] w-full" ref={constraintsRef}>
+                <div className="text-white animate-blink">
+                  Baam! <br /> Lets uploaded
+                </div>
+                <motion.div
+                  drag="x"
+                  style={{
+                    x,
+                    backgroundImage: 'url("/images/Baam.png")',
+                    backgroundSize: '100%',
+                    backgroundPosition: 'top',
+                    transform: 'scale(1.0)',
+                  }}
+                  className="absolute  flex justify-center items-center h-[70px] w-[70px]  rounded-full bg-white left-1 cursor-pointer"
+                  dragConstraints={constraintsRef}
+                  dragSnapToOrigin
+                  ></motion.div>
+                <div className="absolute  right-[20px]">
+                  <ChevronRightAnimated />
+                </div>
+              </motion.div>
             </div>
-          </motion.div>
-        </div>
+        )}
       </div>
     </Layout>
   )
