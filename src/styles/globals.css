@@ -44,3 +44,12 @@
     margin: 0;
   }
 }
+
+*::-webkit-scrollbar {
+  width: 1px;
+  height:5px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: gray;  
+}
