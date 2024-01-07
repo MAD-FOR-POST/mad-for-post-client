@@ -34,6 +34,7 @@ export default function TailwindExample() {
 
   const [clickedImg, setClickedImg] = useState(gptResults.image ? gptResults.image[0] : '')
   const [clickedImgIndex, setClickedImgIndex] = useState(0)
+  const [bgwidth, setBgWidth] = useState(0)
 
   const onDeleteImage = (index: number) => {
     const confirmed = confirm('Do you want to delete?')
@@ -159,6 +160,11 @@ export default function TailwindExample() {
   useEffect(() => {
     setMaxImgError(false)
   }, [selectedImagesArray])
+
+  useEffect(() => {
+    setBgWidth(window.innerWidth + 40 > 468 ? 468 : window.innerWidth + 40)
+  }, [])
+
   return (
     <Layout>
       {!isLoading ? (
@@ -233,7 +239,7 @@ export default function TailwindExample() {
                 backgroundImage: 'url("/images/FormBackgroundLong.png")',
                 backgroundSize: 'cover',
                 backgroundPosition: 'top',
-                width: `${window.innerWidth + 40 > 468 ? 468 : window.innerWidth + 40}px`,
+                width: `${bgwidth}px`,
               }}
             >
               <div className="font-bold mb-4">Stage</div>
