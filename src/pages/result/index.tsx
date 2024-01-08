@@ -14,6 +14,7 @@ import { CopySuccessModal } from '@/components/ui/modal/CopySuccessModal'
 import { FloatingButton } from '@/components/ui/button/FloatingButton'
 import { useMutation } from 'react-query'
 import { postService } from '@/services/PostService'
+
 const SNSList: ISnsItem[] = [
   {
     title: 'instagram',
@@ -89,28 +90,14 @@ export default function ResultPage() {
   const [modifyContent, setModifyContent] = useState(gptResults.text)
   const [copySuccess, setCopySuccess] = useState(false)
   const [downloadSuccess, setDownloadSuccess] = useState(false)
+  const [swipe, setSwipe] = useState(false)
 
   const { mutate: generatePostMutate, isLoading: gptLoading, error: gptDataFetchError, data: gptTextResult } = useMutation(postService.generatePost)
   const userInput = useRecoilValue(userInputTextsAtom)
 
   // console.log('이거 뭐냐', selectedImagesArray) // 최종 선택 이미지들
-  useEffect(() => {
-    if (myComponentRef.current) {
-      const componentWidth = myComponentRef.current.offsetWidth
-      setCurrentWidth(componentWidth)
-    }
-    console.log('x', newX)
-    newX.onChange(() => {
-      if (newX.get() > 0.9) {
-        console.log('복사하고 사진 저장!! 하기!! ')
-        copyToClipboard()
-        setDownloadSuccess(true)
-        selectedImagesArray.forEach((url, index) => {
-          onImgDownload(url, index)
-        })
-      }
-    })
-  }, [])
+
+  //텍스트 수정 파트
   useEffect(() => {
     if (modifySuccess) {
       //저장 버튼 눌렀을때 리코일로 변경사항 저장
@@ -153,7 +140,7 @@ export default function ResultPage() {
     setClickedSNS(current)
   }
 
-  const onImgDownload = async (url: string, index: number) => {
+  const onImgDownload = async (url: string, index: number, time: string) => {
     await axios
       .get(url, { responseType: 'blob' })
       .then((response) => {
@@ -161,7 +148,7 @@ export default function ResultPage() {
         // Now you can use imageUrl as the source for an image tag, or save it, etc.
         const link = document.createElement('a')
         link.href = imageUrl
-        link.download = `gpt Img ${index}`
+        link.download = `${time}_${index}`
         document.body.appendChild(link)
         link.click()
         document.body.removeChild(link)
@@ -203,6 +190,44 @@ export default function ResultPage() {
       }))
     }
   }, [gptLoading])
+
+  useEffect(() => {
+    if (myComponentRef.current) {
+      const componentWidth = myComponentRef.current.offsetWidth
+      setCurrentWidth(componentWidth)
+    }
+  }, [])
+
+  useEffect(() => {
+    console.log('x', newX)
+    newX.onChange(() => {
+      if (newX.get() > 0.9) {
+        setSwipe(true)
+      }
+    })
+  }, [x])
+
+  useEffect(() => {
+    if (swipe) {
+      const currentDate = new Date()
+
+      // Get Current Time
+      const year = currentDate.getFullYear()
+      const month = (currentDate.getMonth() + 1).toString().padStart(2, '0') // Months are zero-based
+      const day = currentDate.getDate().toString().padStart(2, '0')
+      const hours = currentDate.getHours().toString().padStart(2, '0')
+      const minutes = currentDate.getMinutes().toString().padStart(2, '0')
+      const seconds = currentDate.getSeconds().toString().padStart(2, '0')
+      const formattedTime = `${year}${month}${day}${hours}${minutes}${seconds}`
+
+      copyToClipboard()
+      setDownloadSuccess(true)
+      selectedImagesArray.forEach((url, index) => {
+        onImgDownload(url, index, formattedTime)
+        // console.log(index)
+      })
+    }
+  }, [swipe])
   return (
     <Layout>
       <div className={'flex flex-col  justify-front items-front bg-[#DDBCC5] w-full max-w-[428px] h-full pt-9  relative '}>
