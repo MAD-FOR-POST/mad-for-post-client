@@ -13,6 +13,7 @@ import { TitleText } from '@/components/ui/typography/TitleText'
 import { useMutation } from 'react-query'
 import { postService } from '@/services/PostService'
 import Loading from '@/components/ui/loading/Loading'
+import { FloatingButton } from '@/components/ui/button/FloatingButton'
 
 export default function TextKeywordPage() {
   const [typedKeyword, setTypedKeyword] = useState('') //리스트 안에 각각
@@ -103,14 +104,7 @@ export default function TextKeywordPage() {
         <div className={'flex flex-col justify-between items-center bg-[#DDBCC5] w-full max-w-[428px] h-full pt-9 relative '}>
           <div className="flex w-full items-center justify-between px-5">
             <BackButton />
-            <button
-              className="bg-white rounded-full py-2 px-[19px] font-bold shadow-[rgba(50,50,93,0.25)_0px_6px_12px_-2px,_rgba(0,0,0,0.3)_0px_3px_7px_-3px]"
-              onClick={() => {
-                router.push(AppRoutes.inputTextOptional)
-              }}
-            >
-              Add more detail
-            </button>{' '}
+            <FloatingButton text="Add more detail" />
           </div>
           <TitleText>Give me words</TitleText>
           <div className={'relative w-full'}>

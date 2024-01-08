@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import { BackButton } from '@/components/ui/button/BackButton'
 import { useRecoilState, useRecoilValue } from 'recoil'
 import { gptResultsAtom, userInputImagesAtom, userInputTextsAtom } from '@/stores/UserInfoAtom'
@@ -11,6 +11,9 @@ import { NextButton } from '@/components/ui/button/NextButton'
 import axios from 'axios'
 import { EditButton } from '@/components/ui/button/EditButton'
 import { CopySuccessModal } from '@/components/ui/modal/CopySuccessModal'
+import { FloatingButton } from '@/components/ui/button/FloatingButton'
+import { useMutation } from 'react-query'
+import { postService } from '@/services/PostService'
 const SNSList: ISnsItem[] = [
   {
     title: 'instagram',
@@ -87,6 +90,9 @@ export default function ResultPage() {
   const [copySuccess, setCopySuccess] = useState(false)
   const [downloadSuccess, setDownloadSuccess] = useState(false)
 
+  const { mutate: generatePostMutate, isLoading: gptLoading, error: gptDataFetchError, data: gptTextResult } = useMutation(postService.generatePost)
+  const userInput = useRecoilValue(userInputTextsAtom)
+
   // console.log('이거 뭐냐', selectedImagesArray) // 최종 선택 이미지들
   useEffect(() => {
     if (myComponentRef.current) {
@@ -107,6 +113,7 @@ export default function ResultPage() {
   }, [])
   useEffect(() => {
     if (modifySuccess) {
+      //저장 버튼 눌렀을때 리코일로 변경사항 저장
       setGptResults((prevGptResults) => ({
         ...prevGptResults,
         text: modifyContent,
@@ -164,12 +171,39 @@ export default function ResultPage() {
       })
   }
 
+  const generatePostWithReactQuery = async () => {
+    try {
+      const response = await generatePostMutate({
+        keywords: userInput.keywords.toString(),
+        description: userInput.detail ? userInput.detail : '.',
+      })
+      return response // Assuming you want to return the response to the caller
+    } catch (error) {
+      console.error(error)
+      throw error // Rethrow the error for further handling if needed
+    }
+  }
+
+  const onRegenerateClick = () => {
+    !gptLoading && generatePostWithReactQuery()
+  }
   useEffect(() => {
     copySuccess &&
       setTimeout(() => {
         setCopySuccess(false)
       }, 5000)
   }, [copySuccess])
+
+  useEffect(() => {
+    console.log(gptTextResult)
+    if (gptTextResult) {
+      setModifyContent(gptTextResult)
+      setGptResults((prevGptResults) => ({
+        ...prevGptResults,
+        text: gptTextResult,
+      }))
+    }
+  }, [gptLoading])
   return (
     <Layout>
       <div className={'flex flex-col  justify-front items-front bg-[#DDBCC5] w-full max-w-[428px] h-full pt-9  relative '}>
@@ -217,9 +251,6 @@ export default function ResultPage() {
                           className="w-full h-full object-contain absolute z-1"
                           style={{ objectPosition: '50% 50%' }} // Center the image within the container
                         />
-                        <div className="absoute z-20 flex justify-between mt-4 px-2">
-                          <EditButton>Regenerate</EditButton>
-                        </div>
                       </div>
                     ) : null,
                   )}
@@ -231,8 +262,13 @@ export default function ResultPage() {
             <div className=" flex w-full justify-end my-4">
               {/* <img src="/images/InstaEx.png" alt="샘플이미지" className="w-[364px]" /> */}
               {!modify && (
-                <div onClick={() => setModify(true)} className="text-[#116AEF] text-[16px]  cursor-pointer w-fit">
-                  텍스트 수정
+                <div className="flex justify-between w-full items-center">
+                  <div className="absoute z-20 flex justify-between  px-2">
+                    <FloatingButton onClick={onRegenerateClick} text={gptLoading ? 'Generating...' : 'Regenerate'} bgColor="#DFBFC7" />
+                  </div>
+                  <div onClick={() => setModify(true)} className="text-[#116AEF] text-[16px]  cursor-pointer w-fit">
+                    텍스트 수정
+                  </div>
                 </div>
               )}
             </div>
