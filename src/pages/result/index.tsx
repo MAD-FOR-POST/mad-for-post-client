@@ -195,7 +195,6 @@ export default function ResultPage() {
   }, [copySuccess])
 
   useEffect(() => {
-    console.log(gptTextResult)
     if (gptTextResult) {
       setModifyContent(gptTextResult)
       setGptResults((prevGptResults) => ({
@@ -289,7 +288,7 @@ export default function ResultPage() {
 
             <div className="bg-white mb-[12px] w-full flex-1">
               {modify ? (
-                <textarea className="w-full resize-y h-full" value={modifyContent} onChange={(e) => setModifyContent(e.target.value)} />
+                <textarea className="w-full resize-y h-[500px]" value={modifyContent} onChange={(e) => setModifyContent(e.target.value)} />
               ) : (
                 <div className="relative">
                   {showButton && (
@@ -298,7 +297,7 @@ export default function ResultPage() {
                     </div>
                   )}
                   {copySuccess && <CopySuccessModal />}
-                  <span>{modifyContent}</span>
+                  <span dangerouslySetInnerHTML={{ __html: (modifyContent ?? '').replace(/\n/g, '<br />') }} />
                 </div>
               )}
             </div>
