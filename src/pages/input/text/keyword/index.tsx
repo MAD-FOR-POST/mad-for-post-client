@@ -99,6 +99,7 @@ export default function TextKeywordPage() {
   }, [gptTextResult, gptImageResults])
 
   const onDetailClick = () => {
+    console.log('clicked')
     router.push(AppRoutes.inputTextOptional)
   }
 
