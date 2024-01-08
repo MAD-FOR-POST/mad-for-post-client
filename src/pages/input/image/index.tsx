@@ -197,7 +197,7 @@ export default function TailwindExample() {
                         {gptResults?.image?.map(
                           (image) =>
                             image === clickedImg && (
-                              <Draggable draggableId={clickedImg} index={0}>
+                              <Draggable key={image} draggableId={clickedImg} index={0}>
                                 {(magic) => (
                                   <div {...magic.dragHandleProps} {...magic.draggableProps} ref={magic.innerRef} className="flex justify-center ">
                                     {!selectedImagesArray.includes(clickedImg) && (

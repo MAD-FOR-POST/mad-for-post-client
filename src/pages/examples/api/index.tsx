@@ -99,7 +99,7 @@ export default function ApiExample() {
 
         {generatedImageBase64 &&
           generatedImagesBase64?.map((image) => (
-            <div className="relative">
+            <div key={image} className="relative">
               <img src={image ?? ''} />
               <EditButton onClick={onEditButtonClicked}></EditButton>
             </div>
