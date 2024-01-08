@@ -263,7 +263,7 @@ export default function ResultPage() {
                 <AnimatePresence custom={back}>
                   {selectedImagesArray.map((imgBase64Data, index) =>
                     index === visible ? (
-                      <div key={index} className="relative flex flex-col w-full h-full">
+                      <div key={index} className=" flex flex-col w-full h-full absolute">
                         <motion.img
                           src={imgBase64Data}
                           custom={back}
@@ -272,7 +272,7 @@ export default function ResultPage() {
                           animate="center"
                           exit="exit"
                           alt="샘플이미지"
-                          className="w-full h-full object-contain absolute z-1"
+                          className="w-full h-full object-contain  z-1"
                           style={{ objectPosition: '50% 50%' }} // Center the image within the container
                         />
                       </div>
