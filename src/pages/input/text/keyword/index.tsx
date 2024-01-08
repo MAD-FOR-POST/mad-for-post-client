@@ -98,18 +98,17 @@ export default function TextKeywordPage() {
     }
   }, [gptTextResult, gptImageResults])
 
+  const onDetailClick = () => {
+    router.push(AppRoutes.inputTextOptional)
+  }
+
   return (
     <Layout>
       {!isLoading ? (
         <div className={'flex flex-col justify-between items-center bg-[#DDBCC5] w-full max-w-[428px] h-full pt-9 relative '}>
           <div className="flex w-full items-center justify-between px-5">
             <BackButton />
-            <FloatingButton
-              text="Add more detail"
-              onClick={() => {
-                router.push(AppRoutes.inputTextOptional)
-              }}
-            />
+            <FloatingButton text="Add more detail" onClick={onDetailClick} />
           </div>
           <TitleText>Give me words</TitleText>
           <div className={'relative w-full'}>
