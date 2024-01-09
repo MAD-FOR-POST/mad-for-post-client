@@ -95,6 +95,8 @@ export default function ResultPage() {
   const { mutate: generatePostMutate, isLoading: gptLoading, error: gptDataFetchError, data: gptTextResult } = useMutation(postService.generatePost)
   const userInput = useRecoilValue(userInputTextsAtom)
 
+  const [imgWidth, setImgWidth] = useState(0)
+
   // console.log('이거 뭐냐', selectedImagesArray) // 최종 선택 이미지들
 
   //텍스트 수정 파트
@@ -174,6 +176,12 @@ export default function ResultPage() {
   const onRegenerateClick = () => {
     !gptLoading && generatePostWithReactQuery()
   }
+
+  const handleImageLoad = (event: any) => {
+    console.log(event.target.width)
+    setImgWidth(event.target.width)
+  }
+
   // useEffect(() => {
   //   copySuccess &&
   //     setTimeout(() => {
@@ -228,6 +236,10 @@ export default function ResultPage() {
       })
     }
   }, [swipe])
+
+  useEffect(() => {
+    console.log(imgWidth)
+  }, [imgWidth])
   return (
     <Layout>
       <div className={'flex flex-col  justify-front items-front bg-[#DDBCC5] w-full max-w-[428px] h-full pt-9  relative '}>
@@ -248,22 +260,22 @@ export default function ResultPage() {
         <div className=" flex flex-col  w-full h-full overflow-scroll">
           <img src="/images/FormBackgroundTop100.png" className={'relative top-[7px]'} />
           <div className="relative bg-white w-full h-full flex flex-col items-center  overflow-y-scroll hide-scrollbar px-8 overflow-hidden pb-[100px]">
-            <div className="relative min-w-full min-h-[70%] ">
-              {downloadSuccess && (
-                <div className="w-full h-full bg-[#000000]/50 absolute z-10 flex flex-col justify-center items-center">
-                  <img src="/images/check-square.png" className="w-[40%]" />
-                  <div className="text-white font-bold text-[22px] text-center">
-                    사진 전체
-                    <br />
-                    다운로드 완료!
-                  </div>
-                </div>
-              )}
+            <div className="relative min-w-full min-h-[70%] text-white">
               {selectedImagesArray && (
                 <AnimatePresence custom={back}>
+                  {downloadSuccess && (
+                    <div className={` h-full	w-full  bg-[#000000]/50 absolute z-10 flex flex-col justify-center items-center `}>
+                      <img src="/images/check-square.png" className="w-[40%]" />
+                      <div className=" font-bold text-[22px] text-center">
+                        사진 전체
+                        <br />
+                        다운로드 완료!
+                      </div>
+                    </div>
+                  )}
                   {selectedImagesArray.map((imgBase64Data, index) =>
                     index === visible ? (
-                      <div key={index} className=" flex flex-col w-full h-full absolute">
+                      <div key={index} className=" flex flex-col w-full h-full absolute top-0">
                         <motion.img
                           src={imgBase64Data}
                           custom={back}
@@ -272,8 +284,9 @@ export default function ResultPage() {
                           animate="center"
                           exit="exit"
                           alt="샘플이미지"
-                          className="w-full h-full object-contain  z-1"
+                          className="w-full h-full object-contain  z-1 top-0 absolute bg-black"
                           style={{ objectPosition: '50% 50%' }} // Center the image within the container
+                          onLoad={handleImageLoad}
                         />
                       </div>
                     ) : null,
