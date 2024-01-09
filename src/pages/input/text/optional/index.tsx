@@ -2,18 +2,16 @@ import { useRouter } from 'next/router'
 import { useState, useEffect, ChangeEvent, useCallback } from 'react'
 import { NextButton } from '@/components/ui/button/NextButton'
 import { BackButton } from '@/components/ui/button/BackButton'
-import { KeywordInput } from '@/components/ui/keyword/KeywordInput'
-import { KeywordList } from '@/components/ui/keyword/KeywordList'
+
 import { AppRoutes } from '@/common/Constants'
 import { useRecoilState } from 'recoil'
 import { gptResultsAtom, userInputTextsAtom } from '@/stores/UserInfoAtom'
-import { SizedBox } from '@/components/ui/box/SizedBox'
+
 import Layout from '@/components/layout'
 import { TitleText } from '@/components/ui/typography/TitleText'
 import { useMutation } from 'react-query'
 import { postService } from '@/services/PostService'
-import { AnimatePresence, motion } from 'framer-motion'
-import Typewriter from 'typewriter-effect'
+
 import Loading from '@/components/ui/loading/Loading'
 
 export default function TextOptionalPage() {

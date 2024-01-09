@@ -2,7 +2,7 @@ import { useRouter } from 'next/router'
 import { useState, useEffect, ChangeEvent, useCallback } from 'react'
 import { NextButton } from '@/components/ui/button/NextButton'
 import { BackButton } from '@/components/ui/button/BackButton'
-import { KeywordInput } from '@/components/ui/keyword/KeywordInput'
+
 import { KeywordList } from '@/components/ui/keyword/KeywordList'
 import { AppRoutes } from '@/common/Constants'
 import { useRecoilState } from 'recoil'
@@ -16,8 +16,9 @@ import Loading from '@/components/ui/loading/Loading'
 import { FloatingButton } from '@/components/ui/button/FloatingButton'
 
 export default function TextKeywordPage() {
-  const [typedKeyword, setTypedKeyword] = useState('') //리스트 안에 각각
+  const [keyword, setKeyWord] = useState('') //리스트 안에 각각
   const router = useRouter()
+
   //recoil 써서 keyword와 detail값 넣기
   const [userInput, setUserInput] = useRecoilState(userInputTextsAtom)
   const [isModalOpen, setModalOpen] = useState(false)
@@ -29,15 +30,6 @@ export default function TextKeywordPage() {
   const { mutate: generateImageMutate, isLoading: gptImgLoading, error: gptImgDataFetchError, data: gptImageResults } = useMutation(postService.generateImages)
 
   const [gptResults, setGPTResults] = useRecoilState(gptResultsAtom)
-
-  const onEnterKeyDown = () => {
-    setUserInput({
-      ...userInput,
-      keywords: keywords.concat([typedKeyword]),
-    })
-
-    setTypedKeyword('')
-  }
 
   const onRemoveKeywordButtonClicked = (index: number) => {
     setUserInput((currentInput) => {
@@ -103,6 +95,19 @@ export default function TextKeywordPage() {
     router.push(AppRoutes.inputTextOptional)
   }
 
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    setUserInput({
+      ...userInput,
+      keywords: keywords.concat([keyword]),
+    })
+
+    setKeyWord('')
+  }
+
+  useEffect(() => {
+    console.log(userInput)
+  }, [userInput])
   return (
     <Layout>
       {!isLoading ? (
@@ -119,7 +124,19 @@ export default function TextKeywordPage() {
                 <div className={'text-center'}>
                   <p className={'text-[#262A2F] text-[14px] font-bold '}>Keywords</p>
                 </div>
-                {userInput.keywords.length < 10 && <KeywordInput keyword={typedKeyword} setPutKeyword={setTypedKeyword} onEnterKeyDown={onEnterKeyDown} />}
+                {userInput.keywords.length < 10 && (
+                  <form className={'flex justify-between items-center px-[24px] w-full'} onSubmit={onSubmit}>
+                    <input
+                      type="text"
+                      required
+                      className={'text-[16px] focus:outline-none flex-1 max-w-[220px] py-[20px]'}
+                      placeholder="Write keywords here."
+                      value={keyword}
+                      onChange={(e) => setKeyWord(e.target.value)}
+                    />
+                    <button className={'text-[16px] text-[#116AEF] ml-[2px] cursor-pointer'}>Add</button>
+                  </form>
+                )}
                 <SizedBox height={12} />
                 <KeywordList keywords={userInput.keywords} onRemoveKeywordButtonClicked={onRemoveKeywordButtonClicked} />
                 {isModalOpen && <div className="text-[#E71C40] text-[14px] text-center  bottom-0 w-full">Minimum 3 to Maximum 10 keywords needed</div>}
