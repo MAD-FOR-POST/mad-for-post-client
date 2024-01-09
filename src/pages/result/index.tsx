@@ -223,7 +223,9 @@ export default function ResultPage() {
       copyToClipboard()
       setDownloadSuccess(true)
       selectedImagesArray.forEach((url, index) => {
-        onImgDownload(url, index, formattedTime)
+        setTimeout(() => {
+          onImgDownload(url, index, formattedTime);
+        }, index * 200); 
         // console.log(index)
       })
     }
