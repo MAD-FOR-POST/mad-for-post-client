@@ -225,7 +225,7 @@ export default function ResultPage() {
       selectedImagesArray.forEach((url, index) => {
         setTimeout(() => {
           onImgDownload(url, index, formattedTime);
-        }, index * 200); 
+        }, index * 2000); 
         // console.log(index)
       })
     }
