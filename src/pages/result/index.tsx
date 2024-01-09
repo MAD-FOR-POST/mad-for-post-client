@@ -19,7 +19,7 @@ const SNSList: ISnsItem[] = [
   {
     title: 'instagram',
     image: '/images/SNS/InstagramIcon.png',
-    // link: 'https://www.instagram.com/',
+    link: 'https://www.instagram.com/',
   },
   // {
   //   title: 'threads',
@@ -223,9 +223,7 @@ export default function ResultPage() {
       copyToClipboard()
       setDownloadSuccess(true)
       selectedImagesArray.forEach((url, index) => {
-        setTimeout(() => {
-          onImgDownload(url, index, formattedTime);
-        }, index * 2000); 
+        onImgDownload(url, index, formattedTime)
         // console.log(index)
       })
     }
@@ -239,9 +237,9 @@ export default function ResultPage() {
           <div>
             <ul className={'flex flex-row flex-wrap mt-3 justify-center gap-2 w-[80%] m-auto'}>
               {SNSList.map(({ title, image, link }) => (
-                <li key={title} className={` transition-all ${clickedSNS === title ? 'rounded-3xl shadow-lg scale-110' : ''}`} onClick={() => onSNSClick(title)}>
+                <a key={title} className={` transition-all ${clickedSNS === title ? 'rounded-3xl shadow-lg scale-110' : ''}`} href={link}>
                   <Image src={image ?? ''} alt={title ?? ''} width={60} height={60} />
-                </li>
+                </a>
               ))}
             </ul>
           </div>
