@@ -16,23 +16,27 @@ export const KeywordModal: React.FC<KeywordModalProps> = ({ setKeywordModalOpen,
   const onButtonClick = () => {}
   return (
     <div className={'absolute top-0 w-full h-full flex justify-center items-center backdrop-blur-md'}>
-      <div className={'blur-none w-[95%] gap-4 border bg-white text-center flex flex-col justify-center rounded-[36px] p-5 z-20'}>
-        <div className="flex justify-between items-center border-b-2 pb-2">
-          <div>
-            <FontAwesomeIcon icon={faCircleExclamation} />
-            <span className="ml-2">{title}</span>
-          </div>
-          <div onClick={onOkClick} className="cursor-pointer">
-            <FontAwesomeIcon icon={faXmark} />
+      <div className={'blur-none w-[95%] gap-4 border bg-white text-center flex flex-col justify-center rounded-[36px] py-5 z-20'}>
+        <div className="flex justify-between items-center border-b-2 pb-2 px-5">
+          <div className="flex w-full justify-between">
+            <div>
+              <FontAwesomeIcon icon={faCircleExclamation} />
+              <span className="ml-2 font-semibold">{title}</span>
+            </div>
+            <div onClick={onOkClick} className="cursor-pointer">
+              <FontAwesomeIcon icon={faXmark} />
+            </div>
           </div>
         </div>
         {children}
-        <a
-          href="https://open.kakao.com/o/gTUm3dSf"
-          className="flex justify-center items-center text-white py-5 px-7  rounded-full  bottom-5 text-xl font-bold max-w-[380px]  bg-[#303841] hover:shadow-xl transition-shadow"
-        >
-          Join us now!
-        </a>
+        <div className="px-5">
+          <a
+            href="https://open.kakao.com/o/gTUm3dSf"
+            className="flex justify-center items-center w-full  text-white py-3 px-7  rounded-full  bottom-5 text-xl   bg-[#303841] hover:shadow-xl transition-shadow"
+          >
+            Join us now!
+          </a>
+        </div>
       </div>
     </div>
   )
