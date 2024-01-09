@@ -102,7 +102,7 @@ export default function Home() {
                 <div className={'font-bold text-[14px] pt-[11px] pb-[16px]'}>Magic code</div>
                 {codeInputRefs.map((ref, index) => (
                   <input
-                    type="number"
+                    type="string"
                     ref={ref}
                     key={index}
                     maxLength={1}
@@ -117,7 +117,7 @@ export default function Home() {
                       }
                     }}
                     className={
-                      'w-[44px] h-[60px] text-center rounded-[10px] mx-[5px] border-[#ffffff] appearance-none border-2 focus:outline-none focus:bg-white focus:border-[#23C164] hide-scrollbar'
+                      ' bg-red-500 w-[44px] h-[60px] text-center rounded-[10px] mx-[5px] border-[#ffffff] appearance-none border-2 focus:outline-none focus:bg-white focus:border-[#23C164] hide-scrollbar'
                     }
                   />
                 ))}
