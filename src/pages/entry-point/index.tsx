@@ -96,63 +96,38 @@ export default function Home() {
             <br />
             to get final result!
           </p>
-          {invalidValue ? (
-            <div className={'h-[150px]'}>
-              <div className={'w-[90%] h-[128px] bg-[#E0C2CA] rounded-[37px] mx-auto '}>
-                <div className={'font-bold text-[14px] pt-[11px] pb-[16px]'}>Magic code</div>
-                {codeInputRefs.map((ref, index) => (
-                  <input
-                    type="string"
-                    ref={ref}
-                    key={index}
-                    maxLength={1}
-                    onChange={(e) => onInputChanged(index, e.target.value)}
-                    onKeyDown={(e) => {
-                      if (e.key === 'ArrowLeft') {
-                        e.preventDefault()
-                        handleArrowKey(index, 'left')
-                      } else if (e.key === 'ArrowRight') {
-                        e.preventDefault()
-                        handleArrowKey(index, 'right')
-                      }
-                    }}
-                    className={
-                      ' bg-red-500 w-[44px] h-[60px] text-center rounded-[10px] mx-[5px] border-[#ffffff] appearance-none border-2 focus:outline-none focus:bg-white focus:border-[#23C164] hide-scrollbar'
+
+          <div className={'h-[150px]'}>
+            <div className={'w-[90%] h-[128px] bg-[#E0C2CA] rounded-[37px] mx-auto '}>
+              <div className={'font-bold text-[14px] pt-[11px] pb-[16px]'}>Magic code</div>
+              {codeInputRefs.map((ref, index) => (
+                <input
+                  type="string"
+                  ref={ref}
+                  key={index}
+                  maxLength={1}
+                  onChange={(e) => onInputChanged(index, e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'ArrowLeft') {
+                      e.preventDefault()
+                      handleArrowKey(index, 'left')
+                    } else if (e.key === 'ArrowRight') {
+                      e.preventDefault()
+                      handleArrowKey(index, 'right')
                     }
-                  />
-                ))}
-              </div>
+                  }}
+                  className={
+                    '  w-[44px] h-[60px] text-center rounded-[10px] mx-[5px] border-[#ffffff] appearance-none border-2 focus:outline-none focus:bg-white focus:border-[#23C164] hide-scrollbar'
+                  }
+                  onFocus={() => {
+                    setInvalidValue(true)
+                  }}
+                />
+              ))}
             </div>
-          ) : (
-            //잘못입력한 경우
-            <div className={' '}>
-              <div className={'w-[90%] h-[140px] bg-[#E0C2CA] rounded-[37px] mx-auto'}>
-                <div className={'font-bold text-[14px] pt-[11px] pb-[16px]'}>Magic code</div>
-                {codeInputRefs.map((ref, index) => (
-                  <input
-                    ref={ref}
-                    key={index}
-                    maxLength={1}
-                    onChange={(e) => onInputChanged(index, e.target.value)}
-                    onKeyDown={(e) => {
-                      if (e.key === 'ArrowLeft') {
-                        e.preventDefault()
-                        handleArrowKey(index, 'left')
-                      } else if (e.key === 'ArrowRight') {
-                        e.preventDefault()
-                        handleArrowKey(index, 'right')
-                      }
-                    }}
-                    onFocus={() => {
-                      setInvalidValue(true)
-                    }}
-                    className={'border-[#E71C40] w-[44px] h-[60px] text-center rounded-[10px] mx-[5px] border-[1px]  appearance-none  '}
-                  />
-                ))}
-              </div>
-              <div className={'text-[#E71C40] text-[14px] mt-[10px]'}>Invalid code. Please check and try again.</div>
-            </div>
-          )}
+            {!invalidValue && <div className={'text-[#E71C40] text-[14px] mt-[10px]'}>Invalid code. Please check and try again.</div>}
+          </div>
+
           <p className={'text-[16px] mt-5 '}>
             You don&apos;t have a code,
             <br />
