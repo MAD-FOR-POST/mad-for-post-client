@@ -106,11 +106,11 @@ export default function ResultPage() {
         text: modifyContent,
       }))
       setShowButton(true)
-      const timeoutId = setTimeout(() => {
-        setShowButton(false)
-        setModifySuccess(false)
-      }, 1000)
-      return () => clearTimeout(timeoutId)
+      // const timeoutId = setTimeout(() => {
+      //   setShowButton(false)
+      //   setModifySuccess(false)
+      // }, 100000)
+      // return () => clearTimeout(timeoutId)
     }
   }, [modifySuccess])
 
@@ -174,12 +174,12 @@ export default function ResultPage() {
   const onRegenerateClick = () => {
     !gptLoading && generatePostWithReactQuery()
   }
-  useEffect(() => {
-    copySuccess &&
-      setTimeout(() => {
-        setCopySuccess(false)
-      }, 5000)
-  }, [copySuccess])
+  // useEffect(() => {
+  //   copySuccess &&
+  //     setTimeout(() => {
+  //       setCopySuccess(false)
+  //     }, 5000)
+  // }, [copySuccess])
 
   useEffect(() => {
     if (gptTextResult) {
@@ -321,7 +321,7 @@ export default function ResultPage() {
                       저장!
                     </div>
                   )}
-                  {copySuccess && <CopySuccessModal />}
+                  {copySuccess && <CopySuccessModal link={SNSList[0].link} />}
                   <span dangerouslySetInnerHTML={{ __html: (modifyContent ?? '').replace(/\n/g, '<br />') }} />
                 </div>
               )}
