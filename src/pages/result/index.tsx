@@ -108,11 +108,11 @@ export default function ResultPage() {
         text: modifyContent,
       }))
       setShowButton(true)
-      // const timeoutId = setTimeout(() => {
-      //   setShowButton(false)
-      //   setModifySuccess(false)
-      // }, 100000)
-      // return () => clearTimeout(timeoutId)
+      const timeoutId = setTimeout(() => {
+        setShowButton(false)
+        setModifySuccess(false)
+      }, 3000)
+      return () => clearTimeout(timeoutId)
     }
   }, [modifySuccess])
   const copyToClipboard = () => {
@@ -215,10 +215,11 @@ export default function ResultPage() {
   }, [])
 
   useEffect(() => {
-    console.log('x', newX)
     newX.onChange(() => {
       if (newX.get() > 0.9) {
         setSwipe(true)
+      } else {
+        setSwipe(false)
       }
     })
   }, [x])
@@ -238,10 +239,11 @@ export default function ResultPage() {
 
       copyToClipboard()
       setDownloadSuccess(true)
-      selectedImagesArray.forEach((url, index) => {
-        onImgDownload(url, index, formattedTime)
-        // console.log(index)
-      })
+      !downloadSuccess &&
+        selectedImagesArray.forEach((url, index) => {
+          onImgDownload(url, index, formattedTime)
+          // console.log(index)
+        })
     }
   }, [swipe])
 
