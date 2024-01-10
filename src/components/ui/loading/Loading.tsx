@@ -8,13 +8,13 @@ function Loading({ setIsLoading }: any) {
   return (
     <AnimatePresence>
       <div className="overflow-hidden flex flex-col justify-between items-center  bg-[#DADDBC] w-full max-w-[428px] h-full pt-9 relative">
-        <div className="flex w-full items-center justify-between px-5">
+        {/* <div className="flex w-full items-center justify-between px-5">
           <BackButton
             onClick={() => {
               setIsLoading(false)
             }}
           />
-        </div>
+        </div> */}
 
         <div className="flex  flex-col font-poppins text-4xl w-[220px] h-full   text-center  justify-center font-bold  ">
           <Typewriter
