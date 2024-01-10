@@ -32,6 +32,7 @@ export const KeywordModal: React.FC<KeywordModalProps> = ({ setKeywordModalOpen,
         <div className="px-5">
           <a
             href="https://open.kakao.com/o/gTUm3dSf"
+            target="_blank"
             className="flex justify-center items-center w-full  text-white py-3 px-7  rounded-full  bottom-5 text-xl   bg-[#303841] hover:shadow-xl transition-shadow"
           >
             Join us now!

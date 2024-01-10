@@ -18,7 +18,7 @@ export const CopySuccessModal = ({ link }: InterfaceProp) => {
           <br />
           한번 포스팅 하러 가 볼까요!
         </p>
-        <a className="flex w-1/6  items-start justify-center" href={link}>
+        <a className="flex w-1/6  items-start justify-center" href={link} target="_blank">
           <FontAwesomeIcon icon={faChevronRight} size="xl" />
         </a>
       </div>
