@@ -15,7 +15,7 @@ export const KeywordModal: React.FC<KeywordModalProps> = ({ setKeywordModalOpen,
   }
   const onButtonClick = () => {}
   return (
-    <div className={'absolute top-0 w-full h-full flex justify-center items-center backdrop-blur-md'}>
+    <div className={'absolute top-0 w-full h-full flex justify-center items-center backdrop-blur-md z-50'}>
       <div className={'blur-none w-[95%] gap-4 border bg-white text-center flex flex-col justify-center rounded-[36px] py-5 z-20'}>
         <div className="flex justify-between items-center border-b-2 pb-2 px-5">
           <div className="flex w-full justify-between">
