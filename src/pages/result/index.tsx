@@ -95,8 +95,6 @@ export default function ResultPage() {
   const { mutate: generatePostMutate, isLoading: gptLoading, error: gptDataFetchError, data: gptTextResult } = useMutation(postService.generatePost)
   const userInput = useRecoilValue(userInputTextsAtom)
 
-  // console.log('이거 뭐냐', selectedImagesArray) // 최종 선택 이미지들
-
   //텍스트 수정 파트
   useEffect(() => {
     if (modifySuccess) {
@@ -145,7 +143,6 @@ export default function ResultPage() {
       .get(url, { responseType: 'blob' })
       .then((response) => {
         const imageUrl = URL.createObjectURL(response.data)
-        // Now you can use imageUrl as the source for an image tag, or save it, etc.
         const link = document.createElement('a')
         link.href = imageUrl
         link.download = `${time}_${index}`
@@ -224,7 +221,6 @@ export default function ResultPage() {
       setDownloadSuccess(true)
       selectedImagesArray.forEach((url, index) => {
         onImgDownload(url, index, formattedTime)
-        // console.log(index)
       })
     }
   }, [swipe])
