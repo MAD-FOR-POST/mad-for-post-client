@@ -135,36 +135,11 @@ export default function ResultPage() {
     //   console.error('Clipboard copy failed:', err)
     // }
     // clipboard API X
-    // try {
-    //   if (document.queryCommandSupported('copy')) {
-    //     // Use the "copy" command if supported by the browser
-    //     document.execCommand('copy');
-    //     console.log('Text copied to clipboard.');
-    //     setCopySuccess(true);
-    //   } else {
-    //     // Fallback for browsers that do not support the "copy" command
-    //     const textarea = document.createElement('textarea');
-    //     textarea.value = textToCopy;
-    //     document.body.appendChild(textarea);
-  
-    //     // Select and copy the text
-    //     textarea.select();
-    //     document.execCommand('copy');
-  
-    //     // Clean up
-    //     document.body.removeChild(textarea);
-  
-    //     console.log('Text copied to clipboard (fallback).');
-    //     setCopySuccess(true);
-    //   }
-    // } catch (err) {
-    //   console.error('Clipboard copy failed:', err);
-    // }
-    // if (navigator.clipboard) {
-    //   navigator.clipboard.writeText(textToCopy)
-    //   console.log('Text copied to clipboard.')
-    //   setCopySuccess(true)
-    // } else {
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(textToCopy)
+      console.log('Text copied to clipboard.')
+      setCopySuccess(true)
+    } else {
       const textArea = document.createElement('textarea')
       textArea.value = textToCopy
       document.body.appendChild(textArea)
@@ -173,7 +148,7 @@ export default function ResultPage() {
       document.body.removeChild(textArea)
       console.log('Text copied to clipboard.')
       setCopySuccess(true)
-    // }
+    }
   }
 
   const onNextImgClick = async () => {
@@ -276,12 +251,11 @@ export default function ResultPage() {
       const formattedTime = `${year}${month}${day}${hours}${minutes}${seconds}`
 
       copyToClipboard()
-      setDownloadSuccess(true)
-      !downloadSuccess &&
-        selectedImagesArray.forEach((url, index) => {
-          onImgDownload(url, index, formattedTime)
-          // console.log(index)
-        })
+      // setDownloadSuccess(true)
+      // !downloadSuccess &&
+      //   selectedImagesArray.forEach((url, index) => {
+      //     onImgDownload(url, index, formattedTime)
+      //   })
     }
   }, [swipe])
 
