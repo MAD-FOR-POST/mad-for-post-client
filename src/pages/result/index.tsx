@@ -9,11 +9,13 @@ import { ISnsItem } from '@/interfaces/post/ISnsItem'
 import Layout from '@/components/layout'
 import { NextButton } from '@/components/ui/button/NextButton'
 import axios from 'axios'
-import { EditButton } from '@/components/ui/button/EditButton'
+
 import { CopySuccessModal } from '@/components/ui/modal/CopySuccessModal'
 import { FloatingButton } from '@/components/ui/button/FloatingButton'
 import { useMutation } from 'react-query'
 import { postService } from '@/services/PostService'
+
+import copy from 'copy-text-to-clipboard'
 
 const SNSList: ISnsItem[] = [
   {
@@ -117,8 +119,14 @@ export default function ResultPage() {
   }, [modifySuccess])
   const copyToClipboard = () => {
     const textToCopy = modifyContent || ''
+    try {
+      copy(textToCopy)
+      console.log('copied')
+    } catch (err) {
+      console.error(err)
+    }
 
-    // clipboard API O   : 휴대폰에서는 작동하지 않는다.
+    // // clipboard API O
     // try {
     //   navigator.clipboard.writeText(textToCopy).then(() => {
     //     console.log('Text copied to clipboard.')
@@ -134,21 +142,22 @@ export default function ResultPage() {
 
     //   console.error('Clipboard copy failed:', err)
     // }
+
     // clipboard API X
-    if (navigator.clipboard) {
-      navigator.clipboard.writeText(textToCopy)
-      console.log('Text copied to clipboard.')
-      setCopySuccess(true)
-    } else {
-      const textArea = document.createElement('textarea')
-      textArea.value = textToCopy
-      document.body.appendChild(textArea)
-      textArea.select()
-      document.execCommand('copy')
-      document.body.removeChild(textArea)
-      console.log('Text copied to clipboard.')
-      setCopySuccess(true)
-    }
+    // if (navigator.clipboard) {
+    //   navigator.clipboard.writeText(textToCopy)
+    //   console.log('Text copied to clipboard.')
+    //   setCopySuccess(true)
+    // } else {
+    //   const textArea = document.createElement('textarea')
+    //   textArea.value = textToCopy
+    //   document.body.appendChild(textArea)
+    //   textArea.select()
+    //   document.execCommand('copy')
+    //   document.body.removeChild(textArea)
+    //   console.log('Text copied to clipboard.')
+    //   setCopySuccess(true)
+    // }
   }
 
   const onNextImgClick = async () => {
