@@ -15,15 +15,23 @@ export const userInfoAtom = atom<IUser | null>({
 export const userInputImagesAtom = atom<string[]>({
   key: 'InputImages',
   default: [],
+  effects_UNSTABLE: [persistAtom],
 })
 
 export const userInputTextsAtom = atom<IInputTexts>({
   key: 'InputTexts',
   default: { keywords: [], detail: '' },
+  effects_UNSTABLE: [persistAtom],
 })
 
 export const gptResultsAtom = atom<IGptResults>({
   key: 'GptTextResult',
   default: { image: [], text: '' },
+  effects_UNSTABLE: [persistAtom],
+})
+
+export const gptImageResultIndexArrayAtom = atom<number[]>({
+  key: 'GptImageResultArray',
+  default: [],
   effects_UNSTABLE: [persistAtom],
 })

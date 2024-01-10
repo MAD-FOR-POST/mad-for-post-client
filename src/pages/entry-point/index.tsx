@@ -1,8 +1,8 @@
 import { useRouter } from 'next/router'
 import { AppRoutes } from '@/common/Constants'
-import { BasicButton } from '@/components/ui/button/BasicButton'
+
 import React, { useState, useRef, useEffect } from 'react'
-import { BasicInput } from '@/components/ui/input/BasicInput'
+
 import { cookieService } from '@/services/CookieService'
 import { authService } from '@/services/AuthService'
 import Layout from '@/components/layout'
@@ -13,6 +13,7 @@ import { KeywordModal } from '@/components/ui/modal/KeywordModal'
 export default function Home() {
   const [invalidValue, setInvalidValue] = useState(true) //코드가 제대로 유무에 따라 스타일다르게
   const [showModal, setShowModal] = useState(false)
+
   useEffect(() => {
     if (!invalidValue) {
       // setCode([...Array(codeInputRefs.length).fill('')]);

@@ -2,12 +2,12 @@
 import { useRouter } from 'next/router'
 import { BackButton } from '@/components/ui/button/BackButton'
 import { NextButton } from '@/components/ui/button/NextButton'
-import { faXmark } from '@fortawesome/free-solid-svg-icons'
+import { faCheck, faXmark } from '@fortawesome/free-solid-svg-icons'
 import { faCircleQuestion } from '@fortawesome/free-regular-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { ChangeEvent, useCallback, useEffect, useState } from 'react'
 import { useRecoilState, useRecoilValue } from 'recoil'
-import { gptResultsAtom, userInputImagesAtom, userInputTextsAtom } from '@/stores/UserInfoAtom'
+import { gptImageResultIndexArrayAtom, gptResultsAtom, userInputImagesAtom, userInputTextsAtom } from '@/stores/UserInfoAtom'
 import { printLog } from '@/utils/LogUtil'
 import { motion, AnimatePresence } from 'framer-motion'
 import { postService } from '@/services/PostService'
@@ -24,19 +24,21 @@ export default function TailwindExample() {
   const router = useRouter()
   const [selectedImagesArray, setSelectedImagesArray] = useRecoilState(userInputImagesAtom)
   const [gptResults, setGPTResults] = useRecoilState(gptResultsAtom)
+  //이미지 선택 후 남은 이미지 index 에서 가져오기 위함
+  const [indexArr, setIndexArr] = useRecoilState(gptImageResultIndexArrayAtom)
 
   const userInput = useRecoilValue(userInputTextsAtom)
   const [isLoading, setIsLoading] = useState(false)
   const [modalOpen, setModalOpen] = useState(false)
   const [stageError, setStageError] = useState(false)
   const [maxImgError, setMaxImgError] = useState(false)
-  const { mutate: generateImageMutate, isLoading: gptImgLoading, error: gptImgDataFetchError, data: gptImageResults } = useMutation(postService.generateImages)
+  const { mutate: generateImageMutate, data: gptImageResults } = useMutation(postService.generateImages)
 
   const [clickedImg, setClickedImg] = useState(gptResults.image ? gptResults.image[0] : '')
   const [clickedImgIndex, setClickedImgIndex] = useState(0)
   const [bgwidth, setBgWidth] = useState(0)
 
-  const onDeleteImage = (index: number) => {
+  const onDeleteImage = (index: number, imgUrl: string) => {
     const confirmed = confirm('Do you want to delete?')
     if (confirmed) {
       // Copy the current array
@@ -45,6 +47,24 @@ export default function TailwindExample() {
       newArray.splice(index, 1)
       // Update the Recoil state
       setSelectedImagesArray(newArray)
+
+      //삭제 이미지가 생성된 리스트에 존재할 때
+      if (gptResults.image?.includes(imgUrl)) {
+        //삭제한 index 되돌리기
+        setIndexArr((oldArr) => {
+          const indexArrCopy = [...oldArr]
+          const clickedImgIndex = gptResults.image?.indexOf(imgUrl) // Replace with the actual index you want to remove
+          console.log(clickedImgIndex)
+          // Remove the element at the specified index
+          clickedImgIndex?.toString && indexArrCopy.push(clickedImgIndex)
+          console.log(indexArrCopy)
+
+          // Sort the array
+          indexArrCopy.sort((a, b) => a - b)
+
+          return indexArrCopy
+        })
+      }
     }
   }
 
@@ -111,22 +131,27 @@ export default function TailwindExample() {
   useEffect(() => {
     //사용자가 선택한 이미지가 없는 경우: 텍스트만 기다린다.
     if (gptImageResults) {
+      console.log('image created')
       updateResultsAndNavigate([...gptImageResults])
-      console.log(gptImageResults)
       setClickedImg(gptImageResults[0])
       setClickedImgIndex(0)
+      setIndexArr(Array.from(Array(gptImageResults.length).keys()))
       setIsLoading(false)
       return
     }
-  }, [gptImgLoading, gptImageResults])
+  }, [gptImageResults])
 
   useEffect(() => {
     if (gptResults.image?.length === 0) {
       onGPTGenerateButtonClicked()
     }
+    //indexArr 초기 세팅
+    indexArr.length === 0 && gptResults.image && setIndexArr(Array.from(Array(gptResults.image.length).keys()))
   }, [gptResults])
 
+  console.log(gptImageResults)
   const onDragEnd = ({ draggableId, destination, source }: DropResult) => {
+    //같은 공간에서 움직일때
     if (destination?.droppableId === source.droppableId && destination.droppableId === 'selectedImages') {
       setSelectedImagesArray((oldArray) => {
         const selectedArrCopy = [...oldArray]
@@ -134,6 +159,7 @@ export default function TailwindExample() {
         selectedArrCopy.splice(destination.index, 0, draggableId)
         return selectedArrCopy
       })
+      // 위에서 아래로 이미지 움직였을때
     } else if (destination?.droppableId === 'selectedImages') {
       if (selectedImagesArray.length === 10) return
 
@@ -141,6 +167,10 @@ export default function TailwindExample() {
         const selectedArrCopy = [...oldArray]
         selectedArrCopy.splice(destination.index, 0, draggableId)
         return selectedArrCopy
+      })
+      setIndexArr((prev) => {
+        const indexArrCopy = [...indexArr]
+        return indexArrCopy.filter((items) => items !== clickedImgIndex)
       })
     }
     setMaxImgError(false)
@@ -164,6 +194,16 @@ export default function TailwindExample() {
   useEffect(() => {
     setBgWidth(window.innerWidth + 40 > 468 ? 468 : window.innerWidth + 40)
   }, [])
+
+  useEffect(() => {
+    console.log(indexArr)
+
+    if (gptResults.image) {
+      setClickedImg(gptResults.image[indexArr[0]])
+      setClickedImgIndex(indexArr[0])
+      console.log(indexArr)
+    }
+  }, [indexArr])
 
   return (
     <Layout>
@@ -222,13 +262,19 @@ export default function TailwindExample() {
               </div>
               <div className="flex transition-all overflow-scroll  w-full px-4 gap-1">
                 {gptResults?.image?.map((image, index) => (
-                  <img
-                    key={index}
-                    src={image} // Make sure `image` contains the correct URL
-                    className={` min-w-[65px] min-h-[65px] w-1/2 border-black  cursor-pointer  ${index === clickedImgIndex && ' mx-1'}`}
-                    alt={`Image ${index}`}
-                    onClick={() => onImageClick(image, index)}
-                  />
+                  <div className={` ${index === clickedImgIndex && ' mx-1'} relative`} key={index} onClick={() => onImageClick(image, index)}>
+                    <img
+                      key={index}
+                      src={image} // Make sure `image` contains the correct URL
+                      className={` min-w-[65px] min-h-[65px] w-1/2 border-black  cursor-pointer `}
+                      alt={`Image ${index}`}
+                    />
+                    {selectedImagesArray.includes(image) && (
+                      <div className="flex min-w-[65px] min-h-[65px] bg-black/60 absolute z-50 top-0 text-white items-center justify-center ">
+                        <FontAwesomeIcon icon={faCheck} size="2xl" />
+                      </div>
+                    )}
+                  </div>
                 ))}
               </div>
             </div>
@@ -254,7 +300,7 @@ export default function TailwindExample() {
                             <img key={index} src={imgUrl} alt="Selected" className=" object-cover rounded-3xl  max-w-[100px] max-h-[100px] min-w-[100px] min-h-[100px] " />
                             <span
                               className="absolute top-0 right-0 bg-white p-1 rounded-full w-6 h-6 flex justify-center items-center cursor-pointer"
-                              onClick={() => onDeleteImage(index)}
+                              onClick={() => onDeleteImage(index, imgUrl)}
                             >
                               <FontAwesomeIcon icon={faXmark} />
                             </span>
