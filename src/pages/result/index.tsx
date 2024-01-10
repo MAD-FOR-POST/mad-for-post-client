@@ -119,35 +119,35 @@ export default function ResultPage() {
     const textToCopy = modifyContent || ''
 
     // clipboard API O
-    // try {
-    //   navigator.clipboard.writeText(textToCopy).then(() => {
-    //     console.log('Text copied to clipboard.')
-    //     setCopySuccess(true)
-    //   })
-    // } catch (err) {
-    //   const textarea = document.createElement('textarea')
-    //   textarea.value = textToCopy
-    //   document.body.appendChild(textarea)
-    //   textarea.select()
-    //   document.execCommand('copy')
-    //   document.body.removeChild(textarea)
+    try {
+      navigator.clipboard.writeText(textToCopy).then(() => {
+        console.log('Text copied to clipboard.')
+        setCopySuccess(true)
+      })
+    } catch (err) {
+      const textarea = document.createElement('textarea')
+      textarea.value = textToCopy
+      document.body.appendChild(textarea)
+      textarea.select()
+      document.execCommand('copy')
+      document.body.removeChild(textarea)
 
-    //   console.error('Clipboard copy failed:', err)
-    // }
+      console.error('Clipboard copy failed:', err)
+    }
     // clipboard API X
     // if (navigator.clipboard) {
     //   navigator.clipboard.writeText(textToCopy)
     //   console.log('Text copied to clipboard.')
     //   setCopySuccess(true)
     // } else {
-      const textArea = document.createElement('textarea')
-      textArea.value = textToCopy
-      document.body.appendChild(textArea)
-      textArea.select()
-      document.execCommand('copy')
-      document.body.removeChild(textArea)
-      console.log('Text copied to clipboard.')
-      setCopySuccess(true)
+    //   const textArea = document.createElement('textarea')
+    //   textArea.value = textToCopy
+    //   document.body.appendChild(textArea)
+    //   textArea.select()
+    //   document.execCommand('copy')
+    //   document.body.removeChild(textArea)
+    //   console.log('Text copied to clipboard.')
+    //   setCopySuccess(true)
     // }
   }
 
