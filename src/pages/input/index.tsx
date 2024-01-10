@@ -5,6 +5,8 @@ import { useEffect, useRef, useState } from 'react'
 import { AppRoutes } from '@/common/Constants'
 import ChevronRightAnimated from '@/components/ui/icon/ChevronRightAnimated'
 import Layout from '@/components/layout'
+import { useResetRecoilState } from 'recoil'
+import { userInputTextsAtom } from '@/stores/UserInfoAtom'
 
 export default function TailwindExample() {
   const router = useRouter()
@@ -16,6 +18,11 @@ export default function TailwindExample() {
 
   const newX = useTransform(x, [0, currentWidth - 100], [0, 1])
   const constraintsRef = useRef(null)
+
+  const resetInputText = useResetRecoilState(userInputTextsAtom)
+  useEffect(() => {
+    resetInputText()
+  }, [])
 
   useEffect(() => {
     newX.onChange(() => {

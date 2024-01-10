@@ -146,7 +146,7 @@ export default function TailwindExample() {
       onGPTGenerateButtonClicked()
     }
     //indexArr 초기 세팅
-    indexArr.length !== 0 && gptResults.image && setIndexArr(Array.from(Array(gptResults.image.length).keys()))
+    indexArr.length === 0 && gptResults.image && setIndexArr(Array.from(Array(gptResults.image.length).keys()))
   }, [gptResults])
 
   console.log(gptImageResults)
