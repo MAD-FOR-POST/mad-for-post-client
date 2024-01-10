@@ -115,20 +115,28 @@ export default function ResultPage() {
       // return () => clearTimeout(timeoutId)
     }
   }, [modifySuccess])
-
   const copyToClipboard = () => {
-    const textToCopy = modifyContent || '' // 복사하고 싶은 내용을 지정하세요
+    const textToCopy = modifyContent || ''
 
-    navigator.clipboard
-      .writeText(textToCopy)
-      .then(() => {
-        console.log('클립보드에 복사되었습니다.')
+    try {
+      // Attempt to use the modern Clipboard API
+      navigator.clipboard.writeText(textToCopy).then(() => {
+        console.log('Text copied to clipboard.')
         setCopySuccess(true)
       })
-      .catch((error) => {
-        console.error('클립보드 복사 실패:', error)
-      })
+    } catch (err) {
+      // Fallback for browsers that do not support the Clipboard API
+      const textarea = document.createElement('textarea')
+      textarea.value = textToCopy
+      document.body.appendChild(textarea)
+      textarea.select()
+      document.execCommand('copy')
+      document.body.removeChild(textarea)
+
+      console.error('Clipboard copy failed:', err)
+    }
   }
+
   const onNextImgClick = async () => {
     await setBack(false)
 
