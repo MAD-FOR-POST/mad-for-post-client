@@ -118,23 +118,62 @@ export default function ResultPage() {
   const copyToClipboard = () => {
     const textToCopy = modifyContent || ''
 
-    try {
-      // Attempt to use the modern Clipboard API
-      navigator.clipboard.writeText(textToCopy).then(() => {
-        console.log('Text copied to clipboard.')
-        setCopySuccess(true)
-      })
-    } catch (err) {
-      // Fallback for browsers that do not support the Clipboard API
-      const textarea = document.createElement('textarea')
-      textarea.value = textToCopy
-      document.body.appendChild(textarea)
-      textarea.select()
-      document.execCommand('copy')
-      document.body.removeChild(textarea)
+    // clipboard API O
+    // try {
+    //   navigator.clipboard.writeText(textToCopy).then(() => {
+    //     console.log('Text copied to clipboard.')
+    //     setCopySuccess(true)
+    //   })
+    // } catch (err) {
+    //   const textarea = document.createElement('textarea')
+    //   textarea.value = textToCopy
+    //   document.body.appendChild(textarea)
+    //   textarea.select()
+    //   document.execCommand('copy')
+    //   document.body.removeChild(textarea)
 
-      console.error('Clipboard copy failed:', err)
-    }
+    //   console.error('Clipboard copy failed:', err)
+    // }
+    // clipboard API X
+    // try {
+    //   if (document.queryCommandSupported('copy')) {
+    //     // Use the "copy" command if supported by the browser
+    //     document.execCommand('copy');
+    //     console.log('Text copied to clipboard.');
+    //     setCopySuccess(true);
+    //   } else {
+    //     // Fallback for browsers that do not support the "copy" command
+    //     const textarea = document.createElement('textarea');
+    //     textarea.value = textToCopy;
+    //     document.body.appendChild(textarea);
+  
+    //     // Select and copy the text
+    //     textarea.select();
+    //     document.execCommand('copy');
+  
+    //     // Clean up
+    //     document.body.removeChild(textarea);
+  
+    //     console.log('Text copied to clipboard (fallback).');
+    //     setCopySuccess(true);
+    //   }
+    // } catch (err) {
+    //   console.error('Clipboard copy failed:', err);
+    // }
+    // if (navigator.clipboard) {
+    //   navigator.clipboard.writeText(textToCopy)
+    //   console.log('Text copied to clipboard.')
+    //   setCopySuccess(true)
+    // } else {
+      const textArea = document.createElement('textarea')
+      textArea.value = textToCopy
+      document.body.appendChild(textArea)
+      textArea.select()
+      document.execCommand('copy')
+      document.body.removeChild(textArea)
+      console.log('Text copied to clipboard.')
+      setCopySuccess(true)
+    // }
   }
 
   const onNextImgClick = async () => {
@@ -155,7 +194,6 @@ export default function ResultPage() {
       .get(url, { responseType: 'blob' })
       .then((response) => {
         const imageUrl = URL.createObjectURL(response.data)
-        // Now you can use imageUrl as the source for an image tag, or save it, etc.
         const link = document.createElement('a')
         link.href = imageUrl
         link.download = `${time}_${index}`
