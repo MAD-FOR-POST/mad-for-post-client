@@ -87,9 +87,6 @@ export default function Home() {
   return (
     <Layout>
       <div className={'flex flex-col items-center w-full max-w-[428px] h-full pt-9 relative '}>
-        <div className="flex w-full items-center justify-between px-5">
-          <BackButton />
-        </div>
         <div className={'text-center w-full flex justify-center  flex-col h-[85%]'}>
           <h1 className={'font-bold text-[38px] '}>Hello✨</h1>
           <p className={'text-[16px] mt-5 mb-6'}>
