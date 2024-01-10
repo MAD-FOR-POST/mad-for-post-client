@@ -262,7 +262,7 @@ export default function TailwindExample() {
               </div>
               <div className="flex transition-all overflow-scroll  w-full px-4 gap-1">
                 {gptResults?.image?.map((image, index) => (
-                  <div className={` ${index === clickedImgIndex && ' mx-1'} relative`} onClick={() => onImageClick(image, index)}>
+                  <div className={` ${index === clickedImgIndex && ' mx-1'} relative`} key={index} onClick={() => onImageClick(image, index)}>
                     <img
                       key={index}
                       src={image} // Make sure `image` contains the correct URL
