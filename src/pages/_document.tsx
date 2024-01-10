@@ -7,7 +7,7 @@ export default function Document() {
         {/* 모바일폰에서 줌 안되도록 처리 */}
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
       </Head>
-      <body className="overscroll-y-contain	">
+      <body className="overscroll-y-none	">
         <Main />
         <NextScript />
       </body>
