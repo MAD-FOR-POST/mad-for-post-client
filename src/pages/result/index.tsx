@@ -268,7 +268,7 @@ export default function ResultPage() {
           <div>
             <ul className={'flex flex-row flex-wrap mt-3 justify-center gap-2 w-[80%] m-auto'}>
               {SNSList.map(({ title, image, link }) => (
-                <a key={title} className={` transition-all ${clickedSNS === title ? 'rounded-3xl shadow-lg scale-110' : ''}`} href={link}>
+                <a key={title} className={` transition-all ${clickedSNS === title ? 'rounded-3xl shadow-lg scale-110' : ''}`} href={link} target="_blank">
                   <Image src={image ?? ''} alt={title ?? ''} width={60} height={60} />
                 </a>
               ))}
