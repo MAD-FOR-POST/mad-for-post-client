@@ -47,9 +47,13 @@
 
 *::-webkit-scrollbar {
   width: 1px;
-  height:5px;
+  height: 5px;
 }
 
 *::-webkit-scrollbar-thumb {
-  background-color: gray;  
+  background-color: gray;
+}
+
+body {
+  overscroll-behavior-y: contain;
 }

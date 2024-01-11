@@ -282,13 +282,12 @@ export default function ResultPage() {
             <div className="relative min-w-full min-h-[70%] text-white">
               {selectedImagesArray && (
                 <AnimatePresence custom={back}>
-                  {downloadSuccess && (
+                  {copySuccess && (
                     <div className={` h-full	w-full  bg-[#000000]/50 absolute z-10 flex flex-col justify-center items-center `}>
-                      <img src="/images/check-square.png" className="w-[40%]" />
-                      <div className=" font-bold text-[22px] text-center">
-                        사진 전체
-                        <br />
-                        다운로드 완료!
+                      <img src="/images/check-square.png" className="w-[20%]" />
+                      <div className=" font-bold text-[22px] text-center p-8">
+                        다운로드중이에요! <br />
+                        만약 다운로드가 안되면 사진을 꾹 눌러서 저장해주세요
                       </div>
                     </div>
                   )}

@@ -3,7 +3,7 @@ import { BackButton } from '../button/BackButton'
 import Typewriter from 'typewriter-effect'
 
 function Loading({ setIsLoading }: any) {
-  const loadingTextSplitted = ['게시물에 활용할 ai 생성 이미지를 만드는 중이에요', '거의 다 되었으니 3초만 더 기다려주세요']
+  const loadingTextSplitted = ['게시물에 활용할 ai 생성 이미지를 만드는 중이에요', '최대 20초 정도 소요됩니다.']
 
   return (
     <AnimatePresence>
