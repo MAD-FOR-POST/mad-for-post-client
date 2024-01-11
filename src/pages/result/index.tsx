@@ -251,11 +251,11 @@ export default function ResultPage() {
       const formattedTime = `${year}${month}${day}${hours}${minutes}${seconds}`
 
       copyToClipboard()
-      // setDownloadSuccess(true)
-      // !downloadSuccess &&
-      //   selectedImagesArray.forEach((url, index) => {
-      //     onImgDownload(url, index, formattedTime)
-      //   })
+      !downloadSuccess &&
+        selectedImagesArray.forEach((url, index) => {
+          onImgDownload(url, index, formattedTime)
+        })
+      setDownloadSuccess(true)
     }
   }, [swipe])
 
