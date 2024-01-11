@@ -54,6 +54,6 @@
   background-color: gray;
 }
 
-body {
-  overscroll-behavior-y: contain;
+html {
+  overscroll-behavior: none;
 }
