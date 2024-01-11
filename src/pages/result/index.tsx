@@ -119,29 +119,23 @@ export default function ResultPage() {
   }, [modifySuccess])
   const copyToClipboard = () => {
     const textToCopy = modifyContent || ''
-    try {
-      copy(textToCopy)
-      console.log('copied')
-    } catch (err) {
-      console.error(err)
-    }
 
     // // clipboard API O
-    // try {
-    //   navigator.clipboard.writeText(textToCopy).then(() => {
-    //     console.log('Text copied to clipboard.')
-    //     setCopySuccess(true)
-    //   })
-    // } catch (err) {
-    //   const textarea = document.createElement('textarea')
-    //   textarea.value = textToCopy
-    //   document.body.appendChild(textarea)
-    //   textarea.select()
-    //   document.execCommand('copy')
-    //   document.body.removeChild(textarea)
+    try {
+      navigator.clipboard.writeText(textToCopy).then(() => {
+        console.log('Text copied to clipboard.')
+        setCopySuccess(true)
+      })
+    } catch (err) {
+      const textarea = document.createElement('textarea')
+      textarea.value = textToCopy
+      document.body.appendChild(textarea)
+      textarea.select()
+      document.execCommand('copy')
+      document.body.removeChild(textarea)
 
-    //   console.error('Clipboard copy failed:', err)
-    // }
+      console.error('Clipboard copy failed:', err)
+    }
 
     // clipboard API X
     // if (navigator.clipboard) {
