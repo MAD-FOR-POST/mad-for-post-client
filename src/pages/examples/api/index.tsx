@@ -6,12 +6,15 @@ import { BasicButton } from '@/components/ui/button/BasicButton'
 import { postService } from '@/services/PostService'
 import { useMutation } from 'react-query'
 import Layout from '@/components/layout'
-import {EditButton} from '@/components/ui/button/EditButton'
+import { EditButton } from '@/components/ui/button/EditButton'
 import { AppRoutes } from '@/common/Constants'
+import { InboxArrowDownIcon } from '@heroicons/react/16/solid'
+
 export default function ApiExample() {
   const router = useRouter()
   const [posts, setPosts] = useState<IPost[]>([])
   const [generatedImageBase64, setGenerateImageBase64] = useState<string>()
+  const [generatedImagesBase64, setGenerateImagesBase64] = useState<string[]>()
 
   const { mutate: generatePostMutate, isLoading: isGptDataLoading, error: gptDataFetchError, data: gptResult } = useMutation(postService.generatePost)
 
@@ -54,11 +57,21 @@ export default function ApiExample() {
     setGenerateImageBase64(imageBase64 ?? '')
   }
 
+  const onGenerateImageButtonClicked2 = async () => {
+    const imageUrls = await postService.generateImages({
+      keywords: 'travel, adventure, future war with ailen',
+      description: 'buildings in 5080BC years , super realistic, one photo',
+    })
+    const firstImageUrl = imageUrls[0]
+    setGenerateImageBase64(firstImageUrl ?? '')
+    setGenerateImagesBase64(imageUrls)
+  }
+
   const onClearDataButtonClicked = async () => {
     setPosts([])
   }
-  const onEditButtonClicked=()=>{
-    router.push(AppRoutes.inputImage)
+  const onEditButtonClicked = () => {
+    router.push(AppRoutes.edit)
   }
   return (
     <Layout>
@@ -69,6 +82,7 @@ export default function ApiExample() {
         <BasicButton onClick={onGeneratePostButtonClicked}>GPT생성요청</BasicButton>
         <BasicButton onClick={generatePostWithReactQuery}>GPT생성요청(React Query)</BasicButton>
         <BasicButton onClick={onGenerateImageButtonClicked}>이미지 생성요청</BasicButton>
+        <BasicButton onClick={onGenerateImageButtonClicked2}>stable diffusion 이미지 생성요청</BasicButton>
         <BasicButton onClick={onClearDataButtonClicked}>게시물 초기화</BasicButton>
 
         <div className={'flex flex-col gap-8'}>
@@ -83,12 +97,22 @@ export default function ApiExample() {
             })}
         </div>
 
-        {generatedImageBase64 && 
-        <>
-          <img src={generatedImageBase64 ?? ''} />
-          <EditButton onClick={onEditButtonClicked}/>
-        </>
-        }
+        {generatedImageBase64 &&
+          generatedImagesBase64?.map((image) => (
+            <div key={image} className="relative">
+              <img src={image ?? ''} />
+              <EditButton onClick={onEditButtonClicked}></EditButton>
+            </div>
+          ))}
+
+        {generatedImageBase64 && (
+          <div className="relative">
+            <img src={generatedImageBase64 ?? ''} />
+            <EditButton onClick={onEditButtonClicked}>
+              <InboxArrowDownIcon className="h-6 w-6 text-black" />
+            </EditButton>
+          </div>
+        )}
 
         {isGptDataLoading && <span>GPT 데이터 로딩중</span>}
         {gptResult && <span>{gptResult}</span>}

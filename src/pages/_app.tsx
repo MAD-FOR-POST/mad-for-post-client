@@ -4,6 +4,8 @@ import { RecoilRoot } from 'recoil'
 
 import { Poppins } from 'next/font/google'
 import { QueryClient, QueryClientProvider } from 'react-query'
+import { useRouter } from 'next/router'
+import { AnimatePresence } from 'framer-motion'
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -14,12 +16,15 @@ const poppins = Poppins({
 
 export default function App({ Component, pageProps }: AppProps) {
   const queryClient = new QueryClient()
+  const router = useRouter()
 
   return (
     <QueryClientProvider client={queryClient}>
       <main className={poppins.className}>
         <RecoilRoot>
-          <Component {...pageProps} />
+          <AnimatePresence mode={'wait'}>
+            <Component {...pageProps} key={router.route} />
+          </AnimatePresence>
         </RecoilRoot>
       </main>
     </QueryClientProvider>

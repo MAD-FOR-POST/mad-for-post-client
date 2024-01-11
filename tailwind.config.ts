@@ -2,6 +2,7 @@ import type { Config } from 'tailwindcss'
 
 const config: Config = {
   content: ['./src/pages/**/*.{js,ts,jsx,tsx,mdx}', './src/components/**/*.{js,ts,jsx,tsx,mdx}', './src/app/**/*.{js,ts,jsx,tsx,mdx}'],
+  darkMode: 'class',
   theme: {
     extend: {
       backgroundColor: {
@@ -24,6 +25,7 @@ const config: Config = {
       animation: {
         slidein: 'slidein 90s linear 1s infinite alternate ',
         slideout: 'slideout 90s linear 1s infinite alternate ',
+        blink: 'blink 3s ease-in-out  infinite',
       },
       keyframes: {
         slidein: {
@@ -41,6 +43,10 @@ const config: Config = {
           '50%': {
             transform: 'translateX(-250%)', // Adjust the distance as needed
           },
+        },
+        blink: {
+          '0%, 100%': { opacity: '0' },
+          '10%,90%': { opacity: '1' },
         },
       },
     },

@@ -1,6 +1,5 @@
 import React from 'react'
 
-// InputHTMLAttributes 타입을 확장하여 모든 표준 <input> 속성을 포함시킵니다.
 interface Props extends React.InputHTMLAttributes<HTMLInputElement> {}
 
 export const BasicInput: React.FC<Props> = (props) => {

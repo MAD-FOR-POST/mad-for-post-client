@@ -5,19 +5,21 @@ import { useRouter } from 'next/router'
 
 interface Props {
   onClick?: () => void
+  extraStyles?: string // Additional CSS classes
 }
 
-export const BackButton: React.FC<Props> = ({ onClick }) => {
+export const BackButton: React.FC<Props> = ({ onClick, extraStyles }) => {
   const router = useRouter()
   const onButtonClicked = () => {
     router.back()
   }
 
+  // Combine the default styles with extraStyles
+  const buttonStyles = `bg-[#F7F7F7] w-[46px] h-[64px] rounded-full start-10 z-10 ${extraStyles}`
+
   return (
-    <div className="absolute w-full px-8">
-      <button className="bg-white w-[50px] h-[70px]  rounded-full  start-10 z-10 " onClick={onClick ? onClick : onButtonClicked}>
-        <FontAwesomeIcon icon={faChevronLeft} />
-      </button>
-    </div>
+    <button className={buttonStyles} onClick={onClick ? onClick : onButtonClicked}>
+      <FontAwesomeIcon icon={faChevronLeft} />
+    </button>
   )
 }

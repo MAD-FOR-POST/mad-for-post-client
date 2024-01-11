@@ -19,8 +19,14 @@ export const postService = {
     printLog(`response.data.data ${response.data.data}`)
     return response.data.data
   },
+  // DALL-E이미지 요청 (사용안함) -> string은 base64스트링
   async generateImage(params: IGeneratePostRequest): Promise<string> {
     const response = await axiosInstance.post<IApiResponse<string>>(Apis.generateImage, params)
+    return response.data.data
+  },
+  // Stable Diffusion 이미지 요청 -> string[]은 url 리스트
+  async generateImages(params: IGeneratePostRequest): Promise<string[]> {
+    const response = await axiosInstance.post<IApiResponse<string[]>>(Apis.generateImages, params)
     return response.data.data
   },
 }
