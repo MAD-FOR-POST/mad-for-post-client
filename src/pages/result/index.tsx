@@ -123,9 +123,7 @@ export default function ResultPage() {
     // // clipboard API O
     try {
       setCopySuccess(true)
-      navigator.clipboard.writeText(textToCopy).then(() => {
-        console.log('Text copied to clipboard.')
-      })
+      navigator.clipboard.writeText(textToCopy).then(() => {})
     } catch (err) {
       const textarea = document.createElement('textarea')
       textarea.value = textToCopy
@@ -202,7 +200,6 @@ export default function ResultPage() {
   }
 
   const handleImageLoad = (event: any) => {
-    console.log(event.target.width)
     setImgWidth(event.target.width)
   }
 
@@ -232,7 +229,7 @@ export default function ResultPage() {
 
   useEffect(() => {
     newX.onChange(() => {
-      if (newX.get() > 0.9) {
+      if (newX.get() > 0.8) {
         setSwipe(true)
       } else {
         setSwipe(false)
@@ -262,9 +259,6 @@ export default function ResultPage() {
     }
   }, [swipe])
 
-  useEffect(() => {
-    console.log(imgWidth)
-  }, [imgWidth])
   return (
     <Layout>
       <div className={'flex flex-col  justify-front items-front bg-[#DDBCC5] w-full max-w-[428px] h-full pt-9  relative '}>
@@ -380,7 +374,7 @@ export default function ResultPage() {
             </NextButton>
           </div>
         ) : (
-          <div ref={myComponentRef} className="w-full  absolute bottom-0 left-0 px-3 ">
+          <div ref={myComponentRef} className="w-full  absolute bottom-0 left-0 px-4 ">
             <motion.div className=" mb-[32px] relative flex justify-center rounded-full items-center bg-[#303841] h-[80px] w-full" ref={constraintsRef}>
               <div className="text-white animate-blink">
                 Baam! <br /> Lets uploaded

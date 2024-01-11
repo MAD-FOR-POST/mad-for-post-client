@@ -6,7 +6,7 @@ import { AppRoutes } from '@/common/Constants'
 import ChevronRightAnimated from '@/components/ui/icon/ChevronRightAnimated'
 import Layout from '@/components/layout'
 import { useResetRecoilState } from 'recoil'
-import { userInputTextsAtom } from '@/stores/UserInfoAtom'
+import { gptResultsAtom, userInputImagesAtom, userInputTextsAtom } from '@/stores/UserInfoAtom'
 
 export default function TailwindExample() {
   const router = useRouter()
@@ -20,8 +20,10 @@ export default function TailwindExample() {
   const constraintsRef = useRef(null)
 
   const resetInputText = useResetRecoilState(userInputTextsAtom)
+  const resetInputImages = useResetRecoilState(userInputImagesAtom)
   useEffect(() => {
     resetInputText()
+    resetInputImages()
   }, [])
 
   useEffect(() => {
