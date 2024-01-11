@@ -122,9 +122,9 @@ export default function ResultPage() {
 
     // // clipboard API O
     try {
+      setCopySuccess(true)
       navigator.clipboard.writeText(textToCopy).then(() => {
         console.log('Text copied to clipboard.')
-        setCopySuccess(true)
       })
     } catch (err) {
       const textarea = document.createElement('textarea')
@@ -359,13 +359,13 @@ export default function ResultPage() {
                       저장!
                     </div>
                   )}
-                  {copySuccess && <CopySuccessModal link={SNSList[0].link} />}
                   <span dangerouslySetInnerHTML={{ __html: (modifyContent ?? '').replace(/\n/g, '<br />') }} />
                 </div>
               )}
             </div>
           </div>
         </div>
+        {copySuccess && <CopySuccessModal setModal={setCopySuccess} link={SNSList[0].link} />}
 
         {/* 슬라이드 */}
         {modify ? (
