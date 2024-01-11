@@ -5,8 +5,8 @@ import { BackButton } from '@/components/ui/button/BackButton'
 
 import { KeywordList } from '@/components/ui/keyword/KeywordList'
 import { AppRoutes } from '@/common/Constants'
-import { useRecoilState } from 'recoil'
-import { gptResultsAtom, userInputTextsAtom } from '@/stores/UserInfoAtom'
+import { useRecoilState, useResetRecoilState } from 'recoil'
+import { gptImageResultIndexArrayAtom, gptResultsAtom, userInputImagesAtom, userInputTextsAtom } from '@/stores/UserInfoAtom'
 import { SizedBox } from '@/components/ui/box/SizedBox'
 import Layout from '@/components/layout'
 import { TitleText } from '@/components/ui/typography/TitleText'
@@ -30,6 +30,11 @@ export default function TextKeywordPage() {
   const { mutate: generateImageMutate, isLoading: gptImgLoading, error: gptImgDataFetchError, data: gptImageResults } = useMutation(postService.generateImages)
 
   const [gptResults, setGPTResults] = useRecoilState(gptResultsAtom)
+
+  const resetGptResultImagesArray = useResetRecoilState(gptImageResultIndexArrayAtom)
+  useEffect(() => {
+    resetGptResultImagesArray()
+  }, [])
 
   const onRemoveKeywordButtonClicked = (index: number) => {
     setUserInput((currentInput) => {
@@ -105,9 +110,6 @@ export default function TextKeywordPage() {
     setKeyWord('')
   }
 
-  useEffect(() => {
-    console.log(userInput)
-  }, [userInput])
   return (
     <Layout>
       {!isLoading ? (
