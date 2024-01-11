@@ -270,7 +270,7 @@ export default function TailwindExample() {
                       alt={`Image ${index}`}
                     />
                     {selectedImagesArray.includes(image) && (
-                      <div className="flex min-w-[65px] min-h-[65px] bg-black/60 absolute z-50 top-0 text-white items-center justify-center ">
+                      <div className="flex min-w-[65px] min-h-[65px] w-1/2 bg-black/60 absolute z-50 top-0 text-white items-center justify-center ">
                         <FontAwesomeIcon icon={faCheck} size="2xl" />
                       </div>
                     )}
