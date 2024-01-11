@@ -28,7 +28,7 @@ export default function TailwindExample() {
 
   useEffect(() => {
     newX.onChange(() => {
-      if (newX.get() > 0.6 && !routerPushed) {
+      if (newX.get() > 0.9 && !routerPushed) {
         setRouterPushed(true)
         router.push(AppRoutes.inputTextKeyword)
       }
