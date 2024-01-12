@@ -1,4 +1,4 @@
-import { faChevronRight } from '@fortawesome/free-solid-svg-icons'
+import { faChevronRight, faXmark } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 interface InterfaceProp {
@@ -9,13 +9,17 @@ interface InterfaceProp {
 export const CopySuccessModal = ({ link, setModal }: InterfaceProp) => {
   return (
     <div className="px-4 w-full absolute bottom-0 z-50">
-      <div className={' p-4 mb-[32px]    text-white  h-[160px] w-full  flex   justify-center items-center  bg-[#303841]/80 rounded-[10px] backdrop-blur-sm   '}>
+      <div className={'  p-4 mb-[32px]    text-white  h-[160px] w-full  flex   justify-center items-center  bg-[#303841]/80 rounded-[10px] backdrop-blur-sm   '}>
         <div
-          className=" flex flex-col h-full w-full pl-8 items-center  justify-around"
+          className=" relative flex flex-col h-full w-full pl-8 items-center  justify-around"
           onClick={() => {
             setModal(false)
           }}
         >
+          <div className="absolute left-0 top-0">
+            <FontAwesomeIcon icon={faXmark} size="xl" />
+          </div>
+
           <h1 className=" text-[16px] font-bold text-center pl-4"> 텍스트 복사 완료 !</h1>
           <p className="text-[14px] ">
             자동 업로드 기능은 아직 개발 중이에요!

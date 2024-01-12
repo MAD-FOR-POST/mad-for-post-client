@@ -283,7 +283,12 @@ export default function ResultPage() {
               {selectedImagesArray && (
                 <AnimatePresence custom={back}>
                   {copySuccess && (
-                    <div className={` h-full	w-full  bg-[#000000]/50 absolute z-10 flex flex-col justify-center items-center `}>
+                    <div
+                      className={` h-full	w-full  bg-[#000000]/50 absolute z-10 flex flex-col justify-center items-center `}
+                      onClick={() => {
+                        setCopySuccess(false)
+                      }}
+                    >
                       <img src="/images/check-square.png" className="w-[20%]" />
                       <div className=" font-bold text-[22px] text-center p-8">
                         다운로드중이에요! <br />
