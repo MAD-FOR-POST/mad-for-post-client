@@ -19,6 +19,7 @@ import Loading from '@/components/ui/loading/Loading'
 import { KeywordModal } from '@/components/ui/modal/KeywordModal'
 
 import { DragDropContext, Draggable, DropResult, Droppable } from 'react-beautiful-dnd'
+import { imageHelp } from '@/text'
 
 export default function TailwindExample() {
   const router = useRouter()
@@ -217,7 +218,7 @@ export default function TailwindExample() {
           >
             <div className="flex w-full items-center justify-between px-5">
               <BackButton />
-              <div className="text-4xl font-bold">Ta-da!</div>
+              <div className="text-4xl font-bold"></div>
               <div className="text-2xl cursor-pointer " onClick={() => setModalOpen(true)}>
                 <FontAwesomeIcon icon={faCircleQuestion} />
               </div>
@@ -257,7 +258,7 @@ export default function TailwindExample() {
                   )}
                 </Droppable>
                 <div className=" bg-[#DFBFC7] p-2 px-5 rounded-full cursor-pointer absolute bottom-6 right-10 z-0" onClick={onGPTGenerateButtonClicked}>
-                  Regenerate
+                  이미지 재생성
                 </div>
               </div>
               <div className="flex transition-all overflow-scroll  w-full px-4 gap-1">
@@ -326,10 +327,8 @@ export default function TailwindExample() {
             {modalOpen && (
               <KeywordModal setKeywordModalOpen={setModalOpen} title="Help">
                 <div className="border-b-2 pb-2">
-                  <div className={'text-[14px] mb-5'}>
-                    1. Drag the ai-generated image and place it on the stage below! Posts are generated in the order of the images that are staged.
-                  </div>
-                  <div className={'text-[14px]'}>2. Pressing the regenerate button will create 10 new images in 9 seconds, and the images on the stage will not disappear.</div>
+                  <div className={'text-[14px] mb-5'}>{imageHelp.top.kr}</div>
+                  <div className={'text-[14px]'}>{imageHelp.bottom.kr}</div>
                 </div>
               </KeywordModal>
             )}

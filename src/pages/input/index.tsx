@@ -7,6 +7,7 @@ import ChevronRightAnimated from '@/components/ui/icon/ChevronRightAnimated'
 import Layout from '@/components/layout'
 import { useResetRecoilState } from 'recoil'
 import { gptResultsAtom, userInputImagesAtom, userInputTextsAtom } from '@/stores/UserInfoAtom'
+import { inputText } from '@/text'
 
 export default function TailwindExample() {
   const router = useRouter()
@@ -67,15 +68,12 @@ export default function TailwindExample() {
           </div>
           <div className="absolute  flex flex-col  justify-between  shadow-3xl w-full min-h-[320px] bg-white bottom-0 p-[24px] ">
             <div className="h-2/3 flex flex-col items-center">
-              <div className="font-poppins text-4xl text-center font-bold">Let me just be efficient</div>
-              <div className="text-center mt-[24px] text-gray-400  ">
-                Generate SNS contents and boom!
-                <br /> Upload done!
-              </div>
+              <div className="font-poppins text-4xl text-center font-bold">{inputText.title.kr}</div>
+              <div className="text-center mt-[24px] text-gray-400  ">{inputText.subTitle.kr}</div>
             </div>
             <div ref={myComponentRef}>
               <motion.div className="relative flex justify-center rounded-full items-center bg-orange-pink h-[80px] bottom-0 " ref={constraintsRef}>
-                <div className="text-white animate-blink">Start Experience</div>
+                <div className="text-white animate-blink">{inputText.slide.kr}</div>
                 <motion.div
                   drag="x"
                   style={{ x }}

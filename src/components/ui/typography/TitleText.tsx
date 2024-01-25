@@ -11,7 +11,7 @@ export const TitleText: React.FC<Props> = ({ children, color }) => {
   }
 
   return (
-    <span className={`font-bold text-[38px] text-center h-1/3 flex justify-center items-center`} style={textStyle}>
+    <span className={`font-bold w-2/3 text-[38px] text-center h-1/3 flex justify-center items-center`} style={textStyle}>
       {children}
     </span>
   )

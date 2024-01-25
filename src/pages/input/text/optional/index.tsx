@@ -13,6 +13,7 @@ import { useMutation } from 'react-query'
 import { postService } from '@/services/PostService'
 
 import Loading from '@/components/ui/loading/Loading'
+import { inputTextOptional } from '@/text'
 
 export default function TextOptionalPage() {
   const router = useRouter()
@@ -90,25 +91,22 @@ export default function TextOptionalPage() {
           <div className="flex w-full items-center justify-between px-5">
             <BackButton />
           </div>
-          <TitleText color="#DDBCC5">Add more detail!</TitleText>
+          <TitleText color="#DDBCC5">{inputTextOptional.title.kr}</TitleText>
           <div className={'relative w-full'}>
             <img src="/images/FormBackgroundTop.png" />
             <div className={'flex flex-col items-center  w-full bg-white bg-opacity-50'}>
               <div className={'flex flex-col bg-white rounded-[36.38px] w-[87%] min-h-[300px] mt-[14px] px-[40px] pt-[12px] pb-[24px] mb-[104px]'}>
-                <div className={'text-[#262A2F] text-[14px] font-bold text-center  mb-[16px]'}>
-                  Write anything to
-                  <br /> add more detail (optional)
-                </div>
+                <div className={'text-[#262A2F] text-[14px] font-bold text-center  mb-[16px]'}>{inputTextOptional.inputTitle.kr}</div>
                 <textarea
                   style={{ resize: 'none' }}
                   className={'flex-grow h-full text-[16px] focus:outline-none hide-scrollbar'}
-                  placeholder="Write anything and let us do magic"
+                  placeholder={inputTextOptional.inputPlaceholder.kr}
                   name="detail"
                   value={userInput.detail}
                   onChange={handleTextareaChange}
                 ></textarea>
               </div>
-              <NextButton onClick={onGPTGenerateButtonClicked}>Done</NextButton>
+              <NextButton onClick={onGPTGenerateButtonClicked}>완료</NextButton>
             </div>
           </div>
         </div>
