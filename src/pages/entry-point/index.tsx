@@ -88,12 +88,8 @@ export default function Home() {
     <Layout>
       <div className={'flex flex-col items-center w-full max-w-[428px] h-full pt-9 relative '}>
         <div className={'text-center w-full flex justify-center  flex-col h-[85%]'}>
-          <h1 className={'font-bold text-[38px] '}>Hello✨</h1>
-          <p className={'text-[16px] mt-5 mb-6'}>
-            Type your abraca-code
-            <br />
-            to get final result!
-          </p>
+          <h1 className={'font-bold text-[38px] '}>안녕하세요✨</h1>
+          <p className={'text-[16px] mt-5 mb-6'}>결제를 통해 받은 코드를 입력해 결과물을 받으세요!</p>
 
           <div className={'h-[150px]'}>
             <div className={'w-[90%] h-[128px] bg-[#E0C2CA] rounded-[37px] mx-auto '}>
@@ -123,21 +119,21 @@ export default function Home() {
                 />
               ))}
             </div>
-            {!invalidValue && <div className={'text-[#E71C40] text-[14px] mt-[10px]'}>Invalid code. Please check and try again.</div>}
+            {!invalidValue && <div className={'text-[#E71C40] text-[14px] mt-[10px]'}>코드를 다시 입력해주시기 바랍니다.</div>}
           </div>
 
           <p className={'text-[16px] mt-5 '}>
-            You don&apos;t have a code,
+            코드가 없다면
             <br />
-            please contact us&nbsp;
-            <span className={'underline cursor-pointer'} onClick={onShowModal}>
-              here
+            <span className={'underline cursor-pointer text-red-400'} onClick={onShowModal}>
+              여기
             </span>
+            를 눌러주세요
           </p>
         </div>
 
         <NextButton bgColor="#F4B7A8" onClick={goToMainPageButtonClicked}>
-          Done
+          완료
         </NextButton>
         {showModal && (
           <KeywordModal setKeywordModalOpen={setShowModal} title="Get unlimited access!">

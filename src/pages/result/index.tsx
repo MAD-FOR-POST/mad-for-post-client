@@ -203,6 +203,10 @@ export default function ResultPage() {
     setImgWidth(event.target.width)
   }
 
+  const onSelectArea = () => {
+    const text = document.getElementById('text')
+  }
+
   // useEffect(() => {
   //   copySuccess &&
   //     setTimeout(() => {
@@ -324,7 +328,7 @@ export default function ResultPage() {
               {!modify && (
                 <div className="flex justify-between w-full items-center">
                   <div className="absoute z-20 flex justify-between  px-2">
-                    <FloatingButton onClick={onRegenerateClick} text={gptLoading ? 'Generating...' : 'Regenerate'} bgColor="#DFBFC7" />
+                    <FloatingButton onClick={onRegenerateClick} text={gptLoading ? '재생성중...' : '글 재생성'} bgColor="#DFBFC7" />
                   </div>
                   <div onClick={() => setModify(true)} className="text-[#116AEF] text-[16px]  cursor-pointer w-fit">
                     텍스트 수정
@@ -349,7 +353,9 @@ export default function ResultPage() {
 
             <div className="bg-white mb-[12px] w-full flex-1">
               {modify ? (
-                <textarea className="w-full resize-y h-[500px]" value={modifyContent} onChange={(e) => setModifyContent(e.target.value)} />
+                <div>
+                  <textarea className="w-full resize-y h-[500px]" value={modifyContent} id="text" onChange={(e) => setModifyContent(e.target.value)} />
+                </div>
               ) : (
                 <div className="relative">
                   {showButton && (
@@ -357,7 +363,12 @@ export default function ResultPage() {
                       저장!
                     </div>
                   )}
-                  <span dangerouslySetInnerHTML={{ __html: (modifyContent ?? '').replace(/\n/g, '<br />') }} />
+                  <div>
+                    <span id="text" dangerouslySetInnerHTML={{ __html: (modifyContent ?? '').replace(/\n/g, '<br />') }} />
+                    <div className="text-red-500" onClick={onSelectArea}>
+                      {/* 전체선택 */}
+                    </div>
+                  </div>
                 </div>
               )}
             </div>
@@ -380,9 +391,7 @@ export default function ResultPage() {
         ) : (
           <div ref={myComponentRef} className="w-full  absolute bottom-0 left-0 px-4 ">
             <motion.div className=" mb-[32px] relative flex justify-center rounded-full items-center bg-[#303841] h-[80px] w-full" ref={constraintsRef}>
-              <div className="text-white animate-blink">
-                Baam! <br /> Lets uploaded
-              </div>
+              <div className="text-white animate-blink">오른쪽으로 스와이프해서 업로드하기</div>
               <motion.div
                 drag="x"
                 style={{
@@ -397,7 +406,7 @@ export default function ResultPage() {
                 dragSnapToOrigin
               ></motion.div>
               <div className="absolute  right-[20px]">
-                <ChevronRightAnimated />
+                <ChevronRightAnimated last={true} />
               </div>
             </motion.div>
           </div>

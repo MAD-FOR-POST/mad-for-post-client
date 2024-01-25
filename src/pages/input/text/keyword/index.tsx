@@ -14,6 +14,7 @@ import { useMutation } from 'react-query'
 import { postService } from '@/services/PostService'
 import Loading from '@/components/ui/loading/Loading'
 import { FloatingButton } from '@/components/ui/button/FloatingButton'
+import { inputTextKeyword } from '@/text'
 
 export default function TextKeywordPage() {
   const [keyword, setKeyWord] = useState('') //리스트 안에 각각
@@ -116,9 +117,9 @@ export default function TextKeywordPage() {
         <div className={'flex flex-col justify-between items-center bg-[#DDBCC5] w-full max-w-[428px] h-full pt-9 relative '}>
           <div className="flex w-full items-center justify-between px-5">
             <BackButton />
-            <FloatingButton text="Add more detail" onClick={onDetailClick} />
+            <FloatingButton text={inputTextKeyword.input.kr} onClick={onDetailClick} />
           </div>
-          <TitleText>Give me words</TitleText>
+          <TitleText>{inputTextKeyword.title.kr}</TitleText>
           <div className={'relative w-full'}>
             <img src="/images/FormBackgroundTop.png" />
             <div className={'flex flex-col items-center  w-full bg-white bg-opacity-50'}>
@@ -132,11 +133,11 @@ export default function TextKeywordPage() {
                       type="text"
                       required
                       className={'text-[16px] focus:outline-none flex-1 max-w-[220px] py-[20px]'}
-                      placeholder="Write keywords here."
+                      placeholder={inputTextKeyword.input.kr}
                       value={keyword}
                       onChange={(e) => setKeyWord(e.target.value)}
                     />
-                    <button className={'text-[16px] text-[#116AEF] ml-[2px] cursor-pointer'}>Add</button>
+                    <button className={'text-[16px] text-[#116AEF] ml-[2px] cursor-pointer'}>추가</button>
                   </form>
                 )}
                 <SizedBox height={12} />

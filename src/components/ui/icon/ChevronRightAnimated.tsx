@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import styles from './ChevronRightAnimated.module.css'
 
-const ChevronRightAnimated: React.FC = () => {
+const ChevronRightAnimated: React.FC<{ last?: boolean }> = ({ last }) => {
   const [activeIndex, setActiveIndex] = useState(0)
   const images = ['images/svg/ic_chevron_right_anim_1.svg', 'images/svg/ic_chevron_right_anim_2.svg', 'images/svg/ic_chevron_right_anim_3.svg']
 
@@ -16,7 +16,14 @@ const ChevronRightAnimated: React.FC = () => {
   return (
     <div className={styles.animationContainer}>
       {images.map((image, index) => (
-        <img draggable="false" width={8.59} key={index} src={image} alt={`Chevron Right ${index + 1}`} className={`${styles.animatedImg} ${styles[`img${index}`]}`} />
+        <img
+          draggable="false"
+          width={8.59}
+          key={index}
+          src={image}
+          alt={`Chevron Right ${index + 1}`}
+          className={`${styles.animatedImg} ${styles[`img${index}`]} ${last && 'filter brightness-0 invert'}`}
+        />
       ))}
     </div>
   )
