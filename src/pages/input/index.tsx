@@ -20,6 +20,8 @@ export default function TailwindExample() {
   const newX = useTransform(x, [0, currentWidth - 100], [0, 1])
   const constraintsRef = useRef(null)
 
+  const { kr: titleKr } = inputText.title;
+
   const resetInputText = useResetRecoilState(userInputTextsAtom)
   const resetInputImages = useResetRecoilState(userInputImagesAtom)
   useEffect(() => {
@@ -68,7 +70,8 @@ export default function TailwindExample() {
           </div>
           <div className="absolute  flex flex-col  justify-between  shadow-3xl w-full min-h-[320px] bg-white bottom-0 p-[24px] ">
             <div className="h-2/3 flex flex-col items-center">
-              <div className="font-poppins text-4xl text-center font-bold">{inputText.title.kr}</div>
+              <div className="font-poppins text-4xl text-center font-bold">{titleKr.kr1}</div>
+              <div className="font-poppins text-4xl text-center font-bold">{titleKr.kr2}</div>
               <div className="text-center mt-[24px] text-gray-400  ">{inputText.subTitle.kr}</div>
             </div>
             <div ref={myComponentRef}>

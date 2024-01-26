@@ -323,7 +323,7 @@ export default function TailwindExample() {
               </Droppable>
               {stageError && <div className="text-center text-red-500 ">Please select at least 1 photo</div>}
             </form>
-            <NextButton onClick={onClickDone}>Done</NextButton>
+            <NextButton onClick={onClickDone}>완료</NextButton>
             {modalOpen && (
               <KeywordModal setKeywordModalOpen={setModalOpen} title="Help">
                 <div className="border-b-2 pb-2">

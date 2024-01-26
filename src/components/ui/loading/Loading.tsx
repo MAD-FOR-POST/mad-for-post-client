@@ -3,7 +3,7 @@ import { BackButton } from '../button/BackButton'
 import Typewriter from 'typewriter-effect'
 
 function Loading({ setIsLoading }: any) {
-  const loadingTextSplitted = ['게시물에 활용할 ai 생성 이미지를 만드는 중이에요', '최대 20초 정도 소요됩니다.']
+  const loadingTextSplitted = ['게시물에 활용할<br/>ai 생성 이미지를<br/>만드는 중이에요', '결과물까지<br/>최대 20초 정도<br/>소요됩니다.']
 
   return (
     <AnimatePresence>
@@ -16,13 +16,22 @@ function Loading({ setIsLoading }: any) {
           />
         </div> */}
 
-        <div className="flex  flex-col font-poppins text-4xl w-[220px] h-full   text-center  justify-center font-bold  ">
+        <div className="flex  flex-col font-poppins text-4xl w-[300px] h-full   text-center  justify-center font-bold  ">
           <Typewriter
             options={{
               strings: loadingTextSplitted,
               autoStart: true,
               loop: true,
             }}
+            // onInit={(typewriter) => {
+            //   typewriter
+    
+            //     .typeString(loadingTextSplitted)
+    
+            //     .pauseFor(100)
+    
+            //     .start();
+            // }}
           />
         </div>
       </div>

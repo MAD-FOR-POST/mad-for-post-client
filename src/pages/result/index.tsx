@@ -391,7 +391,7 @@ export default function ResultPage() {
         ) : (
           <div ref={myComponentRef} className="w-full  absolute bottom-0 left-0 px-4 ">
             <motion.div className=" mb-[32px] relative flex justify-center rounded-full items-center bg-[#303841] h-[80px] w-full" ref={constraintsRef}>
-              <div className="text-white animate-blink">오른쪽으로 스와이프해서 업로드하기</div>
+              <div className="text-white animate-blink text-[14px]">오른쪽으로 스와이프해서 업로드하기</div>
               <motion.div
                 drag="x"
                 style={{

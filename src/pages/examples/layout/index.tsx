@@ -68,7 +68,7 @@ export default function LayoutExample() {
         </div>
 
         <div className={'p-[24px] bg-emerald-200'}>
-          <ConfirmButton>Done</ConfirmButton>
+          <ConfirmButton>완료</ConfirmButton>
         </div>
       </div>
     </Layout>
