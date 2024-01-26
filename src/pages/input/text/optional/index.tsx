@@ -25,7 +25,7 @@ export default function TextOptionalPage() {
   const { mutate: generateImageMutate, isLoading: gptImgLoading, error: gptImgDataFetchError, data: gptImageResults } = useMutation(postService.generateImages)
 
   const [gptResults, setGPTResults] = useRecoilState(gptResultsAtom)
-
+  const { kr: titleKr } = inputTextOptional.title;
   const onGPTGenerateButtonClicked = async () => {
     //keyword가 없는 경우 GPT 생성을 할 수 없으므로, 키워드 입력 페이지로 이동한다.
     if (userInput.keywords.length === 0) {
@@ -91,7 +91,7 @@ export default function TextOptionalPage() {
           <div className="flex w-full items-center justify-between px-5">
             <BackButton />
           </div>
-          <TitleText color="#DDBCC5">{inputTextOptional.title.kr}</TitleText>
+          <TitleText color="#DDBCC5">{titleKr.kr1}<br/>{titleKr.kr2}</TitleText>
           <div className={'relative w-full'}>
             <img src="/images/FormBackgroundTop.png" />
             <div className={'flex flex-col items-center  w-full bg-white bg-opacity-50'}>

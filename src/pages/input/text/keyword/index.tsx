@@ -125,7 +125,7 @@ export default function TextKeywordPage() {
             <div className={'flex flex-col items-center  w-full bg-white bg-opacity-50'}>
               <div className={'relative flex flex-col bg-white rounded-[36.38px] w-[87%] min-h-[150px] px-[10px] py-[11px] mb-[104px]'}>
                 <div className={'text-center'}>
-                  <p className={'text-[#262A2F] text-[14px] font-bold '}>Keywords</p>
+                  <p className={'text-[#262A2F] text-[14px] font-bold '}>키워드</p>
                 </div>
                 {userInput.keywords.length < 10 && (
                   <form className={'flex justify-between items-center px-[24px] w-full'} onSubmit={onSubmit}>
@@ -144,7 +144,7 @@ export default function TextKeywordPage() {
                 <KeywordList keywords={userInput.keywords} onRemoveKeywordButtonClicked={onRemoveKeywordButtonClicked} />
                 {isModalOpen && <div className="text-[#E71C40] text-[14px] text-center  bottom-0 w-full">Minimum 3 to Maximum 10 keywords needed</div>}
               </div>
-              <NextButton onClick={onGPTGenerateButtonClicked}>Done</NextButton>
+              <NextButton onClick={onGPTGenerateButtonClicked}>완료</NextButton>
             </div>
           </div>
         </div>

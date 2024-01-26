@@ -1,7 +1,10 @@
 export const inputText = {
   title: {
     en: 'Let me just be efficient',
-    kr: 'SNS 자동 생성글 더이상 고민하지 마세요!',
+    kr: {
+      kr1:'SNS 자동 생성글',
+      kr2:' 더이상 고민하지 마세요!'
+    },
   },
   subTitle: {
     en: 'Generate SNS contents and boom! Upload done!',
@@ -16,7 +19,7 @@ export const inputText = {
 export const inputTextKeyword = {
   title: {
     en: 'Give me words',
-    kr: '키워드 입력',
+    kr: '키워드를 입력해주세요!',
   },
   button: {
     en: 'Add more detail',
@@ -31,7 +34,10 @@ export const inputTextKeyword = {
 export const inputTextOptional = {
   title: {
     en: 'Add more detail!',
-    kr: '추가적인 세부사항을 입력하세요',
+    kr: {
+      kr1 : '추가적인',
+      kr2 : '세부사항을 입력하세요',
+    }
   },
   inputTitle: {
     en: 'Write anything to add more detail (optional)',
