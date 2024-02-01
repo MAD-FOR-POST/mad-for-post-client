@@ -1,3 +1,4 @@
+'use client'
 import { useRouter } from 'next/router'
 import { useState, useEffect, ChangeEvent, useCallback } from 'react'
 import { NextButton } from '@/components/ui/button/NextButton'

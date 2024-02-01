@@ -9,6 +9,7 @@ import Layout from '@/components/layout'
 import { EditButton } from '@/components/ui/button/EditButton'
 import { AppRoutes } from '@/common/Constants'
 import { InboxArrowDownIcon } from '@heroicons/react/16/solid'
+import onAccountConnectButtonClicked from '@/components/account'
 
 export default function ApiExample() {
   const router = useRouter()
@@ -73,6 +74,16 @@ export default function ApiExample() {
   const onEditButtonClicked = () => {
     router.push(AppRoutes.edit)
   }
+
+  const onAccountConnectButtonClicked = async () => {
+    const imageBase64 = await postService.uploadPost({
+      images: [
+        'https://pub-3626123a908346a7a8be8d9295f44e26.r2.dev/generations/1a70e706-8216-4b13-8400-35060a935242-0.png',
+        'https://pub-3626123a908346a7a8be8d9295f44e26.r2.dev/generations/1a70e706-8216-4b13-8400-35060a935242-1.png',
+      ],
+      description: 'Exploring the hidden gems of the city, uncovering new adventures at every turn.',
+    })
+  }
   return (
     <Layout>
       <div className={'flex flex-col justify-start items-center rounded-[20px] bg-white w-full max-w-[512px] h-full overflow-y-scroll'}>
@@ -84,6 +95,7 @@ export default function ApiExample() {
         <BasicButton onClick={onGenerateImageButtonClicked}>이미지 생성요청</BasicButton>
         <BasicButton onClick={onGenerateImageButtonClicked2}>stable diffusion 이미지 생성요청</BasicButton>
         <BasicButton onClick={onClearDataButtonClicked}>게시물 초기화</BasicButton>
+        <BasicButton onClick={onAccountConnectButtonClicked}>인스타 계정 연동</BasicButton>
 
         <div className={'flex flex-col gap-8'}>
           {posts &&
