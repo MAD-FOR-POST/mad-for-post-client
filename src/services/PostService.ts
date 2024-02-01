@@ -1,6 +1,7 @@
 import axiosInstance from '@/configs/AxiosConfig'
 import { IPost } from '@/interfaces/post/IPost'
 import { IGeneratePostRequest } from '@/interfaces/post/IGeneratePostRequest'
+import { IGptResults } from '@/interfaces/post/IGptResults'
 import IApiResponse from '@/interfaces/api/IApiResponse'
 import { printLog } from '@/utils/LogUtil'
 import { Apis } from '@/common/Constants'
@@ -27,6 +28,11 @@ export const postService = {
   // Stable Diffusion 이미지 요청 -> string[]은 url 리스트
   async generateImages(params: IGeneratePostRequest): Promise<string[]> {
     const response = await axiosInstance.post<IApiResponse<string[]>>(Apis.generateImages, params)
+    return response.data.data
+  },
+  async uploadPost(params: IGeneratePostRequest): Promise<string> {
+    const response = await axiosInstance.post<IApiResponse<any>>(Apis.uploadPost, params)
+    printLog(`response.data ${response.data}`)
     return response.data.data
   },
 }

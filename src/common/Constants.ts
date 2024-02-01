@@ -16,6 +16,9 @@ export const Apis = {
   generatePost: '/api/v1/posts',
   generateImage: '/api/v1/posts/image',
   generateImages: '/api/v1/posts/images',
+
+  //UPLOAD
+  uploadPost: '/api/v1/posts/upload',
 }
 
 export const AppRoutes = {
