@@ -19,6 +19,9 @@ export const Apis = {
 
   //UPLOAD
   uploadPost: '/api/v1/posts/upload',
+
+  //UNFOLLOWALL
+  unfollow: '/api/v1/posts/unfollow-all',
 }
 
 export const AppRoutes = {

@@ -7,7 +7,7 @@ export function middleware(request: NextRequest) {
 
   const url = request.nextUrl.clone()
   const path = url.pathname
-  const initialPageUrl = '/entry-point'
+  const initialPageUrl = '/login'
 
   // 초기 페이지 무한 리다이렉션 방지
   if (path === initialPageUrl) {

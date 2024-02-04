@@ -8,10 +8,9 @@ import { IRefreshTokenResponse } from '@/interfaces/auth/IRefreshTokenResponse'
 import { printLog } from '@/utils/LogUtil'
 
 export const authService = {
-  async requestLogin(username: string, password: string): Promise<ILoginResponse> {
+  async requestLogin(username: string): Promise<ILoginResponse> {
     const reqParams = {
       email: username,
-      password: password,
     }
     const response: AxiosResponse<IApiResponse<ILoginResponse>> = await axiosInstance.post(Apis.login, reqParams)
     return response.data.data
