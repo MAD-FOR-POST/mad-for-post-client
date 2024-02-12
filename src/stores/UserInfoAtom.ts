@@ -3,6 +3,7 @@ import { IUser } from '@/interfaces/user/IUser'
 import { IInputTexts } from '@/interfaces/post/IInputTexts'
 import { IGptResults } from '@/interfaces/post/IGptResults'
 import { recoilPersist } from 'recoil-persist'
+import { IPostingOPtion } from '@/interfaces/post/IPostingOption'
 
 const { persistAtom } = recoilPersist()
 
@@ -33,5 +34,14 @@ export const gptResultsAtom = atom<IGptResults>({
 export const gptImageResultIndexArrayAtom = atom<number[]>({
   key: 'GptImageResultArray',
   default: [],
+  effects_UNSTABLE: [persistAtom],
+})
+
+export const promptSelection = atom<IPostingOPtion>({
+  key: 'PostPurposePrompt',
+  default: {
+    title: '',
+    prompt: '',
+  },
   effects_UNSTABLE: [persistAtom],
 })

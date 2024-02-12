@@ -43,8 +43,8 @@ const Layout: React.FC<LayoutProps> = ({ children, backgroundColor }) => {
   }, [])
 
   return (
-    <div className={'flex items-center justify-center fixed left-0 top-0 right-0 bottom-0 overscroll-y-contain	 '} style={{ backgroundColor: backgroundColor ?? '#E2D9E2' }}>
-      <motion.div initial="initial" animate="animate" exit="exit" variants={pageVariants} className={'flex items-center justify-center w-full h-full'}>
+    <div className={'flex items-center justify-center fixed left-0 top-0 right-0 bottom-0 overscroll-y-contain '} style={{ backgroundColor: backgroundColor ?? '#E2D9E2' }}>
+      <motion.div initial="initial" animate="animate" exit="exit" variants={pageVariants} className={'flex items-center justify-center w-full h-full '}>
         {isMdMedia ? (
           // 모바일이 아닌 경우에만 적용되는 스타일
           <div style={{ height: layoutHeight }} className={'flex flex-col justify-start box-border items-center bg-white w-[428px] h-full overflow-y-scroll hide-scrollbar'}>

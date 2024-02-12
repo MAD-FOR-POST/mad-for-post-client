@@ -35,6 +35,7 @@ export const AppRoutes = {
   inputImage: '/input/image',
   resultPage: '/result',
   edit: '/edit',
+  inputTextSelect: '/input/text/select',
   inputTextKeyword: '/input/text/keyword',
   inputTextOptional: '/input/text/optional',
 }
