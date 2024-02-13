@@ -7,7 +7,7 @@ export function middleware(request: NextRequest) {
 
   const url = request.nextUrl.clone()
   const path = url.pathname
-  const initialPageUrl = '/entry-point'
+  const initialPageUrl = '/input'
 
   // 초기 페이지 무한 리다이렉션 방지
   if (path === initialPageUrl) {
@@ -17,7 +17,7 @@ export function middleware(request: NextRequest) {
   const accessToken = request.cookies.get('accessToken')
 
   if (path === '/' && accessToken) {
-    return NextResponse.redirect(new URL(AppRoutes.input, request.url))
+    return NextResponse.redirect(new URL(AppRoutes.inputTextSelect, request.url))
   }
 
   if (!accessToken) return NextResponse.redirect(new URL(initialPageUrl, request.url))

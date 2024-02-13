@@ -4,153 +4,85 @@ import { useState, useEffect, ChangeEvent, useCallback } from 'react'
 import { NextButton } from '@/components/ui/button/NextButton'
 import { BackButton } from '@/components/ui/button/BackButton'
 
-import { KeywordList } from '@/components/ui/keyword/KeywordList'
 import { AppRoutes } from '@/common/Constants'
-import { useRecoilState, useResetRecoilState } from 'recoil'
-import { gptImageResultIndexArrayAtom, gptResultsAtom, userInputImagesAtom, userInputTextsAtom } from '@/stores/UserInfoAtom'
-import { SizedBox } from '@/components/ui/box/SizedBox'
+import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil'
+import { gptResultsAtom, promptDetail, promptSelection } from '@/stores/UserInfoAtom'
+
 import Layout from '@/components/layout'
 import { TitleText } from '@/components/ui/typography/TitleText'
 import { useMutation } from 'react-query'
 import { postService } from '@/services/PostService'
 import Loading from '@/components/ui/loading/Loading'
-import { FloatingButton } from '@/components/ui/button/FloatingButton'
-import { inputTextKeyword } from '@/text'
 
 export default function TextKeywordPage() {
-  const [keyword, setKeyWord] = useState('') //리스트 안에 각각
+  const [saveKeyword, setSaveKeyword] = useRecoilState(promptDetail)
+  const [keyword, setKeyWord] = useState(saveKeyword) //리스트 안에 각각
   const router = useRouter()
 
   //recoil 써서 keyword와 detail값 넣기
-  const [userInput, setUserInput] = useRecoilState(userInputTextsAtom)
-  const [isModalOpen, setModalOpen] = useState(false)
-  const { keywords, detail } = userInput
 
-  const [isLoading, setIsLoading] = useState(false)
+  const selectPrompt = useRecoilValue(promptSelection)
+  const promptOption = useRecoilValue(promptSelection)
 
   const { mutate: generatePostMutate, isLoading: gptLoading, error: gptDataFetchError, data: gptTextResult } = useMutation(postService.generatePost)
-  const { mutate: generateImageMutate, isLoading: gptImgLoading, error: gptImgDataFetchError, data: gptImageResults } = useMutation(postService.generateImages)
 
   const [gptResults, setGPTResults] = useRecoilState(gptResultsAtom)
 
-  const resetGptResultImagesArray = useResetRecoilState(gptImageResultIndexArrayAtom)
-  useEffect(() => {
-    resetGptResultImagesArray()
-  }, [])
-
-  const onRemoveKeywordButtonClicked = (index: number) => {
-    setUserInput((currentInput) => {
-      const newKeywords = [...currentInput.keywords]
-      newKeywords.splice(index, 1)
-
-      return {
-        ...currentInput,
-        keywords: newKeywords,
-      }
-    })
-  }
-
   const onGPTGenerateButtonClicked = async () => {
-    if (keywords.length < 3) {
-      setModalOpen(true)
-      return
-    }
-    setIsLoading(true)
-    // Promises for text and image data
-
     try {
-      // Wait for both promises to resolve
-      await Promise.all([
-        generatePostMutate({
-          keywords: userInput.keywords.toString(),
-          description: userInput.detail ? userInput.detail : '.',
-        }),
-        generateImageMutate({
-          keywords: userInput.keywords.toString(),
-          description: userInput.detail ? userInput.detail : '.',
-        }),
-      ])
-
-      // !gptLoading && router.push(AppRoutes.resultPage)
+      generatePostMutate({
+        keywords: `${promptOption.prompt} 목적으로 ${keyword} 에 대해 작성해줘`,
+        description: '.',
+      })
+      setSaveKeyword(keyword)
     } catch (error) {
       console.error('Error fetching data:', error)
     }
   }
 
-  const updateResultsAndNavigate = useCallback(
-    (images: string[]) => {
-      setGPTResults((prevResults) => ({
-        ...prevResults,
-        text: gptTextResult,
-        image: images,
-      }))
-    },
-    [gptTextResult, setGPTResults],
-  )
-
   useEffect(() => {
-    //사용자가 선택한 이미지가 없는 경우: 텍스트만 기다린다.
-    if (gptTextResult && gptImageResults) {
-      updateResultsAndNavigate([...gptImageResults])
-      router.push(AppRoutes.inputImage)
-      return
+    if (gptTextResult) {
+      setGPTResults(gptTextResult)
+      router.push(AppRoutes.resultPage)
     }
-  }, [gptTextResult, gptImageResults])
-
-  const onDetailClick = () => {
-    console.log('clicked')
-    router.push(AppRoutes.inputTextOptional)
-  }
-
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    setUserInput({
-      ...userInput,
-      keywords: keywords.concat([keyword]),
-    })
-
-    setKeyWord('')
-  }
-
+  }, [gptTextResult])
   return (
     <Layout>
-      {!isLoading ? (
+      {!gptLoading ? (
         <div className={'flex flex-col justify-between items-center bg-[#DDBCC5] w-full max-w-[428px] h-full pt-9 relative '}>
           <div className="flex w-full items-center justify-between px-5">
             <BackButton />
-            <FloatingButton text={inputTextKeyword.input.kr} onClick={onDetailClick} />
           </div>
-          <TitleText>{inputTextKeyword.title.kr}</TitleText>
+          <TitleText>
+            '{selectPrompt.prompt}' 목적으로
+            <br /> 글을 생성할게요!
+          </TitleText>
           <div className={'relative w-full'}>
             <img src="/images/FormBackgroundTop.png" />
             <div className={'flex flex-col items-center  w-full bg-white bg-opacity-50'}>
               <div className={'relative flex flex-col bg-white rounded-[36.38px] w-[87%] min-h-[150px] px-[10px] py-[11px] mb-[104px]'}>
                 <div className={'text-center'}>
-                  <p className={'text-[#262A2F] text-[14px] font-bold '}>키워드</p>
+                  <p className={'text-[#262A2F] text-[14px] font-bold '}>자세하게 작성할수록 좋아요</p>
                 </div>
-                {userInput.keywords.length < 10 && (
-                  <form className={'flex justify-between items-center px-[24px] w-full'} onSubmit={onSubmit}>
-                    <input
-                      type="text"
-                      required
-                      className={'text-[16px] focus:outline-none flex-1 max-w-[220px] py-[20px]'}
-                      placeholder={inputTextKeyword.input.kr}
-                      value={keyword}
-                      onChange={(e) => setKeyWord(e.target.value)}
-                    />
-                    <button className={'text-[16px] text-[#116AEF] ml-[2px] cursor-pointer'}>추가</button>
-                  </form>
-                )}
-                <SizedBox height={12} />
-                <KeywordList keywords={userInput.keywords} onRemoveKeywordButtonClicked={onRemoveKeywordButtonClicked} />
-                {isModalOpen && <div className="text-[#E71C40] text-[14px] text-center  bottom-0 w-full">Minimum 3 to Maximum 10 keywords needed</div>}
+
+                <form className={'flex  justify-between items-center px-[24px] w-full'}>
+                  <textarea
+                    required
+                    className={'text-[16px] focus:outline-none flex-1  py-[20px] resize-none'}
+                    placeholder="인스타그램 글과 해시태그를 만들어 줄게요."
+                    value={keyword}
+                    maxLength={200}
+                    onChange={(e) => setKeyWord(e.target.value)}
+                  />
+                  <div className={`absolute right-5 bottom-2 text-xs ${keyword.length >= 200 ? 'text-red-500' : 'text-gray-300'} `}>{keyword.length}/200</div>
+                </form>
               </div>
               <NextButton onClick={onGPTGenerateButtonClicked}>완료</NextButton>
             </div>
           </div>
         </div>
       ) : (
-        <Loading setIsLoading={setIsLoading} />
+        <Loading />
       )}
     </Layout>
   )

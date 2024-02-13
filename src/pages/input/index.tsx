@@ -9,18 +9,21 @@ import { useResetRecoilState } from 'recoil'
 import { gptResultsAtom, userInputImagesAtom, userInputTextsAtom } from '@/stores/UserInfoAtom'
 import { inputText } from '@/text'
 
+import { GoogleLogin } from '@react-oauth/google'
+import { jwtDecode } from 'jwt-decode'
+import { authService } from '@/services/AuthService'
+import { cookieService } from '@/services/CookieService'
+
+interface MyJwtPayload {
+  email: string
+  // Add other custom properties that you expect in your JWT payload
+}
+
 export default function TailwindExample() {
   const router = useRouter()
   const [currentWidth, setCurrentWidth] = useState(0) //to set max width depending on current width size
-  const [routerPushed, setRouterPushed] = useState(false)
 
-  const x = useMotionValue(0)
-  const myComponentRef = useRef<HTMLDivElement>(null)
-
-  const newX = useTransform(x, [0, currentWidth - 100], [0, 1])
-  const constraintsRef = useRef(null)
-
-  const { kr: titleKr } = inputText.title;
+  const { kr: titleKr } = inputText.title
 
   const resetInputText = useResetRecoilState(userInputTextsAtom)
   const resetInputImages = useResetRecoilState(userInputImagesAtom)
@@ -29,21 +32,23 @@ export default function TailwindExample() {
     resetInputImages()
   }, [])
 
-  useEffect(() => {
-    newX.onChange(() => {
-      if (newX.get() > 0.9 && !routerPushed) {
-        setRouterPushed(true)
-        router.push(AppRoutes.inputTextKeyword)
+  const login = async (email: string) => {
+    try {
+      const response = await authService.requestLogin(email)
+      if (response.accessToken && response.refreshToken) {
+        cookieService.setAccessToken(response.accessToken)
+        cookieService.setRefreshToken(response.refreshToken)
+        router.push(AppRoutes.inputTextSelect)
       }
-    })
-  }, [x])
-
-  useEffect(() => {
-    if (myComponentRef.current) {
-      const componentWidth = myComponentRef.current.offsetWidth
-      setCurrentWidth(componentWidth)
+    } catch (error) {
+      console.error('Login error:', error)
     }
-  }, [])
+  }
+
+  const decodeToken = (token: string) => {
+    const result = jwtDecode<MyJwtPayload>(token)
+    return result.email
+  }
 
   return (
     <Layout>
@@ -74,19 +79,22 @@ export default function TailwindExample() {
               <div className="font-poppins text-4xl text-center font-bold">{titleKr.kr2}</div>
               <div className="text-center mt-[24px] text-gray-400  ">{inputText.subTitle.kr}</div>
             </div>
-            <div ref={myComponentRef}>
-              <motion.div className="relative flex justify-center rounded-full items-center bg-orange-pink h-[80px] bottom-0 " ref={constraintsRef}>
-                <div className="text-white animate-blink">{inputText.slide.kr}</div>
-                <motion.div
-                  drag="x"
-                  style={{ x }}
-                  className="absolute  flex justify-center items-center h-[70px] w-[70px] z-10  rounded-full bg-white left-1 cursor-pointer"
-                  dragConstraints={constraintsRef}
-                  dragSnapToOrigin
-                >
-                  <ChevronRightAnimated />
-                </motion.div>
-              </motion.div>
+            <div>
+              <div className={'flex flex-col items-center w-full max-w-[428px] h-full pt-9 relative '}>
+                <GoogleLogin
+                  size="large"
+                  width={60}
+                  onSuccess={(credentialResponse) => {
+                    if (credentialResponse.credential) {
+                      const email = decodeToken(credentialResponse.credential)
+                      login(email)
+                    }
+                  }}
+                  onError={() => {
+                    console.log('Login Failed')
+                  }}
+                />
+              </div>
             </div>
           </div>
         </motion.div>

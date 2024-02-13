@@ -19,6 +19,9 @@ export const Apis = {
 
   //UPLOAD
   uploadPost: '/api/v1/posts/upload',
+
+  //UNFOLLOWALL
+  unfollow: '/api/v1/posts/unfollow-all',
 }
 
 export const AppRoutes = {
@@ -32,6 +35,7 @@ export const AppRoutes = {
   inputImage: '/input/image',
   resultPage: '/result',
   edit: '/edit',
+  inputTextSelect: '/input/text/select',
   inputTextKeyword: '/input/text/keyword',
   inputTextOptional: '/input/text/optional',
 }

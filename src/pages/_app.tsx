@@ -6,7 +6,7 @@ import { Poppins } from 'next/font/google'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { useRouter } from 'next/router'
 import { AnimatePresence } from 'framer-motion'
-
+import { GoogleOAuthProvider } from '@react-oauth/google'
 const poppins = Poppins({
   subsets: ['latin'],
   display: 'swap',
@@ -22,9 +22,11 @@ export default function App({ Component, pageProps }: AppProps) {
     <QueryClientProvider client={queryClient}>
       <main className={poppins.className}>
         <RecoilRoot>
-          <AnimatePresence mode={'wait'}>
-            <Component {...pageProps} key={router.route} />
-          </AnimatePresence>
+          <GoogleOAuthProvider clientId="790356584617-l3q9gvvqo30b57rh0m24s7kkcg8g7mvn.apps.googleusercontent.com">
+            <AnimatePresence mode={'wait'}>
+              <Component {...pageProps} key={router.route} />
+            </AnimatePresence>
+          </GoogleOAuthProvider>
         </RecoilRoot>
       </main>
     </QueryClientProvider>

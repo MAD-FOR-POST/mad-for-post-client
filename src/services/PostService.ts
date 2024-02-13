@@ -35,4 +35,9 @@ export const postService = {
     printLog(`response.data ${response.data}`)
     return response.data.data
   },
+
+  async unfollowFollowers() {
+    const response = await axiosInstance.post<IApiResponse<any>>(Apis.unfollow)
+    return response.data.data
+  },
 }
