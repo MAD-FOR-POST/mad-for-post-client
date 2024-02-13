@@ -16,77 +16,77 @@ import Loading from '@/components/ui/loading/Loading'
 import { inputTextOptional } from '@/text'
 
 export default function TextOptionalPage() {
-  const router = useRouter()
-  const [textareaValue, setTextareaValue] = useState('')
-  //recoil 써서 keyword와 detail값 넣기
-  const [userInput, setUserInput] = useRecoilState(userInputTextsAtom)
-  const [isLoading, setIsLoading] = useState(false)
-  const { mutate: generatePostMutate, isLoading: gptLoading, error: gptDataFetchError, data: gptTextResult } = useMutation(postService.generatePost)
-  const { mutate: generateImageMutate, isLoading: gptImgLoading, error: gptImgDataFetchError, data: gptImageResults } = useMutation(postService.generateImages)
+  // const router = useRouter()
+  // const [textareaValue, setTextareaValue] = useState('')
+  // //recoil 써서 keyword와 detail값 넣기
+  // const [userInput, setUserInput] = useRecoilState(userInputTextsAtom)
+  // const [isLoading, setIsLoading] = useState(false)
+  // const { mutate: generatePostMutate, isLoading: gptLoading, error: gptDataFetchError, data: gptTextResult } = useMutation(postService.generatePost)
+  // const { mutate: generateImageMutate, isLoading: gptImgLoading, error: gptImgDataFetchError, data: gptImageResults } = useMutation(postService.generateImages)
 
-  const [gptResults, setGPTResults] = useRecoilState(gptResultsAtom)
-  const { kr: titleKr } = inputTextOptional.title;
-  const onGPTGenerateButtonClicked = async () => {
-    //keyword가 없는 경우 GPT 생성을 할 수 없으므로, 키워드 입력 페이지로 이동한다.
-    if (userInput.keywords.length === 0) {
-      router.replace(AppRoutes.inputTextKeyword)
-      alert('Please add keywords')
-      return
-    }
-    setIsLoading(true)
-    // Promises for text and image data
+  // const [gptResults, setGPTResults] = useRecoilState(gptResultsAtom)
+  // const { kr: titleKr } = inputTextOptional.title;
+  // const onGPTGenerateButtonClicked = async () => {
+  //   //keyword가 없는 경우 GPT 생성을 할 수 없으므로, 키워드 입력 페이지로 이동한다.
+  //   if (userInput.keywords.length === 0) {
+  //     router.replace(AppRoutes.inputTextKeyword)
+  //     alert('Please add keywords')
+  //     return
+  //   }
+  //   setIsLoading(true)
+  //   // Promises for text and image data
 
-    try {
-      // Wait for both promises to resolve
-      await Promise.all([
-        generatePostMutate({
-          keywords: userInput.keywords.toString(),
-          description: userInput.detail ? userInput.detail : '.',
-        }),
-        generateImageMutate({
-          keywords: userInput.keywords.toString(),
-          description: userInput.detail ? userInput.detail : '.',
-        }),
-      ])
+  //   try {
+  //     // Wait for both promises to resolve
+  //     await Promise.all([
+  //       generatePostMutate({
+  //         keywords: userInput.keywords.toString(),
+  //         description: userInput.detail ? userInput.detail : '.',
+  //       }),
+  //       generateImageMutate({
+  //         keywords: userInput.keywords.toString(),
+  //         description: userInput.detail ? userInput.detail : '.',
+  //       }),
+  //     ])
 
-      // !gptLoading && router.push(AppRoutes.resultPage)
-    } catch (error) {
-      console.error('Error fetching data:', error)
-    }
-  }
+  //     // !gptLoading && router.push(AppRoutes.resultPage)
+  //   } catch (error) {
+  //     console.error('Error fetching data:', error)
+  //   }
+  // }
 
-  const updateResultsAndNavigate = useCallback(
-    (images: string[]) => {
-      setGPTResults((prevResults) => ({
-        ...prevResults,
-        text: gptTextResult,
-        image: images,
-      }))
-    },
-    [gptTextResult, setGPTResults],
-  )
+  // const updateResultsAndNavigate = useCallback(
+  //   (images: string[]) => {
+  //     setGPTResults((prevResults) => ({
+  //       ...prevResults,
+  //       text: gptTextResult,
+  //       image: images,
+  //     }))
+  //   },
+  //   [gptTextResult, setGPTResults],
+  // )
 
-  useEffect(() => {
-    //사용자가 선택한 이미지가 없는 경우: 텍스트만 기다린다.
-    if (gptTextResult && gptImageResults) {
-      updateResultsAndNavigate([...gptImageResults])
-      router.push(AppRoutes.inputImage)
-      return
-    }
-  }, [gptTextResult, gptImageResults])
+  // useEffect(() => {
+  //   //사용자가 선택한 이미지가 없는 경우: 텍스트만 기다린다.
+  //   if (gptTextResult && gptImageResults) {
+  //     updateResultsAndNavigate([...gptImageResults])
+  //     router.push(AppRoutes.inputImage)
+  //     return
+  //   }
+  // }, [gptTextResult, gptImageResults])
 
-  const handleTextareaChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    const newDetail = e.target.value
-    setUserInput((prevUserInput) => ({
-      ...prevUserInput,
-      detail: newDetail,
-    }))
-    setTextareaValue(newDetail)
-  }
+  // const handleTextareaChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+  //   const newDetail = e.target.value
+  //   setUserInput((prevUserInput) => ({
+  //     ...prevUserInput,
+  //     detail: newDetail,
+  //   }))
+  //   setTextareaValue(newDetail)
+  // }
 
   return (
     <Layout>
-      {!isLoading ? (
+      {/* {!isLoading ? (
         <div className={'flex flex-col justify-between items-center bg-[#272727] w-full max-w-[428px] h-full pt-9 relative '}>
           <div className="flex w-full items-center justify-between px-5">
             <BackButton />
@@ -112,7 +112,8 @@ export default function TextOptionalPage() {
         </div>
       ) : (
         <Loading setIsLoading={setIsLoading} />
-      )}
+      )} */}
+      <></>
     </Layout>
   )
 }

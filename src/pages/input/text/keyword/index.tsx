@@ -54,7 +54,7 @@ export default function TextKeywordPage() {
             <BackButton />
           </div>
           <TitleText>
-            '{selectPrompt.prompt}' 목적으로
+            {selectPrompt.prompt} 목적으로
             <br /> 글을 생성할게요!
           </TitleText>
           <div className={'relative w-full'}>

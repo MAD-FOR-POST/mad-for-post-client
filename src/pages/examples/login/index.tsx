@@ -18,13 +18,13 @@ export default function TailwindExample() {
 
   const { email, password } = state
 
-  const onLoginButtonClicked = async () => {
-    const result = await authService.requestLogin(email, password)
-    const accessToken = result.accessToken ?? ''
-    const refreshToken = result.refreshToken ?? ''
-    cookieService.setAccessToken(accessToken)
-    cookieService.setRefreshToken(refreshToken)
-  }
+  // const onLoginButtonClicked = async () => {
+  //   const result = await authService.requestLogin(email, password)
+  //   const accessToken = result.accessToken ?? ''
+  //   const refreshToken = result.refreshToken ?? ''
+  //   cookieService.setAccessToken(accessToken)
+  //   cookieService.setRefreshToken(refreshToken)
+  // }
 
   const onTokenRefreshButtonClicked = async () => {
     const result = await authService.refreshToken()
@@ -55,7 +55,7 @@ export default function TailwindExample() {
       <span>로그인 테스트</span>
       <BasicInput name={'email'} value={email} placeholder={'이메일'} onChange={onInputChanged} />
       <BasicInput name={'password'} value={password} placeholder={'비밀번호'} onChange={onInputChanged} />
-      <BasicButton onClick={onLoginButtonClicked}>로그인</BasicButton>
+      {/* <BasicButton onClick={onLoginButtonClicked}>로그인</BasicButton> */}
       <BasicButton onClick={onTokenRefreshButtonClicked}>토큰 리프레시</BasicButton>
       <BasicButton onClick={onValidateTokenButtonClicked}>토큰 검증</BasicButton>
       <BasicButton onClick={onTestAPICallButtonClicked}>API 호출</BasicButton>

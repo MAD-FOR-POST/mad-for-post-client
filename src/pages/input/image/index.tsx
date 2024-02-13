@@ -22,193 +22,194 @@ import { DragDropContext, Draggable, DropResult, Droppable } from 'react-beautif
 import { imageHelp } from '@/text'
 
 export default function TailwindExample() {
-  const router = useRouter()
-  const [selectedImagesArray, setSelectedImagesArray] = useRecoilState(userInputImagesAtom)
-  const [gptResults, setGPTResults] = useRecoilState(gptResultsAtom)
-  //이미지 선택 후 남은 이미지 index 에서 가져오기 위함
-  const [indexArr, setIndexArr] = useRecoilState(gptImageResultIndexArrayAtom)
+  // const router = useRouter()
+  // const [selectedImagesArray, setSelectedImagesArray] = useRecoilState(userInputImagesAtom)
+  // const [gptResults, setGPTResults] = useRecoilState(gptResultsAtom)
+  // //이미지 선택 후 남은 이미지 index 에서 가져오기 위함
+  // const [indexArr, setIndexArr] = useRecoilState(gptImageResultIndexArrayAtom)
 
-  const userInput = useRecoilValue(userInputTextsAtom)
-  const [isLoading, setIsLoading] = useState(false)
-  const [modalOpen, setModalOpen] = useState(false)
-  const [stageError, setStageError] = useState(false)
-  const [maxImgError, setMaxImgError] = useState(false)
-  const { mutate: generateImageMutate, data: gptImageResults } = useMutation(postService.generateImages)
+  // const userInput = useRecoilValue(userInputTextsAtom)
+  // const [isLoading, setIsLoading] = useState(false)
+  // const [modalOpen, setModalOpen] = useState(false)
+  // const [stageError, setStageError] = useState(false)
+  // const [maxImgError, setMaxImgError] = useState(false)
+  // const { mutate: generateImageMutate, data: gptImageResults } = useMutation(postService.generateImages)
 
-  const [clickedImg, setClickedImg] = useState(gptResults.image ? gptResults.image[0] : '')
-  const [clickedImgIndex, setClickedImgIndex] = useState(0)
-  const [bgwidth, setBgWidth] = useState(0)
+  // const [clickedImg, setClickedImg] = useState(gptResults.image ? gptResults.image[0] : '')
+  // const [clickedImgIndex, setClickedImgIndex] = useState(0)
+  // const [bgwidth, setBgWidth] = useState(0)
 
-  const onDeleteImage = (index: number, imgUrl: string) => {
-    const confirmed = confirm('Do you want to delete?')
-    if (confirmed) {
-      // Copy the current array
-      const newArray = [...selectedImagesArray]
-      // Remove the image at the specified index
-      newArray.splice(index, 1)
-      // Update the Recoil state
-      setSelectedImagesArray(newArray)
+  // const onDeleteImage = (index: number, imgUrl: string) => {
+  //   const confirmed = confirm('Do you want to delete?')
+  //   if (confirmed) {
+  //     // Copy the current array
+  //     const newArray = [...selectedImagesArray]
+  //     // Remove the image at the specified index
+  //     newArray.splice(index, 1)
+  //     // Update the Recoil state
+  //     setSelectedImagesArray(newArray)
 
-      //삭제 이미지가 생성된 리스트에 존재할 때
-      if (gptResults.image?.includes(imgUrl)) {
-        //삭제한 index 되돌리기
-        setIndexArr((oldArr) => {
-          const indexArrCopy = [...oldArr]
-          const clickedImgIndex = gptResults.image?.indexOf(imgUrl) // Replace with the actual index you want to remove
-          console.log(clickedImgIndex)
-          // Remove the element at the specified index
-          clickedImgIndex?.toString && indexArrCopy.push(clickedImgIndex)
-          console.log(indexArrCopy)
+  //     //삭제 이미지가 생성된 리스트에 존재할 때
+  //     if (gptResults.image?.includes(imgUrl)) {
+  //       //삭제한 index 되돌리기
+  //       setIndexArr((oldArr) => {
+  //         const indexArrCopy = [...oldArr]
+  //         const clickedImgIndex = gptResults.image?.indexOf(imgUrl) // Replace with the actual index you want to remove
+  //         console.log(clickedImgIndex)
+  //         // Remove the element at the specified index
+  //         clickedImgIndex?.toString && indexArrCopy.push(clickedImgIndex)
+  //         console.log(indexArrCopy)
 
-          // Sort the array
-          indexArrCopy.sort((a, b) => a - b)
+  //         // Sort the array
+  //         indexArrCopy.sort((a, b) => a - b)
 
-          return indexArrCopy
-        })
-      }
-    }
-  }
+  //         return indexArrCopy
+  //       })
+  //     }
+  //   }
+  // }
 
-  const generatePostWithReactQuery = async () => {
-    try {
-      const response = await generateImageMutate({
-        keywords: userInput.keywords.toString(),
-        description: userInput.detail ? userInput.detail : '.',
-      })
-      return response // Assuming you want to return the response to the caller
-    } catch (error) {
-      console.error(error)
-      throw error // Rethrow the error for further handling if needed
-    }
-  }
+  // const generatePostWithReactQuery = async () => {
+  //   try {
+  //     const response = await generateImageMutate({
+  //       keywords: userInput.keywords.toString(),
+  //       description: userInput.detail ? userInput.detail : '.',
+  //     })
+  //     return response // Assuming you want to return the response to the caller
+  //   } catch (error) {
+  //     console.error(error)
+  //     throw error // Rethrow the error for further handling if needed
+  //   }
+  // }
 
-  const onGPTGenerateButtonClicked = async () => {
-    //keyword가 없는 경우 GPT 생성을 할 수 없으므로, 키워드 입력 페이지로 이동한다.
-    if (userInput.keywords.length === 0) {
-      router.replace(AppRoutes.inputTextKeyword)
-      alert('Please add keywords')
-      return
-    }
-    setIsLoading(true)
-    // Promises for text and image data
+  // const onGPTGenerateButtonClicked = async () => {
+  //   //keyword가 없는 경우 GPT 생성을 할 수 없으므로, 키워드 입력 페이지로 이동한다.
+  //   if (userInput.keywords.length === 0) {
+  //     router.replace(AppRoutes.inputTextKeyword)
+  //     alert('Please add keywords')
+  //     return
+  //   }
+  //   setIsLoading(true)
+  //   // Promises for text and image data
 
-    try {
-      // Wait for both promises to resolve
-      await generatePostWithReactQuery()
-    } catch (error) {
-      console.error('Error fetching data:', error)
-    }
-  }
+  //   try {
+  //     // Wait for both promises to resolve
+  //     await generatePostWithReactQuery()
+  //   } catch (error) {
+  //     console.error('Error fetching data:', error)
+  //   }
+  // }
 
-  const updateResultsAndNavigate = useCallback(
-    (images: string[]) => {
-      setGPTResults((prevResults) => ({
-        ...prevResults,
-        text: prevResults.text,
-        image: images,
-      }))
-    },
-    [setGPTResults],
-  )
+  // const updateResultsAndNavigate = useCallback(
+  //   (images: string[]) => {
+  //     setGPTResults((prevResults) => ({
+  //       ...prevResults,
+  //       text: prevResults.text,
+  //       image: images,
+  //     }))
+  //   },
+  //   [setGPTResults],
+  // )
 
-  const onImageClick = (imageUrl: string, index: number) => {
-    setClickedImg(imageUrl)
-    setClickedImgIndex(index)
-  }
+  // const onImageClick = (imageUrl: string, index: number) => {
+  //   setClickedImg(imageUrl)
+  //   setClickedImgIndex(index)
+  // }
 
-  const onImageChanged = (event: ChangeEvent<HTMLInputElement>) => {
-    if (!event?.target?.files) return
+  // const onImageChanged = (event: ChangeEvent<HTMLInputElement>) => {
+  //   if (!event?.target?.files) return
 
-    const file = event?.target?.files[0]
-    if (file) {
-      const reader = new FileReader()
-      reader.onloadend = () => {
-        setSelectedImagesArray((prevStringArray) => [...prevStringArray, reader.result as string])
-      }
-      reader.readAsDataURL(file)
-    }
-  }
+  //   const file = event?.target?.files[0]
+  //   if (file) {
+  //     const reader = new FileReader()
+  //     reader.onloadend = () => {
+  //       setSelectedImagesArray((prevStringArray) => [...prevStringArray, reader.result as string])
+  //     }
+  //     reader.readAsDataURL(file)
+  //   }
+  // }
 
-  useEffect(() => {
-    //사용자가 선택한 이미지가 없는 경우: 텍스트만 기다린다.
-    if (gptImageResults) {
-      console.log('image created')
-      updateResultsAndNavigate([...gptImageResults])
-      setClickedImg(gptImageResults[0])
-      setClickedImgIndex(0)
-      setIndexArr(Array.from(Array(gptImageResults.length).keys()))
-      setIsLoading(false)
-      return
-    }
-  }, [gptImageResults])
+  // useEffect(() => {
+  //   //사용자가 선택한 이미지가 없는 경우: 텍스트만 기다린다.
+  //   if (gptImageResults) {
+  //     console.log('image created')
+  //     updateResultsAndNavigate([...gptImageResults])
+  //     setClickedImg(gptImageResults[0])
+  //     setClickedImgIndex(0)
+  //     setIndexArr(Array.from(Array(gptImageResults.length).keys()))
+  //     setIsLoading(false)
+  //     return
+  //   }
+  // }, [gptImageResults])
 
-  useEffect(() => {
-    if (gptResults.image?.length === 0) {
-      onGPTGenerateButtonClicked()
-    }
-    //indexArr 초기 세팅
-    indexArr.length === 0 && gptResults.image && setIndexArr(Array.from(Array(gptResults.image.length).keys()))
-  }, [gptResults])
+  // useEffect(() => {
+  //   if (gptResults.image?.length === 0) {
+  //     onGPTGenerateButtonClicked()
+  //   }
+  //   //indexArr 초기 세팅
+  //   indexArr.length === 0 && gptResults.image && setIndexArr(Array.from(Array(gptResults.image.length).keys()))
+  // }, [gptResults])
 
-  console.log(gptImageResults)
-  const onDragEnd = ({ draggableId, destination, source }: DropResult) => {
-    //같은 공간에서 움직일때
-    if (destination?.droppableId === source.droppableId && destination.droppableId === 'selectedImages') {
-      setSelectedImagesArray((oldArray) => {
-        const selectedArrCopy = [...oldArray]
-        selectedArrCopy.splice(source.index, 1)
-        selectedArrCopy.splice(destination.index, 0, draggableId)
-        return selectedArrCopy
-      })
-      // 위에서 아래로 이미지 움직였을때
-    } else if (destination?.droppableId === 'selectedImages') {
-      if (selectedImagesArray.length === 10) return
+  // console.log(gptImageResults)
+  // const onDragEnd = ({ draggableId, destination, source }: DropResult) => {
+  //   //같은 공간에서 움직일때
+  //   if (destination?.droppableId === source.droppableId && destination.droppableId === 'selectedImages') {
+  //     setSelectedImagesArray((oldArray) => {
+  //       const selectedArrCopy = [...oldArray]
+  //       selectedArrCopy.splice(source.index, 1)
+  //       selectedArrCopy.splice(destination.index, 0, draggableId)
+  //       return selectedArrCopy
+  //     })
+  //     // 위에서 아래로 이미지 움직였을때
+  //   } else if (destination?.droppableId === 'selectedImages') {
+  //     if (selectedImagesArray.length === 10) return
 
-      setSelectedImagesArray((oldArray) => {
-        const selectedArrCopy = [...oldArray]
-        selectedArrCopy.splice(destination.index, 0, draggableId)
-        return selectedArrCopy
-      })
-      setIndexArr((prev) => {
-        const indexArrCopy = [...indexArr]
-        return indexArrCopy.filter((items) => items !== clickedImgIndex)
-      })
-    }
-    setMaxImgError(false)
-  }
-  const onDragStart = () => {
-    selectedImagesArray.length === 10 && setMaxImgError(true)
-  }
+  //     setSelectedImagesArray((oldArray) => {
+  //       const selectedArrCopy = [...oldArray]
+  //       selectedArrCopy.splice(destination.index, 0, draggableId)
+  //       return selectedArrCopy
+  //     })
+  //     setIndexArr((prev) => {
+  //       const indexArrCopy = [...indexArr]
+  //       return indexArrCopy.filter((items) => items !== clickedImgIndex)
+  //     })
+  //   }
+  //   setMaxImgError(false)
+  // }
+  // const onDragStart = () => {
+  //   selectedImagesArray.length === 10 && setMaxImgError(true)
+  // }
 
-  const onClickDone = () => {
-    if (selectedImagesArray.length === 0) {
-      setStageError(true)
-      return
-    }
-    router.push(AppRoutes.resultPage)
-  }
+  // const onClickDone = () => {
+  //   if (selectedImagesArray.length === 0) {
+  //     setStageError(true)
+  //     return
+  //   }
+  //   router.push(AppRoutes.resultPage)
+  // }
 
-  useEffect(() => {
-    setMaxImgError(false)
-  }, [selectedImagesArray])
+  // useEffect(() => {
+  //   setMaxImgError(false)
+  // }, [selectedImagesArray])
 
-  useEffect(() => {
-    setBgWidth(window.innerWidth + 40 > 468 ? 468 : window.innerWidth + 40)
-  }, [])
+  // useEffect(() => {
+  //   setBgWidth(window.innerWidth + 40 > 468 ? 468 : window.innerWidth + 40)
+  // }, [])
 
-  useEffect(() => {
-    console.log(indexArr)
+  // useEffect(() => {
+  //   console.log(indexArr)
 
-    if (gptResults.image) {
-      setClickedImg(gptResults.image[indexArr[0]])
-      setClickedImgIndex(indexArr[0])
-      console.log(indexArr)
-    }
-  }, [indexArr])
+  //   if (gptResults.image) {
+  //     setClickedImg(gptResults.image[indexArr[0]])
+  //     setClickedImgIndex(indexArr[0])
+  //     console.log(indexArr)
+  //   }
+  // }, [indexArr])
 
   return (
     <Layout>
-      {!isLoading ? (
+      <></>
+      {/* {!isLoading ? (
         <DragDropContext onDragEnd={onDragEnd} onDragStart={onDragStart}>
           <motion.div
             initial={{ opacity: 0 }}
@@ -310,7 +311,7 @@ export default function TailwindExample() {
                       </Draggable>
                     ))}
                     {provided.placeholder} {/* Include the placeholder here */}
-                    {selectedImagesArray.length! < 10 && (
+      {/* {selectedImagesArray.length! < 10 && (
                       <label
                         htmlFor="imageInput"
                         className="bg-white w-full   rounded-3xl max-w-[100px] max-h-[100px] min-w-[100px] min-h-[100px]  flex justify-center items-center cursor-pointer "
@@ -336,7 +337,7 @@ export default function TailwindExample() {
         </DragDropContext>
       ) : (
         <Loading setIsLoading={setIsLoading} />
-      )}
+      )} */}
     </Layout>
   )
 }

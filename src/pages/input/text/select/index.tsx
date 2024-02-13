@@ -81,7 +81,7 @@ export default function Select() {
           {isExtra && (
             <div className="w-full  text-xl font-bold h-4/5 pt-20">
               <div className="flex flex-col justify-center items-center text-[#262A2F] py-4">
-                <div>'기타'를 선택하셨네요</div>
+                <div>&apos;기타&apos;를 선택하셨네요</div>
                 <div className="text-center">
                   어떤 목적으로 포스팅을 하실건지
                   <br /> 직접 입력해주세요.
