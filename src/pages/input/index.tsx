@@ -82,6 +82,8 @@ export default function TailwindExample() {
             <div>
               <div className={'flex flex-col items-center w-full max-w-[428px] h-full pt-9 relative '}>
                 <GoogleLogin
+                  size="large"
+                  width={60}
                   onSuccess={(credentialResponse) => {
                     if (credentialResponse.credential) {
                       const email = decodeToken(credentialResponse.credential)

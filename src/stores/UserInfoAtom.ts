@@ -25,9 +25,9 @@ export const userInputTextsAtom = atom<IInputTexts>({
   effects_UNSTABLE: [persistAtom],
 })
 
-export const gptResultsAtom = atom<IGptResults>({
+export const gptResultsAtom = atom<string>({
   key: 'GptTextResult',
-  default: { image: [], text: '' },
+  default: '',
   effects_UNSTABLE: [persistAtom],
 })
 
@@ -43,5 +43,11 @@ export const promptSelection = atom<IPostingOPtion>({
     title: '',
     prompt: '',
   },
+  effects_UNSTABLE: [persistAtom],
+})
+
+export const promptDetail = atom<string>({
+  key: 'promptDetail',
+  default: '',
   effects_UNSTABLE: [persistAtom],
 })
