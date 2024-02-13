@@ -19,13 +19,13 @@ export default function LayoutExample() {
 
   const { email, password } = state
 
-  const onLoginButtonClicked = async () => {
-    const result = await authService.requestLogin(email, password)
-    const accessToken = result.accessToken ?? ''
-    const refreshToken = result.refreshToken ?? ''
-    cookieService.setAccessToken(accessToken)
-    cookieService.setRefreshToken(refreshToken)
-  }
+  // const onLoginButtonClicked = async () => {
+  //   const result = await authService.requestLogin(email, password)
+  //   const accessToken = result.accessToken ?? ''
+  //   const refreshToken = result.refreshToken ?? ''
+  //   cookieService.setAccessToken(accessToken)
+  //   cookieService.setRefreshToken(refreshToken)
+  // }
 
   const onTokenRefreshButtonClicked = async () => {
     const result = await authService.refreshToken()
